@@ -1,8 +1,0 @@
-{
-    "name": "sitoecommerce",
-    "main": "./dist/_worker.js/index.js",
-    "compatibility_date": "2026-06-04",
-    "assets": {
-        "directory": "dist/client"
-    }
-}
