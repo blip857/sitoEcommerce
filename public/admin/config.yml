@@ -1,14 +1,21 @@
 backend:
   name: git-gateway
-  branch: master # O 'main', controlla il nome del tuo branch su GitHub
+  branch: master 
 
-media_folder: "public/assets" # Dove verranno salvate le immagini dei prodotti
+media_folder: "public/assets"
 public_folder: "/assets"
+
+# Questa sezione mancava ed è obbligatoria
+media_library:
+  name: cloudinary # O 'upload' se vuoi salvare nel repo
+  config:
+    cloud_name: your_cloud_name
+    api_key: your_api_key
 
 collections:
   - name: "prodotti"
     label: "Prodotti"
-    folder: "src/content/prodotti" # Dove salveremo i file dei prodotti
+    folder: "src/content/prodotti"
     create: true
     slug: "{{slug}}"
     fields:
