@@ -1,0 +1,17 @@
+backend:
+  name: git-gateway
+  branch: master # O 'main', controlla il nome del tuo branch su GitHub
+
+media_folder: "public/assets" # Dove verranno salvate le immagini dei prodotti
+public_folder: "/assets"
+
+collections:
+  - name: "prodotti"
+    label: "Prodotti"
+    folder: "src/content/prodotti" # Dove salveremo i file dei prodotti
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Nome", name: "nome", widget: "string" }
+      - { label: "Prezzo", name: "prezzo", widget: "number" }
+      - { label: "Immagine", name: "immagine", widget: "image" }
