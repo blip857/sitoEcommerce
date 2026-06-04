@@ -2,11 +2,9 @@ import { defineConfig } from 'astro/config';
 import cloudflare from '@astrojs/cloudflare';
 
 export default defineConfig({
-    output: 'server', // Cambiamo da 'static' a 'server'
+    output: 'server',
     adapter: cloudflare({
-        kvNamespaces: ['SESSION'],
+        // Rimuoviamo kvNamespaces qui se lo stiamo già dichiarando in wrangler.json
+        // per evitare che l'adattatore cerchi di crearne uno nuovo.
     }),
-    build: {
-        assets: 'assets'
-    },
 });
