@@ -3,8 +3,10 @@ import cloudflare from '@astrojs/cloudflare';
 
 export default defineConfig({
     output: 'server', // Cambiamo da 'static' a 'server'
-    adapter: cloudflare(),
+    adapter: cloudflare({
+        kvNamespaces: ['SESSION'],
+    }),
     build: {
         assets: 'assets'
-    }
+    },
 });

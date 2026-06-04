@@ -1,0 +1,11 @@
+{
+    "name": "sitoecommerce",
+    "main": "./dist/_worker.js/index.js",
+    "compatibility_date": "2026-06-04",
+    "kv_namespaces": [
+        {
+            "binding": "SESSION",
+            "id": "27920be7948c3cd2bb66dabffd0c097b"
+        }
+    ]
+}
