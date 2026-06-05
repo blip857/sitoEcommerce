@@ -5,7 +5,6 @@ export async function onRequest(context) {
   if (!code) return new Response("Mancava il codice di sblocco da GitHub.", { status: 400 });
 
   try {
-    // Convertiamo i dati nel formato standard 'x-www-form-urlencoded' richiesto da GitHub
     const params = new URLSearchParams();
     params.append("client_id", context.env.GITHUB_CLIENT_ID);
     params.append("client_secret", context.env.GITHUB_CLIENT_SECRET);
@@ -14,11 +13,11 @@ export async function onRequest(context) {
     const response = await fetch("https://github.com/login/oauth/access_token", {
       method: "POST",
       headers: {
-        "Content-Type": "application/x-www-form-urlencoded", // <-- Formato corretto per moduli
+        "Content-Type": "application/x-www-form-urlencoded",
         "Accept": "application/json",
-        "User-Agent": "Decap-CMS-Cloudflare-Pages" // <-- Richiesto dai server di GitHub
+        "User-Agent": "Decap-CMS-Cloudflare-Pages"
       },
-      body: params.toString(), // <-- Invia la stringa formattata correttamente (chiave=valore&)
+      body: params.toString(),
     });
 
     const rawText = await response.text();
@@ -27,24 +26,24 @@ export async function onRequest(context) {
     try {
       data = JSON.parse(rawText);
     } catch (e) {
-      return new Response(`Errore parsing JSON della risposta di GitHub. Testo ricevuto: ${rawText}`, { status: 500 });
+      return new Response(`Errore parsing JSON: ${rawText}`, { status: 500 });
     }
 
-    // Se GitHub restituisce un errore interno nel JSON
     if (data.error || response.status !== 200) {
-      return new Response(`Errore da GitHub (Status ${response.status}): ${JSON.stringify(data)}`, { status: 400 });
+      return new Response(`Errore da GitHub: ${JSON.stringify(data)}`, { status: 400 });
     }
 
-    // Se tutto è corretto, passiamo il token di accesso a Decap CMS
+    // FISSARE LE VIRGOLETTE: Ora usiamo una concatenazione pulita che il browser adorerà
     const html = `
       <script>
         const receiveMessage = (e) => {
           if (e.data === "authorizing:github") {
             window.opener.postMessage(
-              "authorization:github:success:${JSON.stringify({ token: data.access_token, provider: "github" })}",
+              'authorization:github:success:' + JSON.stringify({ token: "${data.access_token}", provider: "github" }),
               e.origin
             );
             window.removeEventListener("message", receiveMessage, false);
+            window.close(); 
           }
         };
         window.addEventListener("message", receiveMessage, false);
@@ -57,6 +56,6 @@ export async function onRequest(context) {
     });
 
   } catch (error) {
-    return new Response(`Crash interno della funzione: ${error.message}`, { status: 500 });
+    return new Response(`Crash interno: ${error.message}`, { status: 500 });
   }
 }
