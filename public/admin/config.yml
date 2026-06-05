@@ -5,8 +5,8 @@ backend:
   base_url: https://sitoecommerce.pages.dev
   auth_endpoint: /api/auth
 
-media_folder: "public/assets"
-public_folder: "/assets"
+media_folder: "public/images"
+public_folder: "/images"
 
 collections:
   - name: "prodotti"
