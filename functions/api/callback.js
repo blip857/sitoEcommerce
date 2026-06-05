@@ -2,42 +2,40 @@ export async function onRequest(context) {
   const url = new URL(context.request.url);
   const code = url.searchParams.get("code");
 
-  if (!code) return new Response("Diagnostica: Mancava il codice di sblocco da GitHub.", { status: 400 });
-
-  // Controlliamo se le variabili d'ambiente sono visibili alla funzione
-  const idStatus = context.env.GITHUB_CLIENT_ID ? "Presente" : "Mancante (ERRORE)";
-  const secretStatus = context.env.GITHUB_CLIENT_SECRET ? "Presente" : "Mancante (ERRORE)";
+  if (!code) return new Response("Mancava il codice di sblocco da GitHub.", { status: 400 });
 
   try {
+    // Convertiamo i dati nel formato standard 'x-www-form-urlencoded' richiesto da GitHub
+    const params = new URLSearchParams();
+    params.append("client_id", context.env.GITHUB_CLIENT_ID);
+    params.append("client_secret", context.env.GITHUB_CLIENT_SECRET);
+    params.append("code", code);
+
     const response = await fetch("https://github.com/login/oauth/access_token", {
       method: "POST",
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type": "application/x-www-form-urlencoded", // <-- Formato corretto per moduli
         "Accept": "application/json",
+        "User-Agent": "Decap-CMS-Cloudflare-Pages" // <-- Richiesto dai server di GitHub
       },
-      body: JSON.stringify({
-        client_id: context.env.GITHUB_CLIENT_ID,
-        client_secret: context.env.GITHUB_CLIENT_SECRET,
-        code,
-      }),
+      body: params.toString(), // <-- Invia la stringa formattata correttamente (chiave=valore&)
     });
 
     const rawText = await response.text();
 
-    // Tentiamo di decifrare la risposta di GitHub
     let data;
     try {
       data = JSON.parse(rawText);
     } catch (e) {
-      return new Response(`Diagnostica: Errore nel parsing JSON di GitHub. Risposta grezza: ${rawText}`, { status: 500 });
+      return new Response(`Errore parsing JSON della risposta di GitHub. Testo ricevuto: ${rawText}`, { status: 500 });
     }
 
-    // Se GitHub ha risposto con un errore o uno status non 200
+    // Se GitHub restituisce un errore interno nel JSON
     if (data.error || response.status !== 200) {
-      return new Response(`Diagnostica: GitHub ha rifiutato lo scambio (Status ${response.status}). Dati: ${JSON.stringify(data)}. Client_ID: ${idStatus}, Client_Secret: ${secretStatus}`, { status: 400 });
+      return new Response(`Errore da GitHub (Status ${response.status}): ${JSON.stringify(data)}`, { status: 400 });
     }
 
-    // Se tutto è corretto, inviamo il token a Decap CMS
+    // Se tutto è corretto, passiamo il token di accesso a Decap CMS
     const html = `
       <script>
         const receiveMessage = (e) => {
@@ -59,6 +57,6 @@ export async function onRequest(context) {
     });
 
   } catch (error) {
-    return new Response(`Diagnostica: Errore di rete o crash interno: ${error.message}`, { status: 500 });
+    return new Response(`Crash interno della funzione: ${error.message}`, { status: 500 });
   }
 }
