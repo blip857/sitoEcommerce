@@ -22,34 +22,91 @@
 </nav>
 
 <style>
-    /* Struttura provvisoria in CSS classico (poi la faremo diventare bellissima) */
+    /* 1. Layout Base per Desktop (Schermi Grandi) */
     .navbar {
         background-color: #111;
         color: white;
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 1rem 2rem;
+        padding: 1.2rem 2rem;
         font-family: sans-serif;
         font-weight: bold;
-        font-size: 0.9rem;
+        font-size: 0.85rem;
+        letter-spacing: 1px;
+        border-bottom: 1px solid #222;
     }
-    .navbar a {
-        color: white;
-        text-decoration: none;
-        margin: 0 10px;
-    }
+
     .nav-left,
     .nav-right {
         display: flex;
         align-items: center;
+        gap: 20px; /* Usiamo gap invece dei margini per una spaziatura intelligente */
     }
+
+    .navbar a {
+        color: white;
+        text-decoration: none;
+        white-space: nowrap; /* Impedisce alle parole di spezzarsi su due righe */
+        transition: color 0.2s;
+    }
+
+    .navbar a:hover {
+        color: #ff9f00; /* Richiamo all'arancione del brand */
+    }
+
     .logo-placeholder {
-        font-size: 1.5rem;
+        font-size: 1.1rem;
         letter-spacing: 2px;
+        text-align: center;
+        white-space: nowrap;
+        color: #fff;
     }
+
     .btn-osare {
-        border-left: 1px solid #444;
-        padding-left: 15px;
+        border-left: 1px solid #333;
+        padding-left: 20px;
+    }
+
+    /* ==========================================================================
+     2. MEDIA QUERY: Per Tablet e Laptop Piccoli (Schermi sotto i 1024px)
+     ========================================================================== */
+    @media (max-width: 1024px) {
+        .navbar {
+            flex-direction: column; /* Trasforma la navbar da orizzontale a verticale */
+            gap: 15px;
+            padding: 1rem;
+        }
+
+        .nav-logo {
+            order: -1; /* Forza il logo a stare sempre in cima a tutto */
+            margin-bottom: 5px;
+        }
+
+        .nav-left,
+        .nav-right {
+            width: 100%;
+            justify-content: center; /* Centra i link orizzontalmente */
+            gap: 15px;
+        }
+
+        .btn-osare {
+            border-left: none;
+            padding-left: 0;
+        }
+    }
+
+    /* ==========================================================================
+     3. MEDIA QUERY: Per Smartphone (Schermi sotto i 480px)
+     ========================================================================== */
+    @media (max-width: 480px) {
+        .nav-left,
+        .nav-right {
+            flex-wrap: wrap; /* Se lo smartphone è minuscolo, i link vanno a capo da soli senza rompersi */
+            gap: 10px;
+        }
+        .logo-placeholder {
+            font-size: 0.9rem; /* Rimpicciolisce leggermente il logo sui telefoni */
+        }
     }
 </style>
