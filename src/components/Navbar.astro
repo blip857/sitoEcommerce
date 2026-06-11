@@ -1,0 +1,55 @@
+---
+// Qui andrà l'eventuale logica JavaScript/TypeScript (vuota per ora)
+---
+
+<nav class="navbar">
+    <div class="nav-left">
+        <a href="#">VESTIARIO ▾</a>
+        <a href="#">ACCESSORI ▾</a>
+        <a href="#">CONTATTO</a>
+    </div>
+
+    <div class="nav-logo">
+        <span class="logo-placeholder">[ LOGO ATZEN&SHOCK ]</span>
+    </div>
+
+    <div class="nav-right">
+        <a href="#">🔍 CERCARE</a>
+        <a href="#">ACCOUNT</a>
+        <a href="#">CARRELLO (€) ▾</a>
+        <a href="#" class="btn-osare">OSARE</a>
+    </div>
+</nav>
+
+<style>
+    /* Struttura provvisoria in CSS classico (poi la faremo diventare bellissima) */
+    .navbar {
+        background-color: #111;
+        color: white;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem 2rem;
+        font-family: sans-serif;
+        font-weight: bold;
+        font-size: 0.9rem;
+    }
+    .navbar a {
+        color: white;
+        text-decoration: none;
+        margin: 0 10px;
+    }
+    .nav-left,
+    .nav-right {
+        display: flex;
+        align-items: center;
+    }
+    .logo-placeholder {
+        font-size: 1.5rem;
+        letter-spacing: 2px;
+    }
+    .btn-osare {
+        border-left: 1px solid #444;
+        padding-left: 15px;
+    }
+</style>

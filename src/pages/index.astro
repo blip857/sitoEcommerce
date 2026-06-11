@@ -1,7 +1,10 @@
 ---
 import { getCollection } from "astro:content";
+// 1. Importiamo i due nuovi componenti che hai appena posizionato correttamente
+import Navbar from "../components/Navbar.astro";
+import Hero from "../components/Hero.astro";
 
-// Recuperiamo tutti i file dentro la cartella src/content/prodotti
+// Recuperiamo i prodotti dal CMS (la tua T-shirt)
 const prodotti = await getCollection("prodotti");
 ---
 
@@ -9,59 +12,92 @@ const prodotti = await getCollection("prodotti");
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Il mio E-commerce Futursitico</title>
+    <title>Atzensportstudio | Official Store</title>
     <style>
+      /* Reset globale per permettere il full-width (bordo a bordo) della foto e della navbar */
+      * {
+        box-sizing: border-box;
+      }
       body {
         font-family: sans-serif;
-        background: #f9f9f9;
-        padding: 40px;
-        color: #333;
+        background: #111111; /* Sfondo scuro coerente con lo stile urban */
+        margin: 0;
+        padding: 0;
+        color: #fff;
       }
-      h1 {
+
+      /* Stili per l'area catalogo posizionata sotto la Hero */
+      .catalogo {
+        padding: 60px 20px;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+      .sezione-titolo {
         text-align: center;
+        font-size: 2rem;
+        letter-spacing: 2px;
+        margin-bottom: 40px;
+        text-transform: uppercase;
       }
       .griglia {
         display: flex;
         gap: 20px;
         justify-content: center;
         flex-wrap: wrap;
-        margin-top: 40px;
       }
       .scheda-prodotto {
-        background: white;
-        border: 1px solid #ddd;
+        background: #1a1a1a;
+        border: 1px solid #333;
         padding: 20px;
-        border-radius: 12px;
+        border-radius: 8px;
         width: 250px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
         text-align: center;
+        transition: transform 0.2s;
+      }
+      .scheda-prodotto:hover {
+        transform: translateY(-5px);
+        border-color: #ff9f00; /* Richiamo al colore del bottone Hero */
       }
       .scheda-prodotto img {
         max-width: 100%;
         height: 200px;
         object-fit: cover;
-        border-radius: 8px;
+        border-radius: 4px;
+      }
+      .scheda-prodotto h2 {
+        font-size: 1.1rem;
+        margin: 15px 0 10px 0;
       }
       .prezzo {
         font-weight: bold;
         color: #2ecc71;
         font-size: 1.2rem;
+        margin: 0;
       }
     </style>
   </head>
   <body>
-    <h1>�️ Benvenuto nel mio e-commerce!</h1>
+    <!-- 2. Inseriamo la barra di navigazione scura in cima -->
+    <Navbar />
 
-    <div class="griglia">
-      {
-        prodotti.map((prodotto) => (
-          <div class="scheda-prodotto">
-            <img src={prodotto.data.immagine} alt={prodotto.data.nome} />
-            <h2>{prodotto.data.nome}</h2>
-            <p class="prezzo">{prodotto.data.prezzo}€</p>
-          </div>
-        ))
-      }
-    </div>
+    <!-- 3. Inseriamo l'impatto della Hero Section con il pulsante -->
+    <Hero />
+
+    <!-- 4. Sotto la Hero, lasciamo scivolare la vetrina con la tua T-shirt -->
+    <main class="catalogo">
+      <h2 class="sezione-titolo">I Nostri Prodotti</h2>
+
+      <div class="griglia">
+        {
+          prodotti.map((prodotto) => (
+            <div class="scheda-prodotto">
+              <img src={prodotto.data.immagine} alt={prodotto.data.nome} />
+              <h2>{prodotto.data.nome}</h2>
+              <p class="prezzo">{prodotto.data.prezzo}€</p>
+            </div>
+          ))
+        }
+      </div>
+    </main>
   </body>
 </html>
