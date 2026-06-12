@@ -1,0 +1,240 @@
+---
+// Componente Piè di Pagina (Stile esatto di image_697fba.png)
+const currentYear = new Date().getFullYear(); // Genera automaticamente il 2026
+---
+
+<footer class="site-footer">
+    <!-- Linea retta di divisione richiesta -->
+    <hr class="footer-divider" />
+
+    <div class="footer-container">
+        <!-- Riga Centrale: Selettore Paese + Icone di Pagamento -->
+        <div class="footer-middle-row">
+            <!-- Selettore Paese/Regione (Stile minimale) -->
+            <div class="region-section">
+                <label for="country-select" class="region-label"
+                    >Paese/regione</label
+                >
+                <div class="select-wrapper">
+                    <select id="country-select" class="region-select">
+                        <option value="IT">Italia | EUR €</option>
+                        <option value="DE">Germania | EUR €</option>
+                        <option value="FR">Francia | EUR €</option>
+                        <option value="US">Stati Uniti | USD $</option>
+                    </select>
+                    <span class="select-arrow"></span>
+                </div>
+            </div>
+
+            <!-- Icone Metodi di Pagamento (Rifinite come in image_697fba.png) -->
+            <div class="payment-methods">
+                <!-- Amex -->
+                <span class="payment-card amex">Amex</span>
+                <!-- Apple Pay -->
+                <span class="payment-card applepay">Apple Pay</span>
+                <!-- Discover -->
+                <span class="payment-card discover">Discover</span>
+                <!-- Google Pay -->
+                <span class="payment-card gpay">GPay</span>
+                <!-- Mastercard -->
+                <span class="payment-card mastercard">Mastercard</span>
+                <!-- PayPal -->
+                <span class="payment-card paypal">PayPal</span>
+                <!-- Visa -->
+                <span class="payment-card visa">Visa</span>
+            </div>
+        </div>
+
+        <!-- Riga Inferiore: Note di Copyright e Politiche Legali -->
+        <div class="footer-bottom-row">
+            <p class="footer-copyright">
+                &copy; {currentYear}, OCCHIPIENIDI Powered by Astro
+                <span class="bullet-separator">&middot;</span>
+                <a href="#" class="footer-link">Politica sulla riservatezza</a>
+                <span class="bullet-separator">&middot;</span>
+                <a href="#" class="footer-link">Preferenze sui cookie</a>
+            </p>
+        </div>
+    </div>
+</footer>
+
+<style>
+    .site-footer {
+        background-color: #111111;
+        color: #ffffff;
+        font-family: sans-serif;
+        padding-bottom: 40px;
+        width: 100%;
+    }
+
+    /* La linea retta millimetrica di divisione */
+    .footer-divider {
+        border: 0;
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+        margin: 0 0 40px 0;
+        width: 100%;
+    }
+
+    .footer-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 24px;
+    }
+
+    /* Riga intermedia con allineamento orizzontale flessibile */
+    .footer-middle-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        margin-bottom: 40px;
+        flex-wrap: wrap;
+        gap: 24px;
+    }
+
+    /* Sezione Dropdown Paese */
+    .region-section {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        text-align: left;
+    }
+
+    .region-label {
+        font-size: 0.75rem;
+        color: rgba(255, 255, 255, 0.6);
+        letter-spacing: 0.5px;
+    }
+
+    .select-wrapper {
+        position: relative;
+        display: inline-block;
+    }
+
+    .region-select {
+        background-color: transparent;
+        color: #ffffff;
+        border: 1px solid rgba(255, 255, 255, 0.4);
+        padding: 10px 40px 10px 14px;
+        font-size: 0.85rem;
+        appearance: none; /* Rimuove lo stile di default del sistema operativo */
+        -webkit-appearance: none;
+        cursor: pointer;
+        outline: none;
+        transition: border-color 0.2s;
+    }
+
+    .region-select:focus {
+        border-color: #ffffff;
+    }
+
+    /* Piccola freccia personalizzata interna al selettore */
+    .select-arrow {
+        position: absolute;
+        right: 14px;
+        top: 50%;
+        transform: translateY(-35%) rotate(45deg);
+        width: 6px;
+        height: 6px;
+        border-right: 1px solid #ffffff;
+        border-bottom: 1px solid #ffffff;
+        pointer-events: none;
+    }
+
+    /* Contenitore dei finti loghi carte di credito */
+    .payment-methods {
+        display: flex;
+        gap: 6px;
+        flex-wrap: wrap;
+    }
+
+    /* Styling minimale dei rettangoli di pagamento di riferimento */
+    .payment-card {
+        display: inline-block;
+        padding: 4px 8px;
+        font-size: 0.6rem;
+        font-weight: bold;
+        border-radius: 3px;
+        background-color: #1e1e1e;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        color: #ffffff;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        opacity: 0.8;
+    }
+
+    /* Colorazioni indicative per richiamare i brand graficamente senza appesantire */
+    .visa {
+        border-color: #1a1f71;
+        color: #1a1f71;
+        background: #fff;
+    }
+    .mastercard {
+        border-color: #ff5f00;
+        color: #ff5f00;
+        background: #fff;
+    }
+    .paypal {
+        border-color: #003087;
+        color: #003087;
+        background: #fff;
+    }
+    .applepay {
+        border-color: #000000;
+        color: #000;
+        background: #fff;
+    }
+    .gpay {
+        border-color: #4285f4;
+        color: #4285f4;
+        background: #fff;
+    }
+
+    /* Riga finale inferiore */
+    .footer-bottom-row {
+        text-align: left;
+        border-top: 1px solid rgba(255, 255, 255, 0.04);
+        padding-top: 20px;
+    }
+
+    .footer-copyright {
+        font-size: 0.72rem;
+        color: rgba(255, 255, 255, 0.5);
+        margin: 0;
+        letter-spacing: 0.3px;
+    }
+
+    .bullet-separator {
+        margin: 0 6px;
+        color: rgba(255, 255, 255, 0.3);
+    }
+
+    .footer-link {
+        color: rgba(255, 255, 255, 0.5);
+        text-decoration: none;
+        transition: color 0.2s ease;
+    }
+
+    .footer-link:hover {
+        color: #ffffff;
+        text-decoration: underline;
+    }
+
+    /* ==========================================================================
+     RESPONSIVE
+     ========================================================================== */
+    @media (max-width: 768px) {
+        .footer-middle-row {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 30px;
+        }
+
+        .footer-bottom-row {
+            text-align: center;
+        }
+
+        .footer-copyright {
+            line-height: 1.8;
+        }
+    }
+</style>
