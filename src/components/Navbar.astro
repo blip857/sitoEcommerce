@@ -1,112 +1,198 @@
 ---
-// Qui andrà l'eventuale logica JavaScript/TypeScript (vuota per ora)
+// Struttura Navbar adattiva (Desktop con scritte / Mobile con icone)
 ---
 
 <nav class="navbar">
     <div class="nav-left">
-        <a href="#">VESTIARIO ▾</a>
-        <a href="#">ACCESSORI ▾</a>
-        <a href="#">CONTATTO</a>
+        <button class="mobile-icon menu-hamburger" aria-label="Apri menu">
+            <svg
+                viewBox="0 0 24 24"
+                width="24"
+                height="24"
+                stroke="currentColor"
+                stroke-width="2.5"
+                fill="none"
+                stroke-linecap="round"
+            >
+                <line x1="3" y1="12" x2="21" y2="12"></line>
+                <line x1="3" y1="6" x2="21" y2="6"></line>
+                <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+        </button>
+
+        <button class="mobile-icon menu-search" aria-label="Cerca">
+            <svg
+                viewBox="0 0 24 24"
+                width="22"
+                height="22"
+                stroke="currentColor"
+                stroke-width="2.5"
+                fill="none"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+            >
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+        </button>
+
+        <div class="desktop-items">
+            <a href="#">BEKLEIDUNG ▾</a>
+            <a href="#">ACCESSORIES ▾</a>
+            <a href="#">KONTAKT</a>
+        </div>
     </div>
 
-    <div class="nav-logo">
-        <span class="logo-placeholder">[ LOGO ATZEN&SHOCK ]</span>
+    <div class="nav-center">
+        <span class="logo-placeholder">ATZEN & SHOCK</span>
     </div>
 
     <div class="nav-right">
-        <a href="#">🔍 CERCARE</a>
-        <a href="#">ACCOUNT</a>
-        <a href="#">CARRELLO (€) ▾</a>
-        <a href="#" class="btn-osare">OSARE</a>
+        <div class="desktop-items">
+            <a href="#" class="search-desktop">🔍 SUCHEN</a>
+            <a href="#">KONTO</a>
+            <a href="#">IT (€) ▾</a>
+            <a href="#" class="btn-wagen">WAGEN</a>
+        </div>
+
+        <a href="#" class="mobile-icon menu-user" aria-label="Account">
+            <svg
+                viewBox="0 0 24 24"
+                width="22"
+                height="22"
+                stroke="currentColor"
+                stroke-width="2.5"
+                fill="none"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+            >
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+        </a>
+
+        <a href="#" class="mobile-icon menu-cart" aria-label="Carrello">
+            <svg
+                viewBox="0 0 24 24"
+                width="22"
+                height="22"
+                stroke="currentColor"
+                stroke-width="2.5"
+                fill="none"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+            >
+                <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"
+                ></path>
+                <line x1="3" y1="6" x2="21" y2="6"></line>
+                <path d="M16 10a4 4 0 0 1-8 0"></path>
+            </svg>
+        </a>
     </div>
 </nav>
 
 <style>
-    /* 1. Layout Base per Desktop (Schermi Grandi) */
+    /* Base Comune (Sfondo e Font) */
     .navbar {
-        background-color: #111;
+        background-color: #111111;
         color: white;
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 1.2rem 2rem;
+        padding: 0 24px;
+        height: 70px; /* Altezza fissa per una barra solida ed elegante */
         font-family: sans-serif;
         font-weight: bold;
         font-size: 0.85rem;
         letter-spacing: 1px;
-        border-bottom: 1px solid #222;
+        border-bottom: 1px solid #1a1a1a;
     }
 
     .nav-left,
-    .nav-right {
+    .nav-right,
+    .desktop-items {
         display: flex;
         align-items: center;
-        gap: 20px; /* Usiamo gap invece dei margini per una spaziatura intelligente */
+        gap: 24px;
     }
 
     .navbar a {
         color: white;
         text-decoration: none;
-        white-space: nowrap; /* Impedisce alle parole di spezzarsi su due righe */
-        transition: color 0.2s;
+        white-space: nowrap;
+        transition: color 0.2s ease;
     }
 
     .navbar a:hover {
-        color: #ff9f00; /* Richiamo all'arancione del brand */
+        color: #ff9f00;
     }
 
-    .logo-placeholder {
-        font-size: 1.1rem;
-        letter-spacing: 2px;
-        text-align: center;
-        white-space: nowrap;
-        color: #fff;
-    }
-
-    .btn-osare {
+    /* Pulsante speciale con linea divisoria su Desktop */
+    .btn-wagen {
         border-left: 1px solid #333;
-        padding-left: 20px;
+        padding-left: 24px;
+    }
+
+    /* Logo scuro/graffiti segnaposto */
+    .logo-placeholder {
+        font-size: 1.2rem;
+        letter-spacing: 3px;
+        font-weight: 900;
+        text-transform: uppercase;
+    }
+
+    /* Reset pulsanti icona */
+    button.mobile-icon {
+        background: none;
+        border: none;
+        color: white;
+        padding: 0;
+        cursor: pointer;
     }
 
     /* ==========================================================================
-     2. MEDIA QUERY: Per Tablet e Laptop Piccoli (Schermi sotto i 1024px)
+     STRATEGIA RESPONSIVE (IL CUORE DEL COMPORTAMENTO)
      ========================================================================== */
+
+    /* 1. Di base (su schermi grandi/Desktop), nascondiamo tutte le icone mobile */
+    .mobile-icon {
+        display: none !important;
+    }
+
+    /* 2. Quando lo schermo scende sotto i 1024px (Tablet e Smartphone) */
     @media (max-width: 1024px) {
+        /* Nascondiamo i blocchi di testo desktop */
+        .desktop-items {
+            display: none !important;
+        }
+
+        /* Mostriamo le icone mobile */
+        .mobile-icon {
+            display: inline-flex !important;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            transition: color 0.2s;
+        }
+
+        .mobile-icon:hover {
+            color: #ff9f00;
+        }
+
+        /* Riduciamo leggermente il padding per gli smartphone */
         .navbar {
-            flex-direction: column; /* Trasforma la navbar da orizzontale a verticale */
-            gap: 15px;
-            padding: 1rem;
+            padding: 0 16px;
+            height: 60px; /* Leggermente più bassa su mobile */
         }
 
-        .nav-logo {
-            order: -1; /* Forza il logo a stare sempre in cima a tutto */
-            margin-bottom: 5px;
-        }
-
-        .nav-left,
-        .nav-right {
-            width: 100%;
-            justify-content: center; /* Centra i link orizzontalmente */
-            gap: 15px;
-        }
-
-        .btn-osare {
-            border-left: none;
-            padding-left: 0;
-        }
-    }
-
-    /* ==========================================================================
-     3. MEDIA QUERY: Per Smartphone (Schermi sotto i 480px)
-     ========================================================================== */
-    @media (max-width: 480px) {
-        .nav-left,
-        .nav-right {
-            flex-wrap: wrap; /* Se lo smartphone è minuscolo, i link vanno a capo da soli senza rompersi */
-            gap: 10px;
-        }
         .logo-placeholder {
-            font-size: 0.9rem; /* Rimpicciolisce leggermente il logo sui telefoni */
+            font-size: 1rem;
+        }
+
+        /* Configurazione spaziature icone di sinistra e destra */
+        .nav-left,
+        .nav-right {
+            gap: 16px; /* Distanza ottimale per il tocco delle dita */
         }
     }
 </style>
