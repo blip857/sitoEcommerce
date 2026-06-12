@@ -1,0 +1,271 @@
+---
+// Componente Newsletter minimale (Stile esatto di image_69963a.png)
+---
+
+<section class="newsletter-section">
+    <div class="newsletter-container">
+        <!-- Titolo della newsletter -->
+        <h3 class="newsletter-title">Iscriviti alle nostre email</h3>
+
+        <!-- Form di iscrizione -->
+        <form
+            class="newsletter-form"
+            onsubmit="event.preventDefault(); alert('Grazie per esserti iscritto!');"
+        >
+            <div class="input-wrapper">
+                <input
+                    type="email"
+                    placeholder="E-mail"
+                    required
+                    class="newsletter-input"
+                />
+                <!-- Pulsante con freccia nativa integrata -->
+                <button
+                    type="submit"
+                    class="newsletter-btn"
+                    aria-label="Invia iscrizione"
+                >
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="18"
+                        height="18"
+                        fill="currentColor"
+                        viewBox="0 0 16 16"
+                    >
+                        <path
+                            fill-rule="evenodd"
+                            d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"
+                        ></path>
+                    </svg>
+                </button>
+            </div>
+        </form>
+    </div>
+</section>
+
+<style>
+    .newsletter-section {
+        background-color: #111111; /* Perfettamente coordinato allo sfondo scuro della pagina */
+        padding: 30px 24px 60px 24px;
+        color: #ffffff;
+        font-family: sans-serif;
+    }
+
+    .newsletter-container {
+        max-width: 500px;
+        margin: 0 auto;
+        text-align: center;
+    }
+
+    /* Testo minimale, non troppo grande e leggermente spaziato */
+    .newsletter-title {
+        font-size: 1.15rem;
+        font-weight: 500;
+        letter-spacing: 0.5px;
+        margin: 0 0 20px 0;
+        color: #ffffff;
+    }
+
+    .newsletter-form {
+        width: 100%;
+    }
+
+    /* Il box con il bordo esterno che racchiude input + freccia (Stile image_69963a.png) */
+    .input-wrapper {
+        position: relative;
+        max-width: 380px;
+        margin: 0 auto;
+        border: 1px solid rgba(255, 255, 255, 0.4); /* Sottile bordo geometrico */
+        background: transparent;
+        transition: border-color 0.3s ease;
+    }
+
+    /* Focus visivo quando l'utente clicca sulla casella di testo */
+    .input-wrapper:focus-within {
+        border-color: #ffffff;
+    }
+
+    /* Campo di testo invisibile per far risaltare solo il rettangolo esterno */
+    .newsletter-input {
+        width: 100%;
+        background: transparent;
+        border: none;
+        padding: 14px 50px 14px 16px; /* Spazio destro aumentato per non sovrapporsi alla freccia */
+        color: #ffffff;
+        font-size: 0.95rem;
+        font-family: sans-serif;
+        box-sizing: border-box;
+    }
+
+    .newsletter-input::placeholder {
+        color: rgba(255, 255, 255, 0.5);
+    }
+
+    /* Rimuove l'outline di default del browser */
+    .newsletter-input:focus {
+        outline: none;
+    }
+
+    /* Posizionamento assoluto della freccia sul lato destro interno */
+    .newsletter-btn {
+        position: absolute;
+        right: 16px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: transparent;
+        border: none;
+        color: rgba(255, 255, 255, 0.8);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        padding: 0;
+        transition:
+            color 0.2s ease,
+            transform 0.2s ease;
+    }
+
+    Questa è l'ultima colonna portante della conversion rate optimization (CRO): la raccolta delle email per fare remarketing. 
+
+Guardando attentamente `image_69963a.png`, notiamo un approccio ultra-minimalista tipico dei grandi brand streetwear d'avanguardia: il testo non è eccessivamente grande ed è scritto in un font pulito a medio spessore, mentre la casella di testo è un rettangolo allungato dai bordi sottili e bianchi che racchiude sia il testo segnaposto (*placeholder*) sia la freccia minimale `→` sul lato destro.
+
+Andiamo a riprodurre questo blocco geometrico e pulito passo dopo passo.
+
+---
+
+### 📥 Passo 1: Crea il componente `Newsletter.astro`
+
+Crea un nuovo file dentro la cartella dei tuoi componenti chiamandolo **`src/components/Newsletter.astro`**.
+
+Apri il file e incolla questo codice ottimizzato per rispecchiare fedelmente le proporzioni e lo stile minimale dello screenshot:
+
+```astro
+---
+// Componente Newsletter minimale (Stile esatto image_69963a.png)
+---
+
+<section class="newsletter-section">
+  <div class="newsletter-container">
+    
+    <!-- Testo di invito allineato al centro -->
+    <h3 class="newsletter-title">Iscriviti alle nostre email</h3>
+    
+    <!-- Form di iscrizione geometrico -->
+    <form class="newsletter-form" action="#" method="POST" onsubmit="event.preventDefault(); alert('Grazie per l\'iscrizione!');">
+      <div class="input-wrapper">
+        <input 
+          type="email" 
+          placeholder="E-mail" 
+          required 
+          class="newsletter-input" 
+          aria-label="Indirizzo E-mail"
+        />
+        <button type="submit" class="newsletter-submit" aria-label="Invia iscrizione">
+          <span class="arrow-icon">→</span>
+        </button>
+      </div>
+    </form>
+
+  </div>
+</section>
+
+<style>
+  .newsletter-section {
+        background-color: #111111; /* Uniformato allo sfondo scuro globale */
+        padding: 40px 24px 80px 24px;
+        width: 100%;
+    }
+
+    .newsletter-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        text-align: center;
+    }
+
+    /* Testo pulito e sobrio, speculare all'immagine */
+    .newsletter-title {
+        font-family: sans-serif;
+        color: #ffffff;
+        font-size: 1.2rem;
+        font-weight: 500;
+        margin: 0 0 24px 0;
+        letter-spacing: 0.5px;
+    }
+
+    .newsletter-form {
+        width: 100%;
+    }
+
+    /* La scatola di input rettangolare sottile presente in image_69963a.png */
+    .input-wrapper {
+        position: relative;
+        max-width: 460px; /* Larghezza ottimale per il bilanciamento visivo */
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        border: 1px solid rgba(255, 255, 255, 0.5); /* Bordo chiaro e sottile */
+        padding: 12px 16px;
+        background-color: transparent;
+        transition: border-color 0.2s ease;
+    }
+
+    /* Focus visivo quando l'utente clicca sulla casella */
+    .input-wrapper:focus-within {
+        border-color: #ffffff;
+    }
+
+    /* Input invisibile per far risaltare solo il testo */
+    .newsletter-input {
+        background: transparent;
+        border: none;
+        color: #ffffff;
+        font-family: sans-serif;
+        font-size: 0.95rem;
+        width: 100%;
+        outline: none;
+        padding-right: 40px; /* Evita che il testo si sovrapponga alla freccia */
+    }
+
+    /* Stile per il testo E-mail trasparente */
+    .newsletter-input::placeholder {
+        color: rgba(255, 255, 255, 0.4);
+    }
+
+    /* Pulsante freccia sul lato destro */
+    .newsletter-submit {
+        position: absolute;
+        right: 16px;
+        background: transparent;
+        border: none;
+        color: #ffffff;
+        cursor: pointer;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .arrow-icon {
+        font-size: 1.3rem;
+        line-height: 1;
+        transition: transform 0.2s ease;
+    }
+
+    /* Piccolo feedback dinamico al passaggio del mouse sulla freccia */
+    .newsletter-submit:hover .arrow-icon {
+        transform: translateX(3px);
+    }
+
+    /* Responsive per schermi molto piccoli */
+    @media (max-width: 480px) {
+        .newsletter-section {
+            padding: 30px 16px 60px 16px;
+        }
+        .newsletter-title {
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+        }
+        .input-wrapper {
+            padding: 10px 14px;
+        }
+    }
+</style>
