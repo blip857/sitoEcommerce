@@ -4,6 +4,7 @@ import { getCollection } from "astro:content";
 import Navbar from "../components/Navbar.astro";
 import Hero from "../components/Hero.astro";
 import Categories from "../components/Categories.astro";
+import FeaturedProducts from "../components/FeaturedProducts.astro";
 
 // Recuperiamo i prodotti dal CMS (la tua T-shirt)
 const prodotti = await getCollection("prodotti");
@@ -85,6 +86,8 @@ const prodotti = await getCollection("prodotti");
     <Hero />
 
     <Categories />
+
+    <FeaturedProducts />
     <!-- 4. Sotto la Hero, lasciamo scivolare la vetrina con la tua T-shirt -->
     <main class="catalogo">
       <h2 class="sezione-titolo">I Nostri Prodotti</h2>
