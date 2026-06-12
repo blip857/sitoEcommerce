@@ -3,6 +3,7 @@ import { getCollection } from "astro:content";
 // 1. Importiamo i due nuovi componenti che hai appena posizionato correttamente
 import Navbar from "../components/Navbar.astro";
 import Hero from "../components/Hero.astro";
+import Categories from "../components/Categories.astro";
 
 // Recuperiamo i prodotti dal CMS (la tua T-shirt)
 const prodotti = await getCollection("prodotti");

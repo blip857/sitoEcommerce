@@ -1,0 +1,147 @@
+---
+// Componente per la griglia delle categorie principali (Streetwear Style)
+---
+
+<section class="categories-section">
+    <h2 class="section-title">LE NOSTRE CATEGORIE</h2>
+
+    <div class="categories-grid">
+        <a href="#" class="category-card">
+            <img
+                src="https://images.unsplash.com/photo-1521572267360-ee0c2909d518?q=80&w=600&auto=format&fit=crop"
+                alt="Magliette"
+            />
+            <div class="card-overlay">
+                <h3>MAGLIETTE</h3>
+            </div>
+        </a>
+
+        <a href="#" class="category-card">
+            <img
+                src="https://images.unsplash.com/photo-1556911220-e15b29be8c8f?q=80&w=600&auto=format&fit=crop"
+                alt="Maglioni e felpe con cappuccio"
+            />
+            <div class="card-overlay">
+                <h3>MAGLIONI E FELPE CON CAPPUCCIO</h3>
+            </div>
+        </a>
+
+        <a href="#" class="category-card">
+            <img
+                src="https://images.unsplash.com/photo-1509198397868-475647b2a1e5?q=80&w=600&auto=format&fit=crop"
+                alt="Accessori"
+            />
+            <div class="card-overlay">
+                <h3>ACCESSORI</h3>
+            </div>
+        </a>
+    </div>
+</section>
+
+<style>
+    .categories-section {
+        padding: 60px 24px;
+        background-color: #111111; /* Sfondo scuro coerente con il brand */
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    /* Titolo imponente, compatto e bold stile streetwear */
+    .section-title {
+        font-family: sans-serif;
+        font-size: 2.2rem;
+        font-weight: 900;
+        letter-spacing: 1px;
+        color: #ffffff;
+        margin-bottom: 30px;
+        text-transform: uppercase;
+    }
+
+    /* Griglia flessibile a 3 colonne su Desktop */
+    .categories-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+    }
+
+    /* Struttura della singola scheda */
+    .category-card {
+        position: relative;
+        display: block;
+        aspect-ratio: 4 / 5; /* Forza una proporzione verticale elegante */
+        overflow: hidden;
+        text-decoration: none;
+    }
+
+    .category-card img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.4s ease;
+    }
+
+    /* Sfumatura scura sul fondo per rendere leggibile il testo bianco */
+    .card-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+            to top,
+            rgba(0, 0, 0, 0.7) 0%,
+            rgba(0, 0, 0, 0.1) 40%,
+            transparent 100%
+        );
+        display: flex;
+        align-items: flex-end; /* Spinge il testo in basso */
+        padding: 24px;
+        box-sizing: border-box;
+    }
+
+    /* Testo in basso a sinistra (Stile esatto del sito di riferimento) */
+    .card-overlay h3 {
+        color: #ffffff;
+        font-family: sans-serif;
+        font-size: 1.3rem;
+        font-weight: bold;
+        margin: 0;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        line-height: 1.2;
+    }
+
+    /* Effetto zoom dinamico al passaggio del mouse */
+    .category-card:hover img {
+        transform: scale(1.05);
+    }
+
+    /* ==========================================================================
+     RESPONSIVE: Adattamento per Tablet e Smartphone
+     ========================================================================== */
+    @media (max-width: 900px) {
+        .categories-grid {
+            grid-template-columns: repeat(2, 1fr); /* 2 colonne sui tablet */
+        }
+    }
+
+    @media (max-width: 600px) {
+        .categories-section {
+            padding: 40px 16px;
+        }
+        .section-title {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+        }
+        .categories-grid {
+            grid-template-columns: 1fr; /* 1 colonna a schermo intero sugli smartphone */
+            gap: 16px;
+        }
+        .card-overlay {
+            padding: 16px;
+        }
+        .card-overlay h3 {
+            font-size: 1.1rem;
+        }
+    }
+</style>
