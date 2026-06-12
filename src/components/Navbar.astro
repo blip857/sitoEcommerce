@@ -3,7 +3,9 @@
 ---
 
 <nav class="navbar">
+    <!-- ================= BLOCCO SINISTRO ================= -->
     <div class="nav-left">
+        <!-- Icone Mobile (Nascoste su Desktop) -->
         <button class="mobile-icon menu-hamburger" aria-label="Apri menu">
             <svg
                 viewBox="0 0 24 24"
@@ -36,25 +38,30 @@
             </svg>
         </button>
 
+        <!-- Link Desktop (Nascosti su Mobile) -->
         <div class="desktop-items">
-            <a href="#">BEKLEIDUNG ▾</a>
-            <a href="#">ACCESSORIES ▾</a>
-            <a href="#">KONTAKT</a>
+            <a href="#">VESTIARIO ▾</a>
+            <a href="#">ACCESSORI ▾</a>
+            <a href="#">CONTATTI</a>
         </div>
     </div>
 
+    <!-- ================= BLOCCO CENTRALE (LOGO) ================= -->
     <div class="nav-center">
-        <span class="logo-placeholder">ATZEN & SHOCK</span>
+        <span class="logo-placeholder">OcchiPieniDi</span>
     </div>
 
+    <!-- ================= BLOCCO DESTRO ================= -->
     <div class="nav-right">
+        <!-- Link Desktop (Nascosti su Mobile) -->
         <div class="desktop-items">
-            <a href="#" class="search-desktop">🔍 SUCHEN</a>
-            <a href="#">KONTO</a>
+            <a href="#" class="search-desktop">🔍 CERCA</a>
+            <a href="#">ACCOUNT</a>
             <a href="#">IT (€) ▾</a>
-            <a href="#" class="btn-wagen">WAGEN</a>
+            <a href="#" class="btn-wagen">CARRELLO</a>
         </div>
 
+        <!-- Icone Mobile (Nascoste su Desktop) -->
         <a href="#" class="mobile-icon menu-user" aria-label="Account">
             <svg
                 viewBox="0 0 24 24"
@@ -100,7 +107,7 @@
         justify-content: space-between;
         align-items: center;
         padding: 0 24px;
-        height: 70px; /* Altezza fissa per una barra solida ed elegante */
+        height: 70px;
         font-family: sans-serif;
         font-weight: bold;
         font-size: 0.85rem;
@@ -127,13 +134,12 @@
         color: #ff9f00;
     }
 
-    /* Pulsante speciale con linea divisoria su Desktop */
+    /* Mantenuto inalterato il nome classe per non rompere i collegamenti */
     .btn-wagen {
         border-left: 1px solid #333;
         padding-left: 24px;
     }
 
-    /* Logo scuro/graffiti segnaposto */
     .logo-placeholder {
         font-size: 1.2rem;
         letter-spacing: 3px;
@@ -141,7 +147,6 @@
         text-transform: uppercase;
     }
 
-    /* Reset pulsanti icona */
     button.mobile-icon {
         background: none;
         border: none;
@@ -150,23 +155,16 @@
         cursor: pointer;
     }
 
-    /* ==========================================================================
-     STRATEGIA RESPONSIVE (IL CUORE DEL COMPORTAMENTO)
-     ========================================================================== */
-
-    /* 1. Di base (su schermi grandi/Desktop), nascondiamo tutte le icone mobile */
+    /* RESPONSIVE TRICK */
     .mobile-icon {
         display: none !important;
     }
 
-    /* 2. Quando lo schermo scende sotto i 1024px (Tablet e Smartphone) */
     @media (max-width: 1024px) {
-        /* Nascondiamo i blocchi di testo desktop */
         .desktop-items {
             display: none !important;
         }
 
-        /* Mostriamo le icone mobile */
         .mobile-icon {
             display: inline-flex !important;
             align-items: center;
@@ -179,20 +177,18 @@
             color: #ff9f00;
         }
 
-        /* Riduciamo leggermente il padding per gli smartphone */
         .navbar {
             padding: 0 16px;
-            height: 60px; /* Leggermente più bassa su mobile */
+            height: 60px;
         }
 
         .logo-placeholder {
             font-size: 1rem;
         }
 
-        /* Configurazione spaziature icone di sinistra e destra */
         .nav-left,
         .nav-right {
-            gap: 16px; /* Distanza ottimale per il tocco delle dita */
+            gap: 16px;
         }
     }
 </style>
