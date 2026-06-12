@@ -1,0 +1,245 @@
+---
+// Componente Accordion FAQ (Stile minimale image_78fb38.png)
+---
+
+<section class="faq-section">
+    <div class="faq-container">
+        <!-- Intestazione Centrale -->
+        <div class="faq-header">
+            <span class="faq-subtitle"
+                >DOMANDE FREQUENTI SUI NOSTRI CAPI DI ABBIGLIAMENTO OCCHIPIENIDI</span
+            >
+            <h2 class="faq-title">DOMANDE E RISPOSTE</h2>
+        </div>
+
+        <!-- Lista delle Domande (Accordion) -->
+        <div class="faq-list">
+            <!-- Domanda 1 -->
+            <details class="faq-item" open>
+                <summary class="faq-question">
+                    QUANTO TEMPO IMPIEGA LA SPEDIZIONE?
+                    <span class="chevron"></span>
+                </summary>
+                <div class="faq-answer">
+                    <p>
+                        La consegna richiede in genere 5-7 giorni lavorativi dal
+                        ricevimento del pagamento, salvo diversa indicazione. Si
+                        prega di notare che i tempi di consegna possono variare
+                        a seconda dell'indirizzo di spedizione.
+                    </p>
+                </div>
+            </details>
+
+            <!-- Domanda 2 -->
+            <details class="faq-item">
+                <summary class="faq-question">
+                    COME SONO TAGLIATI I VESTITI?
+                    <span class="chevron"></span>
+                </summary>
+                <div class="faq-answer">
+                    <p>
+                        I nostri prodotti vestono la taglia indicata. Se sei
+                        indeciso tra due taglie per le t-shirt, ti consigliamo
+                        di ordinare la taglia più grande. In caso di dubbi, puoi
+                        consultare le nostre tabelle taglie per confronto (<strong
+                            >felpe con cappuccio</strong
+                        >, <strong>maglioni</strong>, <strong>t-shirt</strong>).
+                        Naturalmente, puoi anche contattarci in qualsiasi
+                        momento.
+                    </p>
+                </div>
+            </details>
+
+            <!-- Domanda 3 -->
+            <details class="faq-item">
+                <summary class="faq-question">
+                    COME FUNZIONA LA PROCEDURA DI RESO?
+                    <span class="chevron"></span>
+                </summary>
+                <div class="faq-answer">
+                    <p>
+                        Se desideri restituire il tuo ordine, puoi farlo entro
+                        14 giorni dal ricevimento dello stesso. L'indirizzo per
+                        la restituzione e la procedura sono disponibili nella
+                        nostra <a href="#">politica sui resi</a>.
+                    </p>
+                </div>
+            </details>
+
+            <!-- Domanda 4 -->
+            <details class="faq-item">
+                <summary class="faq-question">
+                    OFFRITE REGOLARMENTE SCONTI O PROMOZIONI?
+                    <span class="chevron"></span>
+                </summary>
+                <div class="faq-answer">
+                    <p>
+                        Sì, offriamo sconti nel nostro negozio. Ad esempio,
+                        riceverai uno sconto di 10 € su ordini superiori a 150
+                        €. Seguici su <a href="#">Instagram</a> per rimanere aggiornato
+                        e non perderti nessuna offerta o omaggio.
+                    </p>
+                </div>
+            </details>
+
+            <!-- Domanda 5 -->
+            <details class="faq-item">
+                <summary class="faq-question">
+                    AVETE ALTRE DOMANDE?
+                    <span class="chevron"></span>
+                </summary>
+                <div class="faq-answer">
+                    <p>
+                        Per qualsiasi ulteriore domanda, non esitate a
+                        contattarci su <a href="#">Instagram</a> o via email all'indirizzo
+                        <a href="mailto:info@occhipienidistudio.it"
+                            >info@occhipienidistudio.it</a
+                        >. Di solito rispondiamo entro poche ore.
+                    </p>
+                </div>
+            </details>
+        </div>
+    </div>
+</section>
+
+<style>
+    .faq-section {
+        background-color: #111111;
+        padding: 60px 24px 80px 24px;
+        color: #ffffff;
+        font-family: sans-serif;
+    }
+
+    .faq-container {
+        max-width: 800px; /* Layout più stretto e focalizzato rispetto alle griglie prodotti */
+        margin: 0 auto;
+    }
+
+    /* Intestazione */
+    .faq-header {
+        text-align: center;
+        margin-bottom: 50px;
+    }
+
+    .faq-subtitle {
+        font-size: 0.65rem;
+        letter-spacing: 2px;
+        color: #888888;
+        font-weight: bold;
+        display: block;
+        margin-bottom: 10px;
+        text-transform: uppercase;
+    }
+
+    .faq-title {
+        font-size: 2.2rem;
+        font-weight: 900;
+        letter-spacing: 1px;
+        margin: 0;
+        text-transform: uppercase;
+    }
+
+    /* Struttura degli elementi Accordion */
+    .faq-list {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .faq-item {
+        border-bottom: 1px solid #222; /* Linea divisoria sottile come da screenshot */
+        padding: 24px 0;
+    }
+
+    /* Rimuove la freccia nativa del browser su Chrome/Safari/Firefox */
+    .faq-item summary::-webkit-details-marker {
+        display: none;
+    }
+    .faq-item summary {
+        list-style: none;
+    }
+
+    .faq-question {
+        font-size: 1.15rem;
+        font-weight: bold;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        user-select: none;
+        transition: color 0.2s ease;
+    }
+
+    .faq-question:hover {
+        color: #ff9f00;
+    }
+
+    /* Icona freccia custom (Chevron) realizzata in CSS */
+    .chevron {
+        width: 10px;
+        height: 10px;
+        border-right: 2px solid #ffffff;
+        border-bottom: 2px solid #ffffff;
+        transform: rotate(45deg); /* Punta in basso di base */
+        transition:
+            transform 0.3s ease,
+            border-color 0.2s ease;
+        margin-right: 5px;
+    }
+
+    .faq-question:hover .chevron {
+        border-color: #ff9f00;
+    }
+
+    /* Quando l'accordion è aperto, ruota la freccia verso l'alto */
+    .faq-item[open] .chevron {
+        transform: rotate(-135deg);
+    }
+
+    /* Corpo della Risposta */
+    .faq-answer {
+        padding-top: 16px;
+        color: #cccccc;
+        font-size: 0.9rem;
+        line-height: 1.6;
+        max-width: 750px;
+    }
+
+    .faq-answer p {
+        margin: 0;
+    }
+
+    /* Styling dei link interni alle risposte */
+    .faq-answer a {
+        color: #ffffff;
+        text-decoration: underline;
+        text-underline-offset: 3px;
+        font-weight: bold;
+        transition: color 0.2s;
+    }
+
+    .faq-answer a:hover {
+        color: #ff9f00;
+    }
+
+    /* Responsive per schermi piccoli */
+    @media (max-width: 768px) {
+        .faq-section {
+            padding: 40px 16px 60px 16px;
+        }
+        .faq-title {
+            font-size: 1.7rem;
+        }
+        .faq-subtitle {
+            font-size: 0.6rem;
+            letter-spacing: 1px;
+        }
+        .faq-question {
+            font-size: 0.95rem;
+        }
+        .faq-answer {
+            font-size: 0.85rem;
+        }
+    }
+</style>

@@ -1,111 +1,48 @@
 ---
-import { getCollection } from "astro:content";
-// 1. Importiamo i due nuovi componenti che hai appena posizionato correttamente
 import Navbar from "../components/Navbar.astro";
 import Hero from "../components/Hero.astro";
 import Categories from "../components/Categories.astro";
 import FeaturedProducts from "../components/FeaturedProducts.astro";
 import BrandQuote from "../components/BrandQuote.astro";
-
-// Recuperiamo i prodotti dal CMS (la tua T-shirt)
-const prodotti = await getCollection("prodotti");
+import Faq from "../components/Faq.astro";
 ---
 
 <html lang="it">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Atzensportstudio | Official Store</title>
+    <title>OcchiPieniDi | Official Store</title>
     <style>
-      /* Reset globale per permettere il full-width (bordo a bordo) della foto e della navbar */
+      /* Stili Globali di Base */
       * {
         box-sizing: border-box;
       }
       body {
         font-family: sans-serif;
-        background: #111111; /* Sfondo scuro coerente con lo stile urban */
+        background: #111111;
         margin: 0;
         padding: 0;
         color: #fff;
-      }
-
-      /* Stili per l'area catalogo posizionata sotto la Hero */
-      .catalogo {
-        padding: 60px 20px;
-        max-width: 1200px;
-        margin: 0 auto;
-      }
-      .sezione-titolo {
-        text-align: center;
-        font-size: 2rem;
-        letter-spacing: 2px;
-        margin-bottom: 40px;
-        text-transform: uppercase;
-      }
-      .griglia {
-        display: flex;
-        gap: 20px;
-        justify-content: center;
-        flex-wrap: wrap;
-      }
-      .scheda-prodotto {
-        background: #1a1a1a;
-        border: 1px solid #333;
-        padding: 20px;
-        border-radius: 8px;
-        width: 250px;
-        text-align: center;
-        transition: transform 0.2s;
-      }
-      .scheda-prodotto:hover {
-        transform: translateY(-5px);
-        border-color: #ff9f00; /* Richiamo al colore del bottone Hero */
-      }
-      .scheda-prodotto img {
-        max-width: 100%;
-        height: 200px;
-        object-fit: cover;
-        border-radius: 4px;
-      }
-      .scheda-prodotto h2 {
-        font-size: 1.1rem;
-        margin: 15px 0 10px 0;
-      }
-      .prezzo {
-        font-weight: bold;
-        color: #2ecc71;
-        font-size: 1.2rem;
-        margin: 0;
+        overflow-x: hidden;
       }
     </style>
   </head>
   <body>
-    <!-- 2. Inseriamo la barra di navigazione scura in cima -->
+    <!-- 1. Barra di Navigazione Italiana -->
     <Navbar />
 
-    <!-- 3. Inseriamo l'impatto della Hero Section con il pulsante -->
+    <!-- 2. Video Banner Emozionale -->
     <Hero />
 
+    <!-- 3. Griglia Categorie (Magliette, Felpe, Accessori) -->
     <Categories />
 
+    <!-- 4. Vetrina Prodotti Iconici (Classici OcchiPieniDi) -->
     <FeaturedProducts />
 
+    <!-- 5. Sezione Lookbook con Citazione e Immagine Split -->
     <BrandQuote />
-    <!-- 4. Sotto la Hero, lasciamo scivolare la vetrina con la tua T-shirt -->
-    <main class="catalogo">
-      <h2 class="sezione-titolo">I Nostri Prodotti</h2>
-
-      <div class="griglia">
-        {
-          prodotti.map((prodotto) => (
-            <div class="scheda-prodotto">
-              <img src={prodotto.data.immagine} alt={prodotto.data.nome} />
-              <h2>{prodotto.data.nome}</h2>
-              <p class="prezzo">{prodotto.data.prezzo}€</p>
-            </div>
-          ))
-        }
-      </div>
-    </main>
+    <!-- 6.  Blocco Domande e Risposte con effetto fisarmonica -->
+    <Faq />
   </body>
 </html>
