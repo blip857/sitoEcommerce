@@ -1,14 +1,24 @@
 ---
-
+// Hero Section con Video Banner di Sfondo integrato
 ---
 
 <section class="hero-section">
+    <!-- Il video nativo ottimizzato per il loop continuo -->
+    <video autoplay loop muted playsinline class="hero-video">
+        <source src="/hero-video.mp4" type="video/mp4" />
+        Il tuo browser non supporta i video HTML5.
+    </video>
+
+    <!-- Overlay scuro/desaturato per garantire che il testo rimanga leggibile -->
+    <div class="hero-overlay"></div>
+
+    <!-- Contenuto sopra il video -->
     <div class="hero-content">
         <div class="hero-graffiti-logo">
             [ LOGO GRAFFITI GRANDE MULTICOLOR ]
         </div>
 
-        <h1 class="brand-title">ATZENSPORT<i>STUDIO</i></h1>
+        <h1 class="brand-title">OCCHIPIENIDI<i>STUDIO</i></h1>
         <p class="brand-subtitle">ABBIGLIAMENTO GRAFFITI PER BAMBINI</p>
 
         <button class="cta-button">ACQUISTA ORA</button>
@@ -16,45 +26,107 @@
 </section>
 
 <style>
-    /* Layout base provvisorio a schermo intero */
     .hero-section {
-        background-color: #222; /* Qui caricheremo la foto del ragazzo di spalle */
-        height: 75vh;
+        position: relative; /* Fondamentale per bloccare il video sotto il testo */
+        height: 80vh; /* Copre l'80% dell'altezza dello schermo */
+        width: 100%;
         display: flex;
         justify-content: center;
         align-items: center;
         text-align: center;
         color: white;
-        font-family: serif;
+        overflow: hidden; /* Taglia i bordi del video in eccesso */
     }
+
+    /* Il video si adatta a tutto schermo coprendo l'area come una foto */
+    .hero-video {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transform: translate(-50%, -50%);
+        z-index: 1;
+        filter: grayscale(80%) brightness(40%); /* Applica l'effetto desaturato e scuro della foto di riferimento */
+    }
+
+    /* Strato protettivo tra video e scritte per aumentare il contrasto */
+    .hero-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.2);
+        z-index: 2;
+    }
+
+    /* Il contenuto deve stare SOPRA il video e l'overlay */
+    .hero-content {
+        position: relative;
+        z-index: 3;
+        padding: 0 20px;
+    }
+
     .brand-title {
+        font-family: serif;
         font-size: 3.5rem;
-        margin: 10px 0;
+        font-weight: bold;
+        margin: 15px 0;
         letter-spacing: 1px;
+        text-transform: uppercase;
     }
     .brand-title i {
-        font-family: serif;
         font-style: italic;
     }
     .brand-subtitle {
         font-family: sans-serif;
-        font-size: 0.8rem;
-        letter-spacing: 4px;
-        color: #ccc;
-        margin-bottom: 30px;
+        font-size: 0.85rem;
+        letter-spacing: 5px;
+        color: #e0e0e0;
+        margin-bottom: 35px;
+        text-transform: uppercase;
+        font-weight: bold;
     }
     .cta-button {
-        background-color: #ff9f00; /* Giallo/Arancio della foto */
+        background-color: #ff9f00;
         color: black;
         border: none;
-        padding: 15px 45px;
+        padding: 16px 48px;
         font-family: sans-serif;
         font-weight: bold;
-        font-size: 1rem;
+        font-size: 0.95rem;
+        letter-spacing: 1px;
         cursor: pointer;
-        transition: transform 0.2s;
+        text-transform: uppercase;
+        transition:
+            transform 0.2s ease,
+            background-color 0.2s ease;
     }
     .cta-button:hover {
         transform: scale(1.05);
+        background-color: #ffa61a;
+    }
+    .hero-graffiti-logo {
+        font-family: sans-serif;
+        font-size: 1.2rem;
+        letter-spacing: 2px;
+        color: #aaa;
+        margin-bottom: 10px;
+    }
+
+    /* Ottimizzazione per schermi mobile */
+    @media (max-width: 768px) {
+        .hero-section {
+            height: 65vh; /* Abbassiamo leggermente l'altezza sui telefoni */
+        }
+        .brand-title {
+            font-size: 2.2rem;
+        }
+        .brand-subtitle {
+            font-size: 0.75rem;
+            letter-spacing: 3px;
+        }
     }
 </style>
