@@ -41,12 +41,11 @@
 <style>
     .categories-section {
         padding: 60px 24px;
-        background-color: #111111; /* Sfondo scuro coerente con il brand */
+        background-color: #111111;
         max-width: 1200px;
         margin: 0 auto;
     }
 
-    /* Titolo imponente, compatto e bold stile streetwear */
     .section-title {
         font-family: sans-serif;
         font-size: 2.2rem;
@@ -57,18 +56,16 @@
         text-transform: uppercase;
     }
 
-    /* Griglia flessibile a 3 colonne su Desktop */
     .categories-grid {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
         gap: 20px;
     }
 
-    /* Struttura della singola scheda */
     .category-card {
         position: relative;
         display: block;
-        aspect-ratio: 4 / 5; /* Forza una proporzione verticale elegante */
+        aspect-ratio: 4 / 5;
         overflow: hidden;
         text-decoration: none;
     }
@@ -80,7 +77,6 @@
         transition: transform 0.4s ease;
     }
 
-    /* Sfumatura scura sul fondo per rendere leggibile il testo bianco */
     .card-overlay {
         position: absolute;
         top: 0;
@@ -94,12 +90,11 @@
             transparent 100%
         );
         display: flex;
-        align-items: flex-end; /* Spinge il testo in basso */
+        align-items: flex-end;
         padding: 24px;
         box-sizing: border-box;
     }
 
-    /* Testo in basso a sinistra (Stile esatto del sito di riferimento) */
     .card-overlay h3 {
         color: #ffffff;
         font-family: sans-serif;
@@ -111,21 +106,14 @@
         line-height: 1.2;
     }
 
-    /* Effetto zoom dinamico al passaggio del mouse */
     .category-card:hover img {
         transform: scale(1.05);
     }
 
     /* ==========================================================================
-     RESPONSIVE: Adattamento per Tablet e Smartphone
+     STRATEGIA RESPONSIVE AGGIORNATA (Stile image_79e3fd.jpg)
      ========================================================================== */
     @media (max-width: 900px) {
-        .categories-grid {
-            grid-template-columns: repeat(2, 1fr); /* 2 colonne sui tablet */
-        }
-    }
-
-    @media (max-width: 600px) {
         .categories-section {
             padding: 40px 16px;
         }
@@ -134,14 +122,15 @@
             margin-bottom: 20px;
         }
         .categories-grid {
-            grid-template-columns: 1fr; /* 1 colonna a schermo intero sugli smartphone */
-            gap: 16px;
+            /* Forza rigorosamente le 2 colonne anche su schermi smartphone */
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
         }
         .card-overlay {
-            padding: 16px;
+            padding: 14px;
         }
         .card-overlay h3 {
-            font-size: 1.1rem;
+            font-size: 1rem;
         }
     }
 </style>
