@@ -81,7 +81,7 @@ const currentYear = new Date().getFullYear(); // Genera automaticamente il 2026
         padding: 0 24px;
     }
 
-    /* Riga intermedia con allineamento orizzontale flessibile */
+    /* Riga intermedia desktop flessibile */
     .footer-middle-row {
         display: flex;
         justify-content: space-between;
@@ -116,7 +116,7 @@ const currentYear = new Date().getFullYear(); // Genera automaticamente il 2026
         border: 1px solid rgba(255, 255, 255, 0.4);
         padding: 10px 40px 10px 14px;
         font-size: 0.85rem;
-        appearance: none; /* Rimuove lo stile di default del sistema operativo */
+        appearance: none;
         -webkit-appearance: none;
         cursor: pointer;
         outline: none;
@@ -127,7 +127,6 @@ const currentYear = new Date().getFullYear(); // Genera automaticamente il 2026
         border-color: #ffffff;
     }
 
-    /* Piccola freccia personalizzata interna al selettore */
     .select-arrow {
         position: absolute;
         right: 14px;
@@ -140,14 +139,13 @@ const currentYear = new Date().getFullYear(); // Genera automaticamente il 2026
         pointer-events: none;
     }
 
-    /* Contenitore dei finti loghi carte di credito */
+    /* Contenitore dei loghi carte di credito */
     .payment-methods {
         display: flex;
         gap: 6px;
         flex-wrap: wrap;
     }
 
-    /* Styling minimale dei rettangoli di pagamento di riferimento */
     .payment-card {
         display: inline-block;
         padding: 4px 8px;
@@ -162,7 +160,6 @@ const currentYear = new Date().getFullYear(); // Genera automaticamente il 2026
         opacity: 0.8;
     }
 
-    /* Colorazioni indicative per richiamare i brand graficamente senza appesantire */
     .visa {
         border-color: #1a1f71;
         color: #1a1f71;
@@ -220,21 +217,47 @@ const currentYear = new Date().getFullYear(); // Genera automaticamente il 2026
     }
 
     /* ==========================================================================
-     RESPONSIVE
+     STRATEGIA RESPONSIVE AGGIORNATA (Stile esatto image_de07e5.png)
      ========================================================================== */
     @media (max-width: 768px) {
-        .footer-middle-row {
-            flex-direction: column;
-            align-items: flex-start;
-            gap: 30px;
+        .site-footer {
+            padding-bottom: 30px;
         }
 
-        .footer-bottom-row {
+        .footer-divider {
+            margin-bottom: 30px;
+        }
+
+        /* Impila gli elementi verticalmente e li allinea al centro esatto */
+        .footer-middle-row {
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            gap: 32px; /* Spaziatura bilanciata tra selettore e carte */
+            margin-bottom: 35px;
+        }
+
+        /* Centra la label e il box del Paese */
+        .region-section {
+            align-items: center;
             text-align: center;
         }
 
+        /* Forziamo le icone dei pagamenti a distribuirsi dal centro */
+        .payment-methods {
+            justify-content: center;
+        }
+
+        /* Centratura del testo di copyright e dei link legali */
+        .footer-bottom-row {
+            text-align: center;
+            padding-top: 24px;
+        }
+
         .footer-copyright {
-            line-height: 1.8;
+            line-height: 2;
+            font-size: 0.75rem;
         }
     }
 </style>
