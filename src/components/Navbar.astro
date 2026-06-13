@@ -1,11 +1,9 @@
 ---
-// Struttura Navbar adattiva (Desktop con scritte / Mobile con icone)
+// Struttura Navbar Premium (Con selettore valuta interattivo e icone stile image_cff8e0.png)
 ---
 
 <nav class="navbar">
-    <!-- ================= BLOCCO SINISTRO ================= -->
     <div class="nav-left">
-        <!-- Icone Mobile (Nascoste su Desktop) -->
         <button class="mobile-icon menu-hamburger" aria-label="Apri menu">
             <svg
                 viewBox="0 0 24 24"
@@ -38,7 +36,6 @@
             </svg>
         </button>
 
-        <!-- Link Desktop (Nascosti su Mobile) -->
         <div class="desktop-items">
             <a href="#">VESTIARIO ▾</a>
             <a href="#">ACCESSORI ▾</a>
@@ -46,22 +43,100 @@
         </div>
     </div>
 
-    <!-- ================= BLOCCO CENTRALE (LOGO) ================= -->
     <div class="nav-center">
         <span class="logo-placeholder">OcchiPieniDi</span>
     </div>
 
-    <!-- ================= BLOCCO DESTRO ================= -->
     <div class="nav-right">
-        <!-- Link Desktop (Nascosti su Mobile) -->
         <div class="desktop-items">
-            <a href="#" class="search-desktop">🔍 CERCA</a>
-            <a href="#">ACCOUNT</a>
-            <a href="#">IT (€) ▾</a>
-            <a href="#" class="btn-wagen">CARRELLO</a>
+            <div class="currency-picker">
+                <button
+                    class="currency-trigger"
+                    id="currencyBtn"
+                    aria-haspopup="listbox"
+                    aria-expanded="false"
+                >
+                    <span class="current-selected-text">Italia | USD $</span>
+                    <span class="chevron-arrow">＾</span>
+                </button>
+
+                <div class="currency-dropdown" id="currencyDropdown">
+                    <div class="search-box-wrapper">
+                        <input
+                            type="text"
+                            id="countrySearchInput"
+                            placeholder="Ricerca"
+                            autocomplete="off"
+                        />
+                    </div>
+                    <ul class="country-scroll-list" id="countryList">
+                        <li data-value="Afghanistan | USD $">Afghanistan</li>
+                        <li data-value="Isole Åland | EUR €">Isole Åland</li>
+                        <li data-value="Albania | ALL L">Albania</li>
+                        <li data-value="Algeria | DZD د.ج">Algeria</li>
+                        <li data-value="Andorra | EUR €">Andorra</li>
+                        <li data-value="Angola | AOA Kz">Angola</li>
+                        <li data-value="Argentina | ARS $">Argentina</li>
+                        <li data-value="Australia | AUD $">Australia</li>
+                        <li data-value="Francia | EUR €">Francia</li>
+                        <li data-value="Germania | EUR €">Germania</li>
+                        <li data-value="Italia | EUR €">Italia | EUR €</li>
+                        <li data-value="Italia | USD $">Italia | USD $</li>
+                    </ul>
+                </div>
+            </div>
+
+            <a href="#" class="icon-link search-desktop" aria-label="Cerca">
+                <svg
+                    viewBox="0 0 24 24"
+                    width="20"
+                    height="20"
+                    stroke="currentColor"
+                    stroke-width="2.5"
+                    fill="none"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                >
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+            </a>
+
+            <a href="#" class="icon-link" aria-label="Account">
+                <svg
+                    viewBox="0 0 24 24"
+                    width="20"
+                    height="20"
+                    stroke="currentColor"
+                    stroke-width="2.5"
+                    fill="none"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                >
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+            </a>
+
+            <a href="#" class="icon-link btn-wagen" aria-label="Carrello">
+                <svg
+                    viewBox="0 0 24 24"
+                    width="20"
+                    height="20"
+                    stroke="currentColor"
+                    stroke-width="2.5"
+                    fill="none"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                >
+                    <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"
+                    ></path>
+                    <line x1="3" y1="6" x2="21" y2="6"></line>
+                    <path d="M16 10a4 4 0 0 1-8 0"></path>
+                </svg>
+            </a>
         </div>
 
-        <!-- Icone Mobile (Nascoste su Desktop) -->
         <a href="#" class="mobile-icon menu-user" aria-label="Account">
             <svg
                 viewBox="0 0 24 24"
@@ -98,8 +173,86 @@
     </div>
 </nav>
 
+<script>
+    function initCurrencyPicker() {
+        const btn = document.getElementById("currencyBtn");
+        const dropdown = document.getElementById("currencyDropdown");
+        const searchInput = document.getElementById(
+            "countrySearchInput",
+        ) as HTMLInputElement | null;
+        const listItems = document.querySelectorAll("#countryList li");
+        const currentText = document.querySelector(".current-selected-text");
+
+        if (!btn || !dropdown || !searchInput || !currentText) return;
+
+        // 1. Apri/Chiudi il menu al click
+        btn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            const isOpen = dropdown.classList.contains("active");
+            if (isOpen) {
+                dropdown.classList.remove("active");
+                btn.setAttribute("aria-expanded", "false");
+            } else {
+                dropdown.classList.add("active");
+                btn.setAttribute("aria-expanded", "true");
+                searchInput.focus();
+            }
+        });
+
+        // 2. Chiudi se l'utente clicca fuori dal menu
+        document.addEventListener("click", (e) => {
+            const target = e.target as Node;
+            if (!dropdown.contains(target) && !btn.contains(target)) {
+                dropdown.classList.remove("active");
+                btn.setAttribute("aria-expanded", "false");
+            }
+        });
+
+        // 3. Funzione di ricerca/filtro in tempo reale
+        searchInput.addEventListener("input", (e) => {
+            const inputEl = e.target as HTMLInputElement;
+            const term = inputEl.value.toLowerCase().trim();
+
+            listItems.forEach((item) => {
+                const listItem = item as HTMLElement;
+                const txt = listItem.textContent
+                    ? listItem.textContent.toLowerCase()
+                    : "";
+                if (txt.includes(term)) {
+                    listItem.style.display = "block";
+                } else {
+                    listItem.style.display = "none";
+                }
+            });
+        });
+
+        // 4. Selezione del paese e aggiornamento testo della Navbar
+        listItems.forEach((item) => {
+            const listItem = item as HTMLElement;
+            listItem.addEventListener("click", () => {
+                const chosenVal = listItem.getAttribute("data-value");
+                if (chosenVal) {
+                    currentText.textContent = chosenVal;
+                }
+                dropdown.classList.remove("active");
+                btn.setAttribute("aria-expanded", "false");
+
+                searchInput.value = "";
+
+                // RIGA CORRETTA: Rimosso il doppio .style
+                listItems.forEach((i) => {
+                    (i as HTMLElement).style.display = "block";
+                });
+            });
+        });
+    }
+
+    // Caricamento sicuro
+    initCurrencyPicker();
+</script>
+
 <style>
-    /* Base Comune (Sfondo e Font) */
+    /* Base Comune */
     .navbar {
         background-color: #111111;
         color: white;
@@ -113,6 +266,8 @@
         font-size: 0.85rem;
         letter-spacing: 1px;
         border-bottom: 1px solid #1a1a1a;
+        position: relative;
+        z-index: 100;
     }
 
     .nav-left,
@@ -130,11 +285,18 @@
         transition: color 0.2s ease;
     }
 
-    .navbar a:hover {
+    .navbar a:hover,
+    .icon-link:hover {
         color: #ff9f00;
     }
 
-    /* Mantenuto inalterato il nome classe per non rompere i collegamenti */
+    .icon-link {
+        color: white;
+        display: inline-flex;
+        align-items: center;
+        transition: color 0.2s;
+    }
+
     .btn-wagen {
         border-left: 1px solid #333;
         padding-left: 24px;
@@ -155,11 +317,122 @@
         cursor: pointer;
     }
 
-    /* RESPONSIVE TRICK */
     .mobile-icon {
         display: none !important;
     }
 
+    /* Dropdown Valuta */
+    .currency-picker {
+        position: relative;
+        display: inline-block;
+    }
+
+    .currency-trigger {
+        background: transparent;
+        border: none;
+        color: #ffffff;
+        font-family: sans-serif;
+        font-size: 0.85rem;
+        font-weight: bold;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        padding: 4px 0;
+        letter-spacing: 0.5px;
+    }
+
+    .currency-trigger:hover .current-selected-text {
+        text-decoration: underline;
+        text-underline-offset: 4px;
+    }
+
+    .chevron-arrow {
+        font-size: 0.6rem;
+        display: inline-block;
+        transform: rotate(180deg);
+        transition: transform 0.2s ease;
+    }
+
+    .currency-trigger[aria-expanded="true"] .chevron-arrow {
+        transform: rotate(0deg);
+    }
+
+    .currency-dropdown {
+        position: absolute;
+        top: calc(100% + 15px);
+        right: 0;
+        background-color: #000000;
+        width: 290px;
+        box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.5);
+        display: none;
+        padding: 16px;
+        z-index: 999;
+    }
+
+    .currency-dropdown.active {
+        display: block;
+    }
+
+    .search-box-wrapper {
+        margin-bottom: 14px;
+    }
+
+    #countrySearchInput {
+        width: 100%;
+        background-color: transparent;
+        border: 2px solid #ffffff;
+        color: #ffffff;
+        padding: 10px 12px;
+        font-size: 0.85rem;
+        outline: none;
+        font-family: sans-serif;
+    }
+
+    #countrySearchInput::placeholder {
+        color: #888888;
+    }
+
+    .country-scroll-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        max-height: 240px;
+        overflow-y: auto;
+        text-align: left;
+    }
+
+    .country-scroll-list li {
+        padding: 12px 8px;
+        color: #cccccc;
+        font-weight: normal;
+        font-size: 0.9rem;
+        cursor: pointer;
+        transition:
+            background 0.15s,
+            color 0.15s;
+    }
+
+    .country-scroll-list li:hover {
+        background-color: #1a1a1a;
+        color: #ffffff;
+    }
+
+    .country-scroll-list::-webkit-scrollbar {
+        width: 12px;
+    }
+
+    .country-scroll-list::-webkit-scrollbar-track {
+        background: #ffffff;
+    }
+
+    .country-scroll-list::-webkit-scrollbar-thumb {
+        background-color: #a0a0a0;
+        border-radius: 2px;
+        border: 2px solid #ffffff;
+    }
+
+    /* Responsive Mobile */
     @media (max-width: 1024px) {
         .desktop-items {
             display: none !important;
