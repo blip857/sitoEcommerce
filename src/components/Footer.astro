@@ -1,22 +1,22 @@
 ---
-// CONFIGURAZIONE ASTRO: Lista dei Paesi (Sincronizzata con la Navbar)
+// CONFIGURAZIONE ASTRO: Lista dei Paesi (Sincronizzata con la Navbar in Italiano)
 const countries = [
     { code: "IT", id: "Footer-Italy", name: "Italia", currency: "EUR €" },
     {
         code: "US",
         id: "Footer-UnitedStates",
-        name: "United States",
+        name: "Stati Uniti",
         currency: "USD $",
     },
     {
         code: "GB",
         id: "Footer-UnitedKingdom",
-        name: "United Kingdom",
+        name: "Regno Unito",
         currency: "GBP £",
     },
-    { code: "FR", id: "Footer-France", name: "France", currency: "EUR €" },
-    { code: "DE", id: "Footer-Germany", name: "Germany", currency: "EUR €" },
-    { code: "ES", id: "Footer-Spain", name: "Spain", currency: "EUR €" },
+    { code: "FR", id: "Footer-France", name: "Francia", currency: "EUR €" },
+    { code: "DE", id: "Footer-Germany", name: "Germania", currency: "EUR €" },
+    { code: "ES", id: "Footer-Spain", name: "Spagna", currency: "EUR €" },
     {
         code: "AF",
         id: "Footer-Afghanistan",
@@ -26,7 +26,7 @@ const countries = [
     {
         code: "AX",
         id: "Footer-AlandIslands",
-        name: "Åland Islands",
+        name: "Isole Åland",
         currency: "USD $",
     },
     { code: "AL", id: "Footer-Albania", name: "Albania", currency: "ALL L" },
@@ -37,7 +37,7 @@ const countries = [
     {
         code: "AG",
         id: "Footer-AntiguaBarbuda",
-        name: "Antigua & Barbuda",
+        name: "Antigua e Barbuda",
         currency: "XCD $",
     },
     {
@@ -70,8 +70,13 @@ const countries = [
         currency: "BDT ৳",
     },
     { code: "BB", id: "Footer-Barbados", name: "Barbados", currency: "BBD $" },
-    { code: "BY", id: "Footer-Belarus", name: "Belarus", currency: "BYN Br" },
-    { code: "BE", id: "Footer-Belgium", name: "Belgium", currency: "EUR €" },
+    {
+        code: "BY",
+        id: "Footer-Belarus",
+        name: "Bielorussia",
+        currency: "BYN Br",
+    },
+    { code: "BE", id: "Footer-Belgium", name: "Belgio", currency: "EUR €" },
     { code: "BZ", id: "Footer-Belize", name: "Belize", currency: "BZD Z$" },
     { code: "BJ", id: "Footer-Benin", name: "Benin", currency: "XOF Fr" },
     { code: "BM", id: "Footer-Bermuda", name: "Bermuda", currency: "BMD $" },
@@ -80,23 +85,21 @@ const countries = [
     {
         code: "BA",
         id: "Footer-BosniaHerzegovina",
-        name: "Bosnia & Herzegovina",
+        name: "Bosnia ed Erzegovina",
         currency: "BAM KM",
     },
     {
         code: "CH",
         id: "Footer-Switzerland",
-        name: "Switzerland",
+        name: "Svizzera",
         currency: "CHF CHF",
     },
-    { code: "JP", id: "Footer-Japan", name: "Japan", currency: "JPY ¥" },
+    { code: "JP", id: "Footer-Japan", name: "Giappone", currency: "JPY ¥" },
 ];
 ---
 
 <footer class="site-footer">
-    <!-- SEZIONE SUPERIORE: SELETTORE E METODI DI PAGAMENTO -->
     <div class="footer-top-row">
-        <!-- Scatola Selettore Paese/Regione (Allineata a Sinistra) -->
         <div class="footer-localization-block">
             <label class="localization-label">Paese/regione</label>
 
@@ -113,7 +116,6 @@ const countries = [
                     <span class="chevron-arrow-footer">▾</span>
                 </button>
 
-                <!-- Dropdown Strutturato (Apertura verso l'alto "Drop-up") -->
                 <div
                     class="disclosure__list-wrapper custom-drop-up"
                     id="footerCurrencyDropdown"
@@ -124,7 +126,7 @@ const countries = [
                                 class="country-filter__input field__input"
                                 id="footer-country-filter-input"
                                 type="search"
-                                placeholder="Search"
+                                placeholder="Ricerca"
                                 autocomplete="off"
                                 spellcheck="false"
                             />
@@ -229,7 +231,6 @@ const countries = [
             </div>
         </div>
 
-        <!-- Metodi di Pagamento (Allineati a Destra come in image_ad3c2f.png) -->
         <div class="footer-payment-badges">
             <span class="badge-card">AMEX</span>
             <span class="badge-card bg-light">APPLE PAY</span>
@@ -241,10 +242,8 @@ const countries = [
         </div>
     </div>
 
-    <!-- LINEA DIVISORIA -->
     <hr class="footer-divider" />
 
-    <!-- SEZIONE CENTRAL/LEFT: COPYRIGHT -->
     <div class="footer-middle-row">
         <p class="footer-copyright">
             © 2026, OCCHIPIENIDI Powered by Astro <span class="dot-separator"
@@ -256,11 +255,9 @@ const countries = [
         </p>
     </div>
 
-    <!-- SEZIONE INFERIORE: SOCIAL -->
     <div class="footer-bottom-row">
         <h4 class="social-heading">SEGUI IL NOSTRO VIAGGIO</h4>
         <div class="social-icons">
-            <!-- Instagram -->
             <a href="#" aria-label="Instagram">
                 <svg
                     viewBox="0 0 24 24"
@@ -278,7 +275,6 @@ const countries = [
                     ></line></svg
                 >
             </a>
-            <!-- TikTok -->
             <a href="#" aria-label="TikTok">
                 <svg
                     viewBox="0 0 24 24"
@@ -349,6 +345,8 @@ const countries = [
         // Filtro Ricerca
         searchInput.addEventListener("input", () => {
             const term = searchInput.value.toLowerCase().trim();
+
+            // Manteniamo logica di utilità interna ma nascondiamo il reset via CSS
             if (term.length > 0) {
                 resetBtn.classList.remove("hidden");
             } else {
@@ -390,7 +388,6 @@ const countries = [
                     link.querySelector(".localization-form__currency")
                         ?.textContent || "";
 
-                // Rispetta il formato visivo della foto "Nome Paese | Valuta"
                 currentText.textContent = `${countryName} | ${currencyName.trim()}`;
 
                 document
@@ -418,8 +415,8 @@ const countries = [
 <style>
     /* STRUTTURA GENERALE FOOTER COMPATIBILE CON L'IMMAGINE image_ad3c2f.png */
     .site-footer {
-        background-color: #0b0b0b; /* Sfondo ultra-dark */
-        color: #8b8b8b; /* Scritte grigie soft */
+        background-color: #0b0b0b;
+        color: #8b8b8b;
         padding: 40px 48px;
         font-family: sans-serif;
         font-size: 0.8rem;
@@ -479,7 +476,7 @@ const countries = [
     /* COMPORTAMENTO DROP-UP (Apertura verso l'alto!) */
     .disclosure__list-wrapper.custom-drop-up {
         position: absolute;
-        bottom: calc(100% + 8px); /* Posizionato sopra il bottone */
+        bottom: calc(100% + 8px);
         left: 0;
         background-color: #000000;
         border: 1px solid #222;
@@ -493,13 +490,14 @@ const countries = [
         display: flex;
     }
 
-    /* Barra Interna di Filtro del dropup */
+    /* Barra Interna di Filtro (In linea con lo stile pulito di image_cff8e0) */
     .country-filter {
         display: flex;
         align-items: center;
-        padding: 10px;
-        gap: 6px;
-        border-bottom: 1px solid #222;
+        padding: 12px;
+        gap: 0px;
+        background-color: #000;
+        border-bottom: 1px solid #111;
     }
     .field {
         position: relative;
@@ -507,55 +505,34 @@ const countries = [
         display: flex;
         align-items: center;
     }
+
+    /* Stile casella "Ricerca" identica allo screenshot */
     .field__input {
         width: 100%;
-        background: #111;
-        border: 1px solid #444;
+        background: #000;
+        border: 1px solid #fff; /* Bordo bianco netto */
         color: white;
-        padding: 6px 28px;
-        font-size: 0.8rem;
+        padding: 8px 10px;
+        font-size: 0.85rem;
         outline: none;
+        box-sizing: border-box;
     }
     .field__input:focus {
-        border-color: #ff9f00;
-    }
-    .field__button {
-        position: absolute;
-        background: none;
-        border: none;
-        color: #888;
-        display: flex;
-        align-items: center;
-    }
-    .country-filter__search-icon {
-        left: 8px;
-        pointer-events: none;
-    }
-    .country-filter__reset-button {
-        right: 8px;
-        color: white;
-        cursor: pointer;
-    }
-    .country-filter__reset-button svg,
-    .country-filter__search-icon svg {
-        width: 12px;
-        height: 12px;
-    }
-    .country-selector__close-button {
-        background: none;
-        border: none;
-        color: #888;
-        cursor: pointer;
-    }
-    .country-selector__close-button svg {
-        width: 14px;
-        height: 14px;
+        border-color: #fff;
     }
 
-    /* Elementi della lista */
+    /* Nascondiamo le icone superflue e i pulsanti extra come da richiesta d'immagine */
+    .country-filter__search-icon,
+    .country-filter__reset-button,
+    .country-selector__close-button {
+        display: none !important;
+    }
+
+    /* Elementi della lista paesi */
     .disclosure__list {
         max-height: 200px;
         overflow-y: auto;
+        background-color: #000;
     }
     .list-unstyled {
         list-style: none;
@@ -579,7 +556,7 @@ const countries = [
         display: inline-flex;
         width: 14px;
         margin-right: 6px;
-        color: #ff9f00;
+        color: #fff;
     }
     .checkmark-wrapper-footer svg {
         width: 10px;
@@ -590,12 +567,12 @@ const countries = [
         text-align: left;
     }
     .localization-form__currency {
-        color: #555;
+        color: #666;
         font-size: 0.75rem;
         margin-left: 6px;
     }
 
-    /* BADGES DI PAGAMENTO ESTETICI */
+    /* BADGES DI PAGAMENTO */
     .footer-payment-badges {
         display: flex;
         gap: 6px;
@@ -632,7 +609,7 @@ const countries = [
         border: none;
     }
 
-    /* Linea orizzontale */
+    /* Linea orizzontale divisoria */
     .footer-divider {
         border: 0;
         border-top: 1px solid #1a1a1a;
@@ -688,7 +665,7 @@ const countries = [
         color: white;
     }
 
-    /* Classi Utilità */
+    /* Classi di utilità */
     .hidden {
         display: none !important;
     }
@@ -706,7 +683,7 @@ const countries = [
         background: #222;
     }
 
-    /* Responsive mobile */
+    /* Responsive Mobile */
     @media (max-width: 768px) {
         .footer-top-row {
             flex-direction: column;
