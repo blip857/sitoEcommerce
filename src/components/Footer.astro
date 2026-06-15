@@ -129,7 +129,9 @@ const countries = [
                     aria-haspopup="listbox"
                     aria-expanded="false"
                 >
-                    <span class="footer-current-selected-text">Italia | EUR €</span>
+                    <span class="footer-current-selected-text"
+                        >Italia | EUR €</span
+                    >
                     <span class="chevron-arrow-footer">▾</span>
                 </button>
                 <div
@@ -167,6 +169,8 @@ const countries = [
                                                     xmlns="http://www.w3.org/2000/svg"
                                                     fill="none"
                                                     viewBox="0 0 12 9"
+                                                    width="12"
+                                                    height="9"
                                                 >
                                                     <path
                                                         fill="currentColor"
@@ -207,7 +211,7 @@ const countries = [
     <div class="footer-bottom-row">
         <div class="footer-copyright-block">
             <p class="footer-copyright">
-                &copy; 2026, OCCHIPIENIDI Powered by Astro 
+                &copy; 2026, OCCHIPIENIDI Powered by Astro
                 <span class="dot-separator">&middot;</span>
                 <a href="#" class="footer-link">Politica sulla riservatezza</a>
                 <span class="dot-separator">&middot;</span>
@@ -218,14 +222,40 @@ const countries = [
         <div class="footer-social-block">
             <span class="social-label">SEGUI IL NOSTRO VIAGGIO</span>
             <div class="social-icons">
-                <a href="#" target="_blank" rel="noopener noreferrer" class="social-icon-link" aria-label="Instagram">
-                    <svg viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.051.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
+                <a
+                    href="#"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="social-icon-link"
+                    aria-label="Instagram"
+                >
+                    <svg
+                        viewBox="0 0 24 24"
+                        fill="currentColor"
+                        width="20"
+                        height="20"
+                    >
+                        <path
+                            d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.051.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"
+                        ></path>
                     </svg>
                 </a>
-                <a href="#" target="_blank" rel="noopener noreferrer" class="social-icon-link" aria-label="TikTok">
-                    <svg viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.02 1.59 4.23.95.12 1.93-.16 2.85-.39-.01 1.43-.02 2.85-.02 4.28-.86.26-1.74.2-2.57-.07-.57-.22-1.09-.56-1.54-.97-.04 2.88-.02 5.76-.04 8.64-.1 1.26-.58 2.51-1.46 3.42-.91.97-2.22 1.51-3.56 1.46-1.4-.02-2.77-.66-3.62-1.78-.96-1.21-1.19-2.91-.6-4.34.46-1.16 1.45-2.07 2.66-2.44.02 1.42.01 2.84.02 4.26-.39.1-.75.32-1 .63-.38.45-.49 1.07-.31 1.63.17.57.62 1.02 1.19 1.16.63.15 1.32-.03 1.77-.49.46-.48.6-1.18.52-1.83.03-4.52.01-9.04.02-13.56zm0 0"/>
+                <a
+                    href="#"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="social-icon-link"
+                    aria-label="TikTok"
+                >
+                    <svg
+                        viewBox="0 0 24 24"
+                        fill="currentColor"
+                        width="20"
+                        height="20"
+                    >
+                        <path
+                            d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.02 1.59 4.23.95.12 1.93-.16 2.85-.39-.01 1.43-.02 2.85-.02 4.28-.86.26-1.74.2-2.57-.07-.57-.22-1.09-.56-1.54-.97-.04 2.88-.02 5.76-.04 8.64-.1 1.26-.58 2.51-1.46 3.42-.91.97-2.22 1.51-3.56 1.46-1.4-.02-2.77-.66-3.62-1.78-.96-1.21-1.19-2.91-.6-4.34.46-1.16 1.45-2.07 2.66-2.44.02 1.42.01 2.84.02 4.26-.39.1-.75.32-1 .63-.38.45-.49 1.07-.31 1.63.17.57.62 1.02 1.19 1.16.63.15 1.32-.03 1.77-.49.46-.48.6-1.18.52-1.83.03-4.52.01-9.04.02-13.56zm0 0"
+                        ></path>
                     </svg>
                 </a>
             </div>
@@ -340,7 +370,8 @@ const countries = [
         background-color: #0b0b0b;
         color: #8b8b8b;
         padding: 40px 24px;
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        font-family:
+            -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
         box-sizing: border-box;
     }
 
@@ -481,4 +512,172 @@ const countries = [
     }
 
     .disclosure__link:hover {
-        background-color: #1c1c1c
+        background-color: #1c1c1c;
+        color: #ffffff;
+    }
+
+    .localization-form__currency {
+        color: #666666;
+        font-size: 13px;
+    }
+
+    /* FIXED: Gestione robusta della spunta di selezione */
+    .checkmark-wrapper-footer {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 12px;
+        height: 12px;
+        flex-shrink: 0;
+    }
+
+    .checkmark-wrapper-footer svg {
+        width: 12px !important;
+        height: 9px !important;
+        display: block;
+    }
+
+    .visibility-hidden {
+        display: none !important;
+    }
+
+    /* BADGE DI PAGAMENTO (OTTIMIZZATI) */
+    .footer-payment-badges {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        justify-content: flex-start;
+    }
+
+    @media (max-width: 767px) {
+        .footer-payment-badges {
+            justify-content: center;
+        }
+    }
+
+    .badge-card {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 4px 8px;
+        font-size: 10px;
+        font-weight: 600;
+        letter-spacing: 0.05em;
+        border-radius: 3px;
+        background: #111111;
+        color: #ffffff;
+        border: 1px solid #222222;
+        height: 24px;
+        box-sizing: border-box;
+    }
+
+    .badge-card.bg-light {
+        background: #ffffff;
+        color: #000000;
+    }
+    .badge-card.bg-blue {
+        background: #4285f4;
+        color: #ffffff;
+    }
+    .badge-card.bg-orange {
+        background: #ff5f00;
+        color: #ffffff;
+    }
+    .badge-card.bg-light-blue {
+        background: #003087;
+        color: #ffffff;
+    }
+
+    /* ==========================================================================
+       3. DIVISORE E RIGA INFERIORE (COPYRIGHT E SOCIAL)
+       ========================================================================== */
+    .footer-divider {
+        border: 0;
+        border-top: 1px solid #1a1a1a;
+        margin: 24px 0;
+    }
+
+    .footer-bottom-row {
+        display: flex;
+        flex-direction: column-reverse;
+        gap: 24px;
+        align-items: center;
+        text-align: center;
+    }
+
+    @media (min-width: 768px) {
+        .footer-bottom-row {
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            text-align: left;
+        }
+    }
+
+    .footer-copyright {
+        font-size: 12px;
+        line-height: 1.5;
+        margin: 0;
+    }
+
+    .footer-link {
+        color: #8b8b8b;
+        text-decoration: none;
+        transition: color 0.2s ease;
+    }
+
+    .footer-link:hover {
+        color: #ffffff;
+    }
+
+    .dot-separator {
+        margin: 0 4px;
+        color: #333333;
+    }
+
+    /* SEZIONE SOCIAL */
+    .footer-social-block {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+    }
+
+    @media (min-width: 768px) {
+        .footer-social-block {
+            align-items: flex-end;
+        }
+    }
+
+    .social-label {
+        font-size: 11px;
+        letter-spacing: 0.1em;
+        color: #ffffff;
+        font-weight: 500;
+    }
+
+    .social-icons {
+        display: flex;
+        gap: 16px;
+    }
+
+    .social-icon-link {
+        color: #8b8b8b;
+        transition:
+            color 0.2s ease,
+            transform 0.2s ease;
+        display: inline-flex; /* FIXED: Allinea meglio l'SVG dentro il link */
+    }
+
+    .social-icon-link:hover {
+        color: #ffffff;
+        transform: scale(1.05);
+    }
+
+    /* FIXED: Forzatura rigida delle dimensioni degli SVG social */
+    .social-icon-link svg {
+        width: 20px !important;
+        height: 20px !important;
+        display: block;
+    }
+</style>
