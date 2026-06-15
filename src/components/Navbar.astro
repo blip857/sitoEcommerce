@@ -207,6 +207,7 @@ const countries = [
                                         stroke-opacity=".2"></circle><path
                                         stroke-linecap="round"
                                         stroke-linejoin="round"
+                                        stroke-width="1.5"
                                         d="M11.83 11.83 6.172 6.17M6.229 11.885l5.544-5.77"
                                     ></path></svg
                                 >
@@ -250,26 +251,45 @@ const countries = [
                             class="list-unstyled countries"
                             id="countryList"
                         >
+                            {
+                                countries.map((country) => (
+                                    <li class="disclosure__item" tabindex="-1">
+                                        <a
+                                            class="disclosure__link"
+                                            href="#"
+                                            data-value={country.code}
+                                            id={`Navbar-${country.englishName}`}
+                                        >
+                                            <span
+                                                class={`checkmark-wrapper ${country.code === "IT" ? "" : "visibility-hidden"}`}
+                                            >
+                                                <svg
+                                                    viewBox="0 0 12 9"
+                                                    fill="none"
+                                                    stroke="currentColor"
+                                                    stroke-width="2"
+                                                >
+                                                    <path
+                                                        d="M1 4.5L4 7.5L11 1"
+                                                        stroke-linecap="round"
+                                                        stroke-linejoin="round"
+                                                    />
+                                                </svg>
+                                            </span>
+                                            <span class="country">
+                                                {country.name}
+                                            </span>
+                                            <span class="localization-form__currency">
+                                                {country.currency}
+                                            </span>
+                                        </a>
+                                    </li>
+                                ))
+                            }
                         </ul>
                     </div>
                 </div>
-            </div>{
-                countries.map((country) => (
-                    <li class="disclosure__item" tabindex="-1">
-                        <a
-                            class="disclosure__link"
-                            href="#"
-                            data-value={country.code}
-                            id={`Navbar-${country.englishName}`}
-                        >
-                            <span class="country">{country.name}</span>
-                            <span class="localization-form__currency">
-                                {country.currency}
-                            </span>
-                        </a>
-                    </li>
-                ))
-            }
+            </div>
 
             <a href="#" class="icon-link" aria-label="Cerca"
                 ><svg
@@ -627,13 +647,17 @@ const countries = [
     /* Allineamenti Spunta e Valuta */
     .checkmark-wrapper {
         display: inline-flex;
+        align-items: center;
+        justify-content: center;
         width: 16px;
-        margin-right: 8px;
+        height: 16px;
+        margin-right: 12px;
         color: #ff9f00;
+        flex-shrink: 0;
     }
     .checkmark-wrapper svg {
         width: 12px;
-        height: 9px;
+        height: 12px;
     }
     .country {
         flex-grow: 1;
