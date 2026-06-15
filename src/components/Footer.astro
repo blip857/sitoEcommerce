@@ -223,26 +223,44 @@ const countries = [
 </script>
 
 <style>
-    /* ... (Stili CSS invariati, rimuovi solo .footer-bottom-row e relativi figli se vuoi pulire il CSS) */
-    .site-footer {
-        background-color: #0b0b0b;
-        color: #8b8b8b;
-        padding: 40px 48px;
-        font-family: sans-serif;
+    /* 1. Forza l'SVG ad avere una dimensione minuscola e corretta */
+    .checkmark-wrapper-footer svg {
+        width: 12px;
+        height: 9px;
+        display: inline-block;
+        vertical-align: middle;
     }
-    .footer-top-row {
+
+    /* 2. Rendi i link bianchi o grigi, evitando il blu di default dei link */
+    .disclosure__link {
         display: flex;
-        justify-content: space-between;
-        align-items: flex-end;
-        margin-bottom: 24px;
-        flex-wrap: wrap;
+        align-items: center;
+        gap: 10px;
+        color: #ffffff; /* O il colore che preferisci per il testo */
+        text-decoration: none;
+        padding: 8px 12px;
     }
-    .footer-divider {
-        border: 0;
-        border-top: 1px solid #1a1a1a;
-        margin: 24px 0;
+
+    .disclosure__link:hover {
+        background-color: #222; /* Effetto hover per la lista */
     }
-    .footer-middle-row {
-        text-align: left;
+
+    /* 3. Correggi la classe per nascondere le spunte non attive */
+    /* Invece di visibility:hidden (che lascia lo spazio vuoto), usa display:none o resetta il contenitore */
+    .visibility-hidden {
+        display: none !important;
+    }
+
+    /* 4. Assicurati che la lista non abbia i punti elenco dei tag <ul> standard */
+    .list-unstyled {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    /* 5. Contenitore del dropdown (deve avere un'altezza massima e uno scroll) */
+    .disclosure__list {
+        max-height: 250px;
+        overflow-y: auto;
     }
 </style>
