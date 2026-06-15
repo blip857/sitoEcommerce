@@ -76,7 +76,7 @@ const countries = [
         code: "BH",
         englishName: "Bahrain",
         name: "Bahrain",
-        currency: "BHD .د.ب",
+        currency: "BHD .د.b",
     },
     {
         code: "BD",
@@ -129,9 +129,7 @@ const countries = [
                     aria-haspopup="listbox"
                     aria-expanded="false"
                 >
-                    <span class="footer-current-selected-text"
-                        >Italia | EUR €</span
-                    >
+                    <span class="footer-current-selected-text">Italia | EUR €</span>
                     <span class="chevron-arrow-footer">▾</span>
                 </button>
                 <div
@@ -206,15 +204,32 @@ const countries = [
 
     <hr class="footer-divider" />
 
-    <div class="footer-middle-row">
-        <p class="footer-copyright">
-            © 2026, OCCHIPIENIDI Powered by Astro <span class="dot-separator"
-                >·</span
-            >
-            <a href="#" class="footer-link">Politica sulla riservatezza</a>
-            <span class="dot-separator">·</span>
-            <a href="#" class="footer-link">Preferenze sui cookie</a>
-        </p>
+    <div class="footer-bottom-row">
+        <div class="footer-copyright-block">
+            <p class="footer-copyright">
+                &copy; 2026, OCCHIPIENIDI Powered by Astro 
+                <span class="dot-separator">&middot;</span>
+                <a href="#" class="footer-link">Politica sulla riservatezza</a>
+                <span class="dot-separator">&middot;</span>
+                <a href="#" class="footer-link">Preferenze sui cookie</a>
+            </p>
+        </div>
+
+        <div class="footer-social-block">
+            <span class="social-label">SEGUI IL NOSTRO VIAGGIO</span>
+            <div class="social-icons">
+                <a href="#" target="_blank" rel="noopener noreferrer" class="social-icon-link" aria-label="Instagram">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.051.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
+                    </svg>
+                </a>
+                <a href="#" target="_blank" rel="noopener noreferrer" class="social-icon-link" aria-label="TikTok">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.02 1.59 4.23.95.12 1.93-.16 2.85-.39-.01 1.43-.02 2.85-.02 4.28-.86.26-1.74.2-2.57-.07-.57-.22-1.09-.56-1.54-.97-.04 2.88-.02 5.76-.04 8.64-.1 1.26-.58 2.51-1.46 3.42-.91.97-2.22 1.51-3.56 1.46-1.4-.02-2.77-.66-3.62-1.78-.96-1.21-1.19-2.91-.6-4.34.46-1.16 1.45-2.07 2.66-2.44.02 1.42.01 2.84.02 4.26-.39.1-.75.32-1 .63-.38.45-.49 1.07-.31 1.63.17.57.62 1.02 1.19 1.16.63.15 1.32-.03 1.77-.49.46-.48.6-1.18.52-1.83.03-4.52.01-9.04.02-13.56zm0 0"/>
+                    </svg>
+                </a>
+            </div>
+        </div>
     </div>
 </footer>
 
@@ -232,14 +247,12 @@ const countries = [
             ".footer-current-selected-text",
         );
 
-        // Controllo di sicurezza per evitare errori in console se i componenti cambiano
         if (!btn || !dropdown || !currentText) return;
 
         const toggleDropdown = (show: boolean) => {
             if (show) {
                 dropdown.classList.add("active");
                 btn.setAttribute("aria-expanded", "true");
-                // Porta il focus sulla barra di ricerca interna del footer all'apertura
                 if (searchInput) setTimeout(() => searchInput.focus(), 50);
             } else {
                 dropdown.classList.remove("active");
@@ -247,14 +260,12 @@ const countries = [
             }
         };
 
-        // 1. Gestione click sul bottone del footer
         btn.addEventListener("click", (e) => {
             e.stopPropagation();
             const isDropdownActive = dropdown.classList.contains("active");
             toggleDropdown(!isDropdownActive);
         });
 
-        // 2. Chiudi la tendina se si clicca in un punto qualsiasi fuori dal selettore del footer
         document.addEventListener("click", (e) => {
             const target = e.target as Node;
             if (!dropdown.contains(target) && !btn.contains(target)) {
@@ -262,7 +273,6 @@ const countries = [
             }
         });
 
-        // 3. Funzione di Filtro / Ricerca in tempo reale per il footer
         if (searchInput) {
             searchInput.addEventListener("input", () => {
                 const term = searchInput.value.toLowerCase().trim();
@@ -282,7 +292,6 @@ const countries = [
             });
         }
 
-        // 4. Selezione del Paese dal menu del footer
         listItems.forEach((item) => {
             const link = item.querySelector(".disclosure__link") as HTMLElement;
             if (!link) return;
@@ -296,10 +305,8 @@ const countries = [
                     link.querySelector(".localization-form__currency")
                         ?.textContent || "";
 
-                // Aggiorna il testo visibile sul bottone mantenendo il formato del footer "Italia | EUR €"
                 currentText.textContent = `${countryName} | ${currencyName.trim()}`;
 
-                // Rimuove la spunta attiva dai vecchi elementi nel footer e la assegna al nuovo
                 document
                     .querySelectorAll(".checkmark-wrapper-footer")
                     .forEach((cw) => {
@@ -309,10 +316,8 @@ const countries = [
                     ".checkmark-wrapper-footer",
                 )?.classList.remove("visibility-hidden");
 
-                // Chiude il menu a tendina
                 toggleDropdown(false);
 
-                // Svuota e resetta l'input di ricerca alla chiusura
                 if (searchInput) {
                     searchInput.value = "";
                     listItems.forEach(
@@ -323,73 +328,117 @@ const countries = [
         });
     }
 
-    // Avvia la configurazione al caricamento iniziale della pagina
     initFooterCurrencyPicker();
-
-    // Supporto per i siti Astro che utilizzano View Transitions (<ViewTransitions />)
     document.addEventListener("astro:page-load", initFooterCurrencyPicker);
 </script>
 
 <style>
     /* ==========================================================================
-       1. POSIZIONAMENTO STRUTTURALE (IL FIX PER L'ESPLOSIONE DEL LAYOUT)
+       1. REGOLE STRUTTURALI E RESET
        ========================================================================== */
+    .site-footer {
+        background-color: #0b0b0b;
+        color: #8b8b8b;
+        padding: 40px 24px;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        box-sizing: border-box;
+    }
 
-    /* Il contenitore principale deve essere "relative" per fare da ancora */
+    @media (min-width: 768px) {
+        .site-footer {
+            padding: 40px 48px;
+        }
+    }
+
+    /* ==========================================================================
+       2. RIGA SUPERIORE (LOCALIZZAZIONE E PAGAMENTI)
+       ========================================================================== */
+    .footer-top-row {
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+        margin-bottom: 24px;
+    }
+
+    @media (min-width: 768px) {
+        .footer-top-row {
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+    }
+
+    .footer-localization-block {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .localization-label {
+        font-size: 12px;
+        color: #8b8b8b;
+    }
+
     .currency-picker-footer {
         position: relative;
         display: inline-block;
+        width: 100%;
     }
 
-    /* Stile del bottone trigger (se serve pulirlo) */
+    @media (min-width: 768px) {
+        .currency-picker-footer {
+            width: auto;
+        }
+    }
+
     .currency-trigger-footer {
         background: #111111;
         color: #ffffff;
         border: 1px solid #333333;
-        padding: 8px 16px;
+        padding: 10px 16px;
         font-size: 14px;
         cursor: pointer;
         display: flex;
         align-items: center;
         justify-content: space-between;
         gap: 12px;
-        min-width: 180px;
+        width: 100%;
+        min-width: 240px;
         text-align: left;
+        border-radius: 4px;
+        transition: border-color 0.2s ease;
     }
 
-    /* Il wrapper del menu: deve essere ASSOLUTO e con uno sfondo solido scuro */
+    .currency-trigger-footer:hover {
+        border-color: #555555;
+    }
+
+    /* Drop-up Menu del Selettore */
     .disclosure__list-wrapper.custom-drop-up {
         position: absolute;
-        bottom: calc(
-            100% + 8px
-        ); /* Lo posiziona SOPRA il bottone (Drop-up) con 8px di stacco */
+        bottom: calc(100% + 8px);
         left: 0;
-        width: 280px; /* Larghezza fissa per contenere comodamente testo e ricerca */
-        background-color: #0b0b0b; /* Sfondo solido identico al footer per non essere trasparente */
+        width: 100%;
+        background-color: #0b0b0b;
         border: 1px solid #2a2a2a;
         box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.6);
-        z-index: 999; /* Evita che si posizioni sotto altri elementi */
+        z-index: 999;
         padding: 12px 0;
-
-        /* Gestione visibilità iniziale: di base è nascosto */
         display: none;
+        box-sizing: border-box;
+        border-radius: 4px;
     }
 
-    /* MOSTRARE IL DROPDOWN SE ATTIVO: 
-       A seconda di come funziona il tuo <script>, scommenta la regola corretta: */
-
-    /* Alternativa A: Se il tuo JS cambia l'attributo del bottone (Best Practice accessibilità) */
-    .currency-trigger-footer[aria-expanded="true"] + .disclosure__list-wrapper {
-        display: block;
+    @media (min-width: 768px) {
+        .disclosure__list-wrapper.custom-drop-up {
+            width: 280px;
+        }
     }
 
     .disclosure__list-wrapper.custom-drop-up.active {
         display: block !important;
     }
 
-    /* ==========================================================================
-       2. STILE DELLA BARRA DI RICERCA INTERNA
-       ========================================================================== */
     .country-filter {
         padding: 0 12px 10px 12px;
         border-bottom: 1px solid #1a1a1a;
@@ -405,19 +454,12 @@ const countries = [
         font-size: 14px;
         outline: none;
         box-sizing: border-box;
+        border-radius: 4px;
     }
-
-    .country-filter__input.field__input:focus {
-        border-color: #555555;
-    }
-
-    /* ==========================================================================
-       3. CORREZIONI DI LISTA E COMFORT VISIVO (PRECEDENTI + OTTIMIZZAZIONI)
-       ========================================================================== */
 
     .disclosure__list {
-        max-height: 240px; /* Limita l'altezza massima per attivare lo scroll */
-        overflow-y: auto; /* Attiva la barra di scorrimento verticale */
+        max-height: 200px;
+        overflow-y: auto;
     }
 
     .list-unstyled {
@@ -429,7 +471,7 @@ const countries = [
     .disclosure__link {
         display: flex;
         align-items: center;
-        justify-content: space-between; /* Allinea il nome a sx e la valuta a dx */
+        justify-content: space-between;
         gap: 10px;
         color: #cccccc;
         text-decoration: none;
@@ -439,48 +481,4 @@ const countries = [
     }
 
     .disclosure__link:hover {
-        background-color: #1c1c1c;
-        color: #ffffff;
-    }
-
-    .localization-form__currency {
-        color: #666666; /* Rende la valuta leggermente più scura rispetto al paese */
-        font-size: 13px;
-    }
-
-    /* Forza l'SVG ad avere la dimensione corretta */
-    .checkmark-wrapper-footer svg {
-        width: 12px;
-        height: 9px;
-        display: inline-block;
-        vertical-align: middle;
-    }
-
-    /* Nasconde completamente le spunte non attive senza lasciare spazi vuoti */
-    .visibility-hidden {
-        display: none !important;
-    }
-
-    /* Stili generali del footer rimasti invariati */
-    .site-footer {
-        background-color: #0b0b0b;
-        color: #8b8b8b;
-        padding: 40px 48px;
-        font-family: sans-serif;
-    }
-    .footer-top-row {
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-end;
-        margin-bottom: 24px;
-        flex-wrap: wrap;
-    }
-    .footer-divider {
-        border: 0;
-        border-top: 1px solid #1a1a1a;
-        margin: 24px 0;
-    }
-    .footer-middle-row {
-        text-align: left;
-    }
-</style>
+        background-color: #1c1c1c
