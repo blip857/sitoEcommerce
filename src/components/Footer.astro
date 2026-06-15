@@ -223,7 +223,128 @@ const countries = [
 </script>
 
 <style>
-    /* 1. Forza l'SVG ad avere una dimensione minuscola e corretta */
+    /* ==========================================================================
+       1. POSIZIONAMENTO STRUTTURALE (IL FIX PER L'ESPLOSIONE DEL LAYOUT)
+       ========================================================================== */
+
+    /* Il contenitore principale deve essere "relative" per fare da ancora */
+    .currency-picker-footer {
+        position: relative;
+        display: inline-block;
+    }
+
+    /* Stile del bottone trigger (se serve pulirlo) */
+    .currency-trigger-footer {
+        background: #111111;
+        color: #ffffff;
+        border: 1px solid #333333;
+        padding: 8px 16px;
+        font-size: 14px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        min-width: 180px;
+        text-align: left;
+    }
+
+    /* Il wrapper del menu: deve essere ASSOLUTO e con uno sfondo solido scuro */
+    .disclosure__list-wrapper.custom-drop-up {
+        position: absolute;
+        bottom: calc(
+            100% + 8px
+        ); /* Lo posiziona SOPRA il bottone (Drop-up) con 8px di stacco */
+        left: 0;
+        width: 280px; /* Larghezza fissa per contenere comodamente testo e ricerca */
+        background-color: #0b0b0b; /* Sfondo solido identico al footer per non essere trasparente */
+        border: 1px solid #2a2a2a;
+        box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.6);
+        z-index: 999; /* Evita che si posizioni sotto altri elementi */
+        padding: 12px 0;
+
+        /* Gestione visibilità iniziale: di base è nascosto */
+        display: none;
+    }
+
+    /* MOSTRARE IL DROPDOWN SE ATTIVO: 
+       A seconda di come funziona il tuo <script>, scommenta la regola corretta: */
+
+    /* Alternativa A: Se il tuo JS cambia l'attributo del bottone (Best Practice accessibilità) */
+    .currency-trigger-footer[aria-expanded="true"] + .disclosure__list-wrapper {
+        display: block;
+    }
+
+    /* Alternativa B: Se il tuo JS aggiunge una classe ".open" o ".active" al wrapper */
+    /*
+    .disclosure__list-wrapper.custom-drop-up.open,
+    .disclosure__list-wrapper.custom-drop-up.active {
+        display: block;
+    }
+    */
+
+    /* ==========================================================================
+       2. STILE DELLA BARRA DI RICERCA INTERNA
+       ========================================================================== */
+    .country-filter {
+        padding: 0 12px 10px 12px;
+        border-bottom: 1px solid #1a1a1a;
+        margin-bottom: 8px;
+    }
+
+    .country-filter__input.field__input {
+        width: 100%;
+        background-color: #161616;
+        border: 1px solid #333333;
+        color: #ffffff;
+        padding: 8px 12px;
+        font-size: 14px;
+        outline: none;
+        box-sizing: border-box;
+    }
+
+    .country-filter__input.field__input:focus {
+        border-color: #555555;
+    }
+
+    /* ==========================================================================
+       3. CORREZIONI DI LISTA E COMFORT VISIVO (PRECEDENTI + OTTIMIZZAZIONI)
+       ========================================================================== */
+
+    .disclosure__list {
+        max-height: 240px; /* Limita l'altezza massima per attivare lo scroll */
+        overflow-y: auto; /* Attiva la barra di scorrimento verticale */
+    }
+
+    .list-unstyled {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .disclosure__link {
+        display: flex;
+        align-items: center;
+        justify-content: space-between; /* Allinea il nome a sx e la valuta a dx */
+        gap: 10px;
+        color: #cccccc;
+        text-decoration: none;
+        padding: 8px 16px;
+        font-size: 14px;
+        transition: background 0.2s ease;
+    }
+
+    .disclosure__link:hover {
+        background-color: #1c1c1c;
+        color: #ffffff;
+    }
+
+    .localization-form__currency {
+        color: #666666; /* Rende la valuta leggermente più scura rispetto al paese */
+        font-size: 13px;
+    }
+
+    /* Forza l'SVG ad avere la dimensione corretta */
     .checkmark-wrapper-footer svg {
         width: 12px;
         height: 9px;
@@ -231,36 +352,31 @@ const countries = [
         vertical-align: middle;
     }
 
-    /* 2. Rendi i link bianchi o grigi, evitando il blu di default dei link */
-    .disclosure__link {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        color: #ffffff; /* O il colore che preferisci per il testo */
-        text-decoration: none;
-        padding: 8px 12px;
-    }
-
-    .disclosure__link:hover {
-        background-color: #222; /* Effetto hover per la lista */
-    }
-
-    /* 3. Correggi la classe per nascondere le spunte non attive */
-    /* Invece di visibility:hidden (che lascia lo spazio vuoto), usa display:none o resetta il contenitore */
+    /* Nasconde completamente le spunte non attive senza lasciare spazi vuoti */
     .visibility-hidden {
         display: none !important;
     }
 
-    /* 4. Assicurati che la lista non abbia i punti elenco dei tag <ul> standard */
-    .list-unstyled {
-        list-style: none;
-        padding: 0;
-        margin: 0;
+    /* Stili generali del footer rimasti invariati */
+    .site-footer {
+        background-color: #0b0b0b;
+        color: #8b8b8b;
+        padding: 40px 48px;
+        font-family: sans-serif;
     }
-
-    /* 5. Contenitore del dropdown (deve avere un'altezza massima e uno scroll) */
-    .disclosure__list {
-        max-height: 250px;
-        overflow-y: auto;
+    .footer-top-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        margin-bottom: 24px;
+        flex-wrap: wrap;
+    }
+    .footer-divider {
+        border: 0;
+        border-top: 1px solid #1a1a1a;
+        margin: 24px 0;
+    }
+    .footer-middle-row {
+        text-align: left;
     }
 </style>
