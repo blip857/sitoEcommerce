@@ -219,7 +219,115 @@ const countries = [
 </footer>
 
 <script>
-    // ... (Script JavaScript invariato, assicurati di tenerlo così come lo avevi)
+    function initFooterCurrencyPicker() {
+        const btn = document.getElementById("footerCurrencyBtn");
+        const dropdown = document.getElementById("footerCurrencyDropdown");
+        const searchInput = document.getElementById(
+            "footer-country-filter-input",
+        ) as HTMLInputElement | null;
+        const listItems = document.querySelectorAll(
+            "#footerCountryList .disclosure__item",
+        );
+        const currentText = document.querySelector(
+            ".footer-current-selected-text",
+        );
+
+        // Controllo di sicurezza per evitare errori in console se i componenti cambiano
+        if (!btn || !dropdown || !currentText) return;
+
+        const toggleDropdown = (show: boolean) => {
+            if (show) {
+                dropdown.classList.add("active");
+                btn.setAttribute("aria-expanded", "true");
+                // Porta il focus sulla barra di ricerca interna del footer all'apertura
+                if (searchInput) setTimeout(() => searchInput.focus(), 50);
+            } else {
+                dropdown.classList.remove("active");
+                btn.setAttribute("aria-expanded", "false");
+            }
+        };
+
+        // 1. Gestione click sul bottone del footer
+        btn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            const isDropdownActive = dropdown.classList.contains("active");
+            toggleDropdown(!isDropdownActive);
+        });
+
+        // 2. Chiudi la tendina se si clicca in un punto qualsiasi fuori dal selettore del footer
+        document.addEventListener("click", (e) => {
+            const target = e.target as Node;
+            if (!dropdown.contains(target) && !btn.contains(target)) {
+                toggleDropdown(false);
+            }
+        });
+
+        // 3. Funzione di Filtro / Ricerca in tempo reale per il footer
+        if (searchInput) {
+            searchInput.addEventListener("input", () => {
+                const term = searchInput.value.toLowerCase().trim();
+
+                listItems.forEach((item) => {
+                    const itemEl = item as HTMLElement;
+                    const countrySpan = itemEl.querySelector(".country");
+                    const countryName =
+                        countrySpan?.textContent?.toLowerCase() || "";
+
+                    if (countryName.includes(term)) {
+                        itemEl.style.display = "block";
+                    } else {
+                        itemEl.style.display = "none";
+                    }
+                });
+            });
+        }
+
+        // 4. Selezione del Paese dal menu del footer
+        listItems.forEach((item) => {
+            const link = item.querySelector(".disclosure__link") as HTMLElement;
+            if (!link) return;
+
+            link.addEventListener("click", (e) => {
+                e.preventDefault();
+
+                const countryName =
+                    link.querySelector(".country")?.textContent || "";
+                const currencyName =
+                    link.querySelector(".localization-form__currency")
+                        ?.textContent || "";
+
+                // Aggiorna il testo visibile sul bottone mantenendo il formato del footer "Italia | EUR €"
+                currentText.textContent = `${countryName} | ${currencyName.trim()}`;
+
+                // Rimuove la spunta attiva dai vecchi elementi nel footer e la assegna al nuovo
+                document
+                    .querySelectorAll(".checkmark-wrapper-footer")
+                    .forEach((cw) => {
+                        cw.classList.add("visibility-hidden");
+                    });
+                link.querySelector(
+                    ".checkmark-wrapper-footer",
+                )?.classList.remove("visibility-hidden");
+
+                // Chiude il menu a tendina
+                toggleDropdown(false);
+
+                // Svuota e resetta l'input di ricerca alla chiusura
+                if (searchInput) {
+                    searchInput.value = "";
+                    listItems.forEach(
+                        (i) => ((i as HTMLElement).style.display = "block"),
+                    );
+                }
+            });
+        });
+    }
+
+    // Avvia la configurazione al caricamento iniziale della pagina
+    initFooterCurrencyPicker();
+
+    // Supporto per i siti Astro che utilizzano View Transitions (<ViewTransitions />)
+    document.addEventListener("astro:page-load", initFooterCurrencyPicker);
 </script>
 
 <style>
@@ -275,13 +383,9 @@ const countries = [
         display: block;
     }
 
-    /* Alternativa B: Se il tuo JS aggiunge una classe ".open" o ".active" al wrapper */
-    /*
-    .disclosure__list-wrapper.custom-drop-up.open,
     .disclosure__list-wrapper.custom-drop-up.active {
-        display: block;
+        display: block !important;
     }
-    */
 
     /* ==========================================================================
        2. STILE DELLA BARRA DI RICERCA INTERNA
