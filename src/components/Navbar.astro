@@ -1,69 +1,120 @@
 ---
-// CONFIGURAZIONE ASTRO: Lista dei Paesi (Espandibile e pulita)
+// CONFIGURAZIONE ASTRO: Lista dei Paesi (Sincronizzata e in Italiano)
 const countries = [
-    { code: "IT", id: "Italy", name: "Italia", currency: "EUR €" },
+    { code: "IT", englishName: "Italy", name: "Italia", currency: "EUR €" },
     {
         code: "US",
-        id: "United States",
-        name: "United States",
+        englishName: "UnitedStates",
+        name: "Stati Uniti",
         currency: "USD $",
     },
     {
         code: "GB",
-        id: "United Kingdom",
-        name: "United Kingdom",
+        englishName: "UnitedKingdom",
+        name: "Regno Unito",
         currency: "GBP £",
     },
-    { code: "FR", id: "France", name: "France", currency: "EUR €" },
-    { code: "DE", id: "Germany", name: "Germany", currency: "EUR €" },
-    { code: "ES", id: "Spain", name: "Spain", currency: "EUR €" },
-    { code: "AF", id: "Afghanistan", name: "Afghanistan", currency: "USD $" },
+    { code: "FR", englishName: "France", name: "Francia", currency: "EUR €" },
+    { code: "DE", englishName: "Germany", name: "Germania", currency: "EUR €" },
+    { code: "ES", englishName: "Spain", name: "Spagna", currency: "EUR €" },
     {
-        code: "AX",
-        id: "Åland Islands",
-        name: "Åland Islands",
+        code: "AF",
+        englishName: "Afghanistan",
+        name: "Afghanistan",
         currency: "USD $",
     },
-    { code: "AL", id: "Albania", name: "Albania", currency: "ALL L" },
-    { code: "DZ", id: "Algeria", name: "Algeria", currency: "DZD د.ج" },
-    { code: "AD", id: "Andorra", name: "Andorra", currency: "EUR €" },
-    { code: "AO", id: "Angola", name: "Angola", currency: "AOA Kz" },
-    { code: "AI", id: "Anguilla", name: "Anguilla", currency: "XCD $" },
     {
-        code: "AG",
-        id: "Antigua & Barbuda",
-        name: "Antigua & Barbuda",
+        code: "AX",
+        englishName: "AlandIslands",
+        name: "Isole Åland",
+        currency: "USD $",
+    },
+    { code: "AL", englishName: "Albania", name: "Albania", currency: "ALL L" },
+    {
+        code: "DZ",
+        englishName: "Algeria",
+        name: "Algeria",
+        currency: "DZD د.ج",
+    },
+    { code: "AD", englishName: "Andorra", name: "Andorra", currency: "EUR €" },
+    { code: "AO", englishName: "Angola", name: "Angola", currency: "AOA Kz" },
+    {
+        code: "AI",
+        englishName: "Anguilla",
+        name: "Anguilla",
         currency: "XCD $",
     },
-    { code: "AR", id: "Argentina", name: "Argentina", currency: "ARS $" },
-    { code: "AM", id: "Armenia", name: "Armenia", currency: "AMD ֏" },
-    { code: "AW", id: "Aruba", name: "Aruba", currency: "AWG ƒ" },
-    { code: "AU", id: "Australia", name: "Australia", currency: "AUD $" },
-    { code: "AT", id: "Austria", name: "Austria", currency: "EUR €" },
-    { code: "AZ", id: "Azerbaijan", name: "Azerbaijan", currency: "AZN ₼" },
-    { code: "BS", id: "Bahamas", name: "Bahamas", currency: "BSD $" },
-    { code: "BH", id: "Bahrain", name: "Bahrain", currency: "BHD .د.ب" },
-    { code: "BD", id: "Bangladesh", name: "Bangladesh", currency: "BDT ৳" },
-    { code: "BB", id: "Barbados", name: "Barbados", currency: "BBD $" },
-    { code: "BY", id: "Belarus", name: "Belarus", currency: "BYN Br" },
-    { code: "BE", id: "Belgium", name: "Belgium", currency: "EUR €" },
-    { code: "BZ", id: "Belize", name: "Belize", currency: "BZD Z$" },
-    { code: "BJ", id: "Benin", name: "Benin", currency: "XOF Fr" },
-    { code: "BM", id: "Bermuda", name: "Bermuda", currency: "BMD $" },
-    { code: "BT", id: "Bhutan", name: "Bhutan", currency: "BTN Nu." },
-    { code: "BO", id: "Bolivia", name: "Bolivia", currency: "BOB $b" },
+    {
+        code: "AG",
+        englishName: "AntiguaBarbuda",
+        name: "Antigua e Barbuda",
+        currency: "XCD $",
+    },
+    {
+        code: "AR",
+        englishName: "Argentina",
+        name: "Argentina",
+        currency: "ARS $",
+    },
+    { code: "AM", englishName: "Armenia", name: "Armenia", currency: "AMD ֏" },
+    { code: "AW", englishName: "Aruba", name: "Aruba", currency: "AWG ƒ" },
+    {
+        code: "AU",
+        englishName: "Australia",
+        name: "Australia",
+        currency: "AUD $",
+    },
+    { code: "AT", englishName: "Austria", name: "Austria", currency: "EUR €" },
+    {
+        code: "AZ",
+        englishName: "Azerbaijan",
+        name: "Azerbaijan",
+        currency: "AZN ₼",
+    },
+    { code: "BS", englishName: "Bahamas", name: "Bahamas", currency: "BSD $" },
+    {
+        code: "BH",
+        englishName: "Bahrain",
+        name: "Bahrain",
+        currency: "BHD .د.ب",
+    },
+    {
+        code: "BD",
+        englishName: "Bangladesh",
+        name: "Bangladesh",
+        currency: "BDT ৳",
+    },
+    {
+        code: "BB",
+        englishName: "Barbados",
+        name: "Barbados",
+        currency: "BBD $",
+    },
+    {
+        code: "BY",
+        englishName: "Belarus",
+        name: "Bielorussia",
+        currency: "BYN Br",
+    },
+    { code: "BE", englishName: "Belgium", name: "Belgio", currency: "EUR €" },
+    { code: "BZ", englishName: "Belize", name: "Belize", currency: "BZD Z$" },
+    { code: "BJ", englishName: "Benin", name: "Benin", currency: "XOF Fr" },
+    { code: "BM", englishName: "Bermuda", name: "Bermuda", currency: "BMD $" },
+    { code: "BT", englishName: "Bhutan", name: "Bhutan", currency: "BTN Nu." },
+    { code: "BO", englishName: "Bolivia", name: "Bolivia", currency: "BOB $b" },
     {
         code: "BA",
-        id: "Bosnia & Herzegovina",
-        name: "Bosnia & Herzegovina",
+        englishName: "BosniaHerzegovina",
+        name: "Bosnia ed Erzegovina",
         currency: "BAM KM",
     },
-    { code: "BW", id: "Botswana", name: "Botswana", currency: "BWP P" },
-    { code: "BR", id: "Brazil", name: "Brazil", currency: "BRL R$" },
-    { code: "CA", id: "Canada", name: "Canada", currency: "CAD $" },
-    { code: "CH", id: "Switzerland", name: "Switzerland", currency: "CHF CHF" },
-    { code: "JP", id: "Japan", name: "Japan", currency: "JPY ¥" },
-    { code: "CN", id: "China", name: "China", currency: "CNY ¥" },
+    {
+        code: "CH",
+        englishName: "Switzerland",
+        name: "Svizzera",
+        currency: "CHF CHF",
+    },
+    { code: "JP", englishName: "Japan", name: "Giappone", currency: "JPY ¥" },
 ];
 ---
 
@@ -199,44 +250,26 @@ const countries = [
                             class="list-unstyled countries"
                             id="countryList"
                         >
-                            {
-                                countries.map((country) => (
-                                    <li class="disclosure__item" tabindex="-1">
-                                        <a
-                                            class="disclosure__link"
-                                            href="#"
-                                            data-value={country.code}
-                                            id={country.id}
-                                        >
-                                            <span class="checkmark-wrapper visibility-hidden">
-                                                <svg
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    fill="none"
-                                                    class="icon icon-checkmark"
-                                                    viewBox="0 0 12 9"
-                                                >
-                                                    <path
-                                                        fill="currentColor"
-                                                        fill-rule="evenodd"
-                                                        d="M11.35.643a.5.5 0 0 1 .006.707l-6.77 6.886a.5.5 0 0 1-.719-.006L.638 4.845a.5.5 0 1 1 .724-.69l2.872 3.011 6.41-6.517a.5.5 0 0 1 .707-.006z"
-                                                        clip-rule="evenodd"
-                                                    />
-                                                </svg>
-                                            </span>
-                                            <span class="country">
-                                                {country.name}
-                                            </span>
-                                            <span class="localization-form__currency">
-                                                {country.currency}
-                                            </span>
-                                        </a>
-                                    </li>
-                                ))
-                            }
                         </ul>
                     </div>
                 </div>
-            </div>
+            </div>{
+                countries.map((country) => (
+                    <li class="disclosure__item" tabindex="-1">
+                        <a
+                            class="disclosure__link"
+                            href="#"
+                            data-value={country.code}
+                            id={`Navbar-${country.englishName}`}
+                        >
+                            <span class="country">{country.name}</span>
+                            <span class="localization-form__currency">
+                                {country.currency}
+                            </span>
+                        </a>
+                    </li>
+                ))
+            }
 
             <a href="#" class="icon-link" aria-label="Cerca"
                 ><svg

@@ -1,100 +1,120 @@
 ---
-// CONFIGURAZIONE ASTRO: Lista dei Paesi (Sincronizzata con la Navbar in Italiano)
+// CONFIGURAZIONE ASTRO: Lista dei Paesi (Sincronizzata e in Italiano)
 const countries = [
-    { code: "IT", id: "Footer-Italy", name: "Italia", currency: "EUR €" },
+    { code: "IT", englishName: "Italy", name: "Italia", currency: "EUR €" },
     {
         code: "US",
-        id: "Footer-UnitedStates",
+        englishName: "UnitedStates",
         name: "Stati Uniti",
         currency: "USD $",
     },
     {
         code: "GB",
-        id: "Footer-UnitedKingdom",
+        englishName: "UnitedKingdom",
         name: "Regno Unito",
         currency: "GBP £",
     },
-    { code: "FR", id: "Footer-France", name: "Francia", currency: "EUR €" },
-    { code: "DE", id: "Footer-Germany", name: "Germania", currency: "EUR €" },
-    { code: "ES", id: "Footer-Spain", name: "Spagna", currency: "EUR €" },
+    { code: "FR", englishName: "France", name: "Francia", currency: "EUR €" },
+    { code: "DE", englishName: "Germany", name: "Germania", currency: "EUR €" },
+    { code: "ES", englishName: "Spain", name: "Spagna", currency: "EUR €" },
     {
         code: "AF",
-        id: "Footer-Afghanistan",
+        englishName: "Afghanistan",
         name: "Afghanistan",
         currency: "USD $",
     },
     {
         code: "AX",
-        id: "Footer-AlandIslands",
+        englishName: "AlandIslands",
         name: "Isole Åland",
         currency: "USD $",
     },
-    { code: "AL", id: "Footer-Albania", name: "Albania", currency: "ALL L" },
-    { code: "DZ", id: "Footer-Algeria", name: "Algeria", currency: "DZD د.ج" },
-    { code: "AD", id: "Footer-Andorra", name: "Andorra", currency: "EUR €" },
-    { code: "AO", id: "Footer-Angola", name: "Angola", currency: "AOA Kz" },
-    { code: "AI", id: "Footer-Anguilla", name: "Anguilla", currency: "XCD $" },
+    { code: "AL", englishName: "Albania", name: "Albania", currency: "ALL L" },
+    {
+        code: "DZ",
+        englishName: "Algeria",
+        name: "Algeria",
+        currency: "DZD د.ج",
+    },
+    { code: "AD", englishName: "Andorra", name: "Andorra", currency: "EUR €" },
+    { code: "AO", englishName: "Angola", name: "Angola", currency: "AOA Kz" },
+    {
+        code: "AI",
+        englishName: "Anguilla",
+        name: "Anguilla",
+        currency: "XCD $",
+    },
     {
         code: "AG",
-        id: "Footer-AntiguaBarbuda",
+        englishName: "AntiguaBarbuda",
         name: "Antigua e Barbuda",
         currency: "XCD $",
     },
     {
         code: "AR",
-        id: "Footer-Argentina",
+        englishName: "Argentina",
         name: "Argentina",
         currency: "ARS $",
     },
-    { code: "AM", id: "Footer-Armenia", name: "Armenia", currency: "AMD ֏" },
-    { code: "AW", id: "Footer-Aruba", name: "Aruba", currency: "AWG ƒ" },
+    { code: "AM", englishName: "Armenia", name: "Armenia", currency: "AMD ֏" },
+    { code: "AW", englishName: "Aruba", name: "Aruba", currency: "AWG ƒ" },
     {
         code: "AU",
-        id: "Footer-Australia",
+        englishName: "Australia",
         name: "Australia",
         currency: "AUD $",
     },
-    { code: "AT", id: "Footer-Austria", name: "Austria", currency: "EUR €" },
+    { code: "AT", englishName: "Austria", name: "Austria", currency: "EUR €" },
     {
         code: "AZ",
-        id: "Footer-Azerbaijan",
+        englishName: "Azerbaijan",
         name: "Azerbaijan",
         currency: "AZN ₼",
     },
-    { code: "BS", id: "Footer-Bahamas", name: "Bahamas", currency: "BSD $" },
-    { code: "BH", id: "Footer-Bahrain", name: "Bahrain", currency: "BHD .د.ب" },
+    { code: "BS", englishName: "Bahamas", name: "Bahamas", currency: "BSD $" },
+    {
+        code: "BH",
+        englishName: "Bahrain",
+        name: "Bahrain",
+        currency: "BHD .د.ب",
+    },
     {
         code: "BD",
-        id: "Footer-Bangladesh",
+        englishName: "Bangladesh",
         name: "Bangladesh",
         currency: "BDT ৳",
     },
-    { code: "BB", id: "Footer-Barbados", name: "Barbados", currency: "BBD $" },
+    {
+        code: "BB",
+        englishName: "Barbados",
+        name: "Barbados",
+        currency: "BBD $",
+    },
     {
         code: "BY",
-        id: "Footer-Belarus",
+        englishName: "Belarus",
         name: "Bielorussia",
         currency: "BYN Br",
     },
-    { code: "BE", id: "Footer-Belgium", name: "Belgio", currency: "EUR €" },
-    { code: "BZ", id: "Footer-Belize", name: "Belize", currency: "BZD Z$" },
-    { code: "BJ", id: "Footer-Benin", name: "Benin", currency: "XOF Fr" },
-    { code: "BM", id: "Footer-Bermuda", name: "Bermuda", currency: "BMD $" },
-    { code: "BT", id: "Footer-Bhutan", name: "Bhutan", currency: "BTN Nu." },
-    { code: "BO", id: "Footer-Bolivia", name: "Bolivia", currency: "BOB $b" },
+    { code: "BE", englishName: "Belgium", name: "Belgio", currency: "EUR €" },
+    { code: "BZ", englishName: "Belize", name: "Belize", currency: "BZD Z$" },
+    { code: "BJ", englishName: "Benin", name: "Benin", currency: "XOF Fr" },
+    { code: "BM", englishName: "Bermuda", name: "Bermuda", currency: "BMD $" },
+    { code: "BT", englishName: "Bhutan", name: "Bhutan", currency: "BTN Nu." },
+    { code: "BO", englishName: "Bolivia", name: "Bolivia", currency: "BOB $b" },
     {
         code: "BA",
-        id: "Footer-BosniaHerzegovina",
+        englishName: "BosniaHerzegovina",
         name: "Bosnia ed Erzegovina",
         currency: "BAM KM",
     },
     {
         code: "CH",
-        id: "Footer-Switzerland",
+        englishName: "Switzerland",
         name: "Svizzera",
         currency: "CHF CHF",
     },
-    { code: "JP", id: "Footer-Japan", name: "Giappone", currency: "JPY ¥" },
+    { code: "JP", englishName: "Japan", name: "Giappone", currency: "JPY ¥" },
 ];
 ---
 
@@ -198,7 +218,7 @@ const countries = [
                                             class="disclosure__link"
                                             href="#"
                                             data-value={country.code}
-                                            id={country.id}
+                                            id={`Footer-${country.englishName}`}
                                         >
                                             <span class="checkmark-wrapper-footer visibility-hidden">
                                                 <svg
