@@ -1,263 +1,723 @@
 ---
-// Componente Piè di Pagina (Stile esatto di image_697fba.png)
-const currentYear = new Date().getFullYear(); // Genera automaticamente il 2026
+// CONFIGURAZIONE ASTRO: Lista dei Paesi (Sincronizzata con la Navbar)
+const countries = [
+    { code: "IT", id: "Footer-Italy", name: "Italia", currency: "EUR €" },
+    {
+        code: "US",
+        id: "Footer-UnitedStates",
+        name: "United States",
+        currency: "USD $",
+    },
+    {
+        code: "GB",
+        id: "Footer-UnitedKingdom",
+        name: "United Kingdom",
+        currency: "GBP £",
+    },
+    { code: "FR", id: "Footer-France", name: "France", currency: "EUR €" },
+    { code: "DE", id: "Footer-Germany", name: "Germany", currency: "EUR €" },
+    { code: "ES", id: "Footer-Spain", name: "Spain", currency: "EUR €" },
+    {
+        code: "AF",
+        id: "Footer-Afghanistan",
+        name: "Afghanistan",
+        currency: "USD $",
+    },
+    {
+        code: "AX",
+        id: "Footer-AlandIslands",
+        name: "Åland Islands",
+        currency: "USD $",
+    },
+    { code: "AL", id: "Footer-Albania", name: "Albania", currency: "ALL L" },
+    { code: "DZ", id: "Footer-Algeria", name: "Algeria", currency: "DZD د.ج" },
+    { code: "AD", id: "Footer-Andorra", name: "Andorra", currency: "EUR €" },
+    { code: "AO", id: "Footer-Angola", name: "Angola", currency: "AOA Kz" },
+    { code: "AI", id: "Footer-Anguilla", name: "Anguilla", currency: "XCD $" },
+    {
+        code: "AG",
+        id: "Footer-AntiguaBarbuda",
+        name: "Antigua & Barbuda",
+        currency: "XCD $",
+    },
+    {
+        code: "AR",
+        id: "Footer-Argentina",
+        name: "Argentina",
+        currency: "ARS $",
+    },
+    { code: "AM", id: "Footer-Armenia", name: "Armenia", currency: "AMD ֏" },
+    { code: "AW", id: "Footer-Aruba", name: "Aruba", currency: "AWG ƒ" },
+    {
+        code: "AU",
+        id: "Footer-Australia",
+        name: "Australia",
+        currency: "AUD $",
+    },
+    { code: "AT", id: "Footer-Austria", name: "Austria", currency: "EUR €" },
+    {
+        code: "AZ",
+        id: "Footer-Azerbaijan",
+        name: "Azerbaijan",
+        currency: "AZN ₼",
+    },
+    { code: "BS", id: "Footer-Bahamas", name: "Bahamas", currency: "BSD $" },
+    { code: "BH", id: "Footer-Bahrain", name: "Bahrain", currency: "BHD .د.ب" },
+    {
+        code: "BD",
+        id: "Footer-Bangladesh",
+        name: "Bangladesh",
+        currency: "BDT ৳",
+    },
+    { code: "BB", id: "Footer-Barbados", name: "Barbados", currency: "BBD $" },
+    { code: "BY", id: "Footer-Belarus", name: "Belarus", currency: "BYN Br" },
+    { code: "BE", id: "Footer-Belgium", name: "Belgium", currency: "EUR €" },
+    { code: "BZ", id: "Footer-Belize", name: "Belize", currency: "BZD Z$" },
+    { code: "BJ", id: "Footer-Benin", name: "Benin", currency: "XOF Fr" },
+    { code: "BM", id: "Footer-Bermuda", name: "Bermuda", currency: "BMD $" },
+    { code: "BT", id: "Footer-Bhutan", name: "Bhutan", currency: "BTN Nu." },
+    { code: "BO", id: "Footer-Bolivia", name: "Bolivia", currency: "BOB $b" },
+    {
+        code: "BA",
+        id: "Footer-BosniaHerzegovina",
+        name: "Bosnia & Herzegovina",
+        currency: "BAM KM",
+    },
+    {
+        code: "CH",
+        id: "Footer-Switzerland",
+        name: "Switzerland",
+        currency: "CHF CHF",
+    },
+    { code: "JP", id: "Footer-Japan", name: "Japan", currency: "JPY ¥" },
+];
 ---
 
 <footer class="site-footer">
-    <!-- Linea retta di divisione richiesta -->
-    <hr class="footer-divider" />
+    <!-- SEZIONE SUPERIORE: SELETTORE E METODI DI PAGAMENTO -->
+    <div class="footer-top-row">
+        <!-- Scatola Selettore Paese/Regione (Allineata a Sinistra) -->
+        <div class="footer-localization-block">
+            <label class="localization-label">Paese/regione</label>
 
-    <div class="footer-container">
-        <!-- Riga Centrale: Selettore Paese + Icone di Pagamento -->
-        <div class="footer-middle-row">
-            <!-- Selettore Paese/Regione (Stile minimale) -->
-            <div class="region-section">
-                <label for="country-select" class="region-label"
-                    >Paese/regione</label
+            <div class="currency-picker-footer">
+                <button
+                    class="currency-trigger-footer"
+                    id="footerCurrencyBtn"
+                    aria-haspopup="listbox"
+                    aria-expanded="false"
                 >
-                <div class="select-wrapper">
-                    <select id="country-select" class="region-select">
-                        <option value="IT">Italia | EUR €</option>
-                        <option value="DE">Germania | EUR €</option>
-                        <option value="FR">Francia | EUR €</option>
-                        <option value="US">Stati Uniti | USD $</option>
-                    </select>
-                    <span class="select-arrow"></span>
-                </div>
-            </div>
+                    <span class="footer-current-selected-text"
+                        >Italia | EUR €</span
+                    >
+                    <span class="chevron-arrow-footer">▾</span>
+                </button>
 
-            <!-- Icone Metodi di Pagamento (Rifinite come in image_697fba.png) -->
-            <div class="payment-methods">
-                <!-- Amex -->
-                <span class="payment-card amex">Amex</span>
-                <!-- Apple Pay -->
-                <span class="payment-card applepay">Apple Pay</span>
-                <!-- Discover -->
-                <span class="payment-card discover">Discover</span>
-                <!-- Google Pay -->
-                <span class="payment-card gpay">GPay</span>
-                <!-- Mastercard -->
-                <span class="payment-card mastercard">Mastercard</span>
-                <!-- PayPal -->
-                <span class="payment-card paypal">PayPal</span>
-                <!-- Visa -->
-                <span class="payment-card visa">Visa</span>
+                <!-- Dropdown Strutturato (Apertura verso l'alto "Drop-up") -->
+                <div
+                    class="disclosure__list-wrapper custom-drop-up"
+                    id="footerCurrencyDropdown"
+                >
+                    <div class="country-filter">
+                        <div class="field">
+                            <input
+                                class="country-filter__input field__input"
+                                id="footer-country-filter-input"
+                                type="search"
+                                placeholder="Search"
+                                autocomplete="off"
+                                spellcheck="false"
+                            />
+                            <button
+                                type="reset"
+                                class="country-filter__reset-button field__button hidden"
+                                id="footerFilterResetBtn"
+                                aria-label="Clear search"
+                            >
+                                <svg
+                                    fill="none"
+                                    stroke="currentColor"
+                                    class="icon icon-close"
+                                    viewBox="0 0 18 18"
+                                    ><circle
+                                        cx="9"
+                                        cy="9"
+                                        r="8.5"
+                                        stroke-opacity=".2"></circle><path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        d="M11.83 11.83 6.172 6.17M6.229 11.885l5.544-5.77"
+                                    ></path></svg
+                                >
+                            </button>
+                            <div
+                                class="country-filter__search-icon field__button"
+                            >
+                                <svg
+                                    fill="none"
+                                    class="icon icon-search"
+                                    viewBox="0 0 18 19"
+                                    ><path
+                                        fill="currentColor"
+                                        fill-rule="evenodd"
+                                        d="M11.03 11.68A5.784 5.784 0 1 1 2.85 3.5a5.784 5.784 0 0 1 8.18 8.18m.26 1.12a6.78 6.78 0 1 1 .72-.7l5.4 5.4a.5.5 0 1 1-.71.7z"
+                                        clip-rule="evenodd"></path></svg
+                                >
+                            </div>
+                        </div>
+                        <button
+                            class="country-selector__close-button"
+                            id="footerCloseDropdownBtn"
+                            type="button"
+                            aria-label="Close"
+                        >
+                            <svg
+                                fill="none"
+                                class="icon icon-close"
+                                viewBox="0 0 18 17"
+                                ><path
+                                    fill="currentColor"
+                                    d="M.865 15.978a.5.5 0 0 0 .707.707l7.433-7.431 7.579 7.282a.501.501 0 0 0 .846-.37.5.5 0 0 0-.153-.351L9.712 8.546l7.417-7.416a.5.5 0 1 0-.707-.708L8.991 7.853 1.413.573a.5.5 0 1 0-.693.72l7.563 7.268z"
+                                ></path></svg
+                            >
+                        </button>
+                    </div>
+
+                    <div class="disclosure__list country-selector__list">
+                        <ul
+                            role="list"
+                            class="list-unstyled countries"
+                            id="footerCountryList"
+                        >
+                            {
+                                countries.map((country) => (
+                                    <li class="disclosure__item" tabindex="-1">
+                                        <a
+                                            class="disclosure__link"
+                                            href="#"
+                                            data-value={country.code}
+                                            id={country.id}
+                                        >
+                                            <span class="checkmark-wrapper-footer visibility-hidden">
+                                                <svg
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    fill="none"
+                                                    class="icon icon-checkmark"
+                                                    viewBox="0 0 12 9"
+                                                >
+                                                    <path
+                                                        fill="currentColor"
+                                                        fill-rule="evenodd"
+                                                        d="M11.35.643a.5.5 0 0 1 .006.707l-6.77 6.886a.5.5 0 0 1-.719-.006L.638 4.845a.5.5 0 1 1 .724-.69l2.872 3.011 6.41-6.517a.5.5 0 0 1 .707-.006z"
+                                                        clip-rule="evenodd"
+                                                    />
+                                                </svg>
+                                            </span>
+                                            <span class="country">
+                                                {country.name}
+                                            </span>
+                                            <span class="localization-form__currency">
+                                                {country.currency}
+                                            </span>
+                                        </a>
+                                    </li>
+                                ))
+                            }
+                        </ul>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <!-- Riga Inferiore: Note di Copyright e Politiche Legali -->
-        <div class="footer-bottom-row">
-            <p class="footer-copyright">
-                &copy; {currentYear}, OCCHIPIENIDI Powered by Astro
-                <span class="bullet-separator">&middot;</span>
-                <a href="#" class="footer-link">Politica sulla riservatezza</a>
-                <span class="bullet-separator">&middot;</span>
-                <a href="#" class="footer-link">Preferenze sui cookie</a>
-            </p>
+        <!-- Metodi di Pagamento (Allineati a Destra come in image_ad3c2f.png) -->
+        <div class="footer-payment-badges">
+            <span class="badge-card">AMEX</span>
+            <span class="badge-card bg-light">APPLE PAY</span>
+            <span class="badge-card">DISCOVER</span>
+            <span class="badge-card bg-blue">GPAY</span>
+            <span class="badge-card bg-orange">MASTERCARD</span>
+            <span class="badge-card bg-light-blue">PAYPAL</span>
+            <span class="badge-card bg-light">VISA</span>
+        </div>
+    </div>
+
+    <!-- LINEA DIVISORIA -->
+    <hr class="footer-divider" />
+
+    <!-- SEZIONE CENTRAL/LEFT: COPYRIGHT -->
+    <div class="footer-middle-row">
+        <p class="footer-copyright">
+            © 2026, OCCHIPIENIDI Powered by Astro <span class="dot-separator"
+                >·</span
+            >
+            <a href="#" class="footer-link">Politica sulla riservatezza</a>
+            <span class="dot-separator">·</span>
+            <a href="#" class="footer-link">Preferenze sui cookie</a>
+        </p>
+    </div>
+
+    <!-- SEZIONE INFERIORE: SOCIAL -->
+    <div class="footer-bottom-row">
+        <h4 class="social-heading">SEGUI IL NOSTRO VIAGGIO</h4>
+        <div class="social-icons">
+            <!-- Instagram -->
+            <a href="#" aria-label="Instagram">
+                <svg
+                    viewBox="0 0 24 24"
+                    width="22"
+                    height="22"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    fill="none"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    ><rect x="2" y="2" width="20" height="20" rx="5" ry="5"
+                    ></rect><path
+                        d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"
+                    ></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"
+                    ></line></svg
+                >
+            </a>
+            <!-- TikTok -->
+            <a href="#" aria-label="TikTok">
+                <svg
+                    viewBox="0 0 24 24"
+                    width="22"
+                    height="22"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    fill="none"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    ><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"></path></svg
+                >
+            </a>
         </div>
     </div>
 </footer>
 
+<script>
+    function initFooterCurrencyPicker() {
+        const btn = document.getElementById("footerCurrencyBtn");
+        const dropdown = document.getElementById("footerCurrencyDropdown");
+        const searchInput = document.getElementById(
+            "footer-country-filter-input",
+        ) as HTMLInputElement | null;
+        const resetBtn = document.getElementById("footerFilterResetBtn");
+        const closeBtn = document.getElementById("footerCloseDropdownBtn");
+        const listItems = document.querySelectorAll(
+            "#footerCountryList .disclosure__item",
+        );
+        const currentText = document.querySelector(
+            ".footer-current-selected-text",
+        );
+
+        if (
+            !btn ||
+            !dropdown ||
+            !searchInput ||
+            !currentText ||
+            !resetBtn ||
+            !closeBtn
+        )
+            return;
+
+        const toggleDropdown = (show: boolean) => {
+            if (show) {
+                dropdown.classList.add("active");
+                btn.setAttribute("aria-expanded", "true");
+                setTimeout(() => searchInput.focus(), 50);
+            } else {
+                dropdown.classList.remove("active");
+                btn.setAttribute("aria-expanded", "false");
+            }
+        };
+
+        btn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            toggleDropdown(!dropdown.classList.contains("active"));
+        });
+
+        closeBtn.addEventListener("click", () => toggleDropdown(false));
+
+        document.addEventListener("click", (e) => {
+            const target = e.target as Node;
+            if (!dropdown.contains(target) && !btn.contains(target))
+                toggleDropdown(false);
+        });
+
+        // Filtro Ricerca
+        searchInput.addEventListener("input", () => {
+            const term = searchInput.value.toLowerCase().trim();
+            if (term.length > 0) {
+                resetBtn.classList.remove("hidden");
+            } else {
+                resetBtn.classList.add("hidden");
+            }
+
+            listItems.forEach((item) => {
+                const itemEl = item as HTMLElement;
+                const countryName =
+                    itemEl
+                        .querySelector(".country")
+                        ?.textContent?.toLowerCase() || "";
+                itemEl.style.display = countryName.includes(term)
+                    ? "block"
+                    : "none";
+            });
+        });
+
+        // Reset Ricerca
+        resetBtn.addEventListener("click", () => {
+            searchInput.value = "";
+            resetBtn.classList.add("hidden");
+            listItems.forEach(
+                (item) => ((item as HTMLElement).style.display = "block"),
+            );
+            searchInput.focus();
+        });
+
+        // Selezione Voce
+        listItems.forEach((item) => {
+            const link = item.querySelector(".disclosure__link") as HTMLElement;
+            if (!link) return;
+
+            link.addEventListener("click", (e) => {
+                e.preventDefault();
+                const countryName =
+                    link.querySelector(".country")?.textContent || "";
+                const currencyName =
+                    link.querySelector(".localization-form__currency")
+                        ?.textContent || "";
+
+                // Rispetta il formato visivo della foto "Nome Paese | Valuta"
+                currentText.textContent = `${countryName} | ${currencyName.trim()}`;
+
+                document
+                    .querySelectorAll(".checkmark-wrapper-footer")
+                    .forEach((cw) => cw.classList.add("visibility-hidden"));
+                link.querySelector(
+                    ".checkmark-wrapper-footer",
+                )?.classList.remove("visibility-hidden");
+
+                toggleDropdown(false);
+
+                searchInput.value = "";
+                resetBtn.classList.add("hidden");
+                listItems.forEach(
+                    (i) => ((i as HTMLElement).style.display = "block"),
+                );
+            });
+        });
+    }
+
+    // Avvio al caricamento della pagina
+    initFooterCurrencyPicker();
+</script>
+
 <style>
+    /* STRUTTURA GENERALE FOOTER COMPATIBILE CON L'IMMAGINE image_ad3c2f.png */
     .site-footer {
-        background-color: #111111;
-        color: #ffffff;
+        background-color: #0b0b0b; /* Sfondo ultra-dark */
+        color: #8b8b8b; /* Scritte grigie soft */
+        padding: 40px 48px;
         font-family: sans-serif;
-        padding-bottom: 40px;
-        width: 100%;
+        font-size: 0.8rem;
     }
 
-    /* La linea retta millimetrica di divisione */
-    .footer-divider {
-        border: 0;
-        border-top: 1px solid rgba(255, 255, 255, 0.08);
-        margin: 0 0 40px 0;
-        width: 100%;
-    }
-
-    .footer-container {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 0 24px;
-    }
-
-    /* Riga intermedia desktop flessibile */
-    .footer-middle-row {
+    /* Prima Riga: Dropdown e Loghi Pagamento */
+    .footer-top-row {
         display: flex;
         justify-content: space-between;
         align-items: flex-end;
-        margin-bottom: 40px;
+        margin-bottom: 24px;
         flex-wrap: wrap;
         gap: 24px;
     }
 
-    /* Sezione Dropdown Paese */
-    .region-section {
+    .footer-localization-block {
         display: flex;
         flex-direction: column;
-        gap: 10px;
-        text-align: left;
+        gap: 8px;
     }
 
-    .region-label {
-        font-size: 0.75rem;
-        color: rgba(255, 255, 255, 0.6);
-        letter-spacing: 0.5px;
+    .localization-label {
+        color: #757575;
+        font-size: 0.78rem;
     }
 
-    .select-wrapper {
+    /* STILE DEL CASSETTO / BOTTONE */
+    .currency-picker-footer {
         position: relative;
         display: inline-block;
     }
 
-    .region-select {
-        background-color: transparent;
-        color: #ffffff;
-        border: 1px solid rgba(255, 255, 255, 0.4);
-        padding: 10px 40px 10px 14px;
-        font-size: 0.85rem;
-        appearance: none;
-        -webkit-appearance: none;
+    .currency-trigger-footer {
+        background: transparent;
+        border: 1px solid #333;
+        color: white;
+        padding: 10px 16px;
+        min-width: 170px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
         cursor: pointer;
-        outline: none;
+        font-size: 0.85rem;
         transition: border-color 0.2s;
     }
 
-    .region-select:focus {
-        border-color: #ffffff;
+    .currency-trigger-footer:hover {
+        border-color: #555;
     }
 
-    .select-arrow {
+    .chevron-arrow-footer {
+        font-size: 0.65rem;
+        color: #8b8b8b;
+        margin-left: 12px;
+    }
+
+    /* COMPORTAMENTO DROP-UP (Apertura verso l'alto!) */
+    .disclosure__list-wrapper.custom-drop-up {
         position: absolute;
-        right: 14px;
-        top: 50%;
-        transform: translateY(-35%) rotate(45deg);
-        width: 6px;
-        height: 6px;
-        border-right: 1px solid #ffffff;
-        border-bottom: 1px solid #ffffff;
+        bottom: calc(100% + 8px); /* Posizionato sopra il bottone */
+        left: 0;
+        background-color: #000000;
+        border: 1px solid #222;
+        width: 300px;
+        display: none;
+        flex-direction: column;
+        box-shadow: 0px -10px 30px rgba(0, 0, 0, 0.8);
+        z-index: 999;
+    }
+    .disclosure__list-wrapper.custom-drop-up.active {
+        display: flex;
+    }
+
+    /* Barra Interna di Filtro del dropup */
+    .country-filter {
+        display: flex;
+        align-items: center;
+        padding: 10px;
+        gap: 6px;
+        border-bottom: 1px solid #222;
+    }
+    .field {
+        position: relative;
+        flex-grow: 1;
+        display: flex;
+        align-items: center;
+    }
+    .field__input {
+        width: 100%;
+        background: #111;
+        border: 1px solid #444;
+        color: white;
+        padding: 6px 28px;
+        font-size: 0.8rem;
+        outline: none;
+    }
+    .field__input:focus {
+        border-color: #ff9f00;
+    }
+    .field__button {
+        position: absolute;
+        background: none;
+        border: none;
+        color: #888;
+        display: flex;
+        align-items: center;
+    }
+    .country-filter__search-icon {
+        left: 8px;
         pointer-events: none;
     }
+    .country-filter__reset-button {
+        right: 8px;
+        color: white;
+        cursor: pointer;
+    }
+    .country-filter__reset-button svg,
+    .country-filter__search-icon svg {
+        width: 12px;
+        height: 12px;
+    }
+    .country-selector__close-button {
+        background: none;
+        border: none;
+        color: #888;
+        cursor: pointer;
+    }
+    .country-selector__close-button svg {
+        width: 14px;
+        height: 14px;
+    }
 
-    /* Contenitore dei loghi carte di credito */
-    .payment-methods {
+    /* Elementi della lista */
+    .disclosure__list {
+        max-height: 200px;
+        overflow-y: auto;
+    }
+    .list-unstyled {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+    .disclosure__link {
+        display: flex;
+        align-items: center;
+        padding: 8px 12px;
+        color: #aaa !important;
+        text-decoration: none;
+        font-size: 0.85rem;
+        transition: background 0.1s;
+    }
+    .disclosure__link:hover {
+        background-color: #161616;
+        color: white !important;
+    }
+    .checkmark-wrapper-footer {
+        display: inline-flex;
+        width: 14px;
+        margin-right: 6px;
+        color: #ff9f00;
+    }
+    .checkmark-wrapper-footer svg {
+        width: 10px;
+        height: 8px;
+    }
+    .country {
+        flex-grow: 1;
+        text-align: left;
+    }
+    .localization-form__currency {
+        color: #555;
+        font-size: 0.75rem;
+        margin-left: 6px;
+    }
+
+    /* BADGES DI PAGAMENTO ESTETICI */
+    .footer-payment-badges {
         display: flex;
         gap: 6px;
         flex-wrap: wrap;
     }
-
-    .payment-card {
-        display: inline-block;
-        padding: 4px 8px;
+    .badge-card {
+        background-color: #161616;
+        border: 1px solid #292929;
+        color: #ababab;
         font-size: 0.6rem;
         font-weight: bold;
-        border-radius: 3px;
-        background-color: #1e1e1e;
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        color: #ffffff;
-        text-transform: uppercase;
         letter-spacing: 0.5px;
-        opacity: 0.8;
+        padding: 4px 8px;
+        border-radius: 2px;
     }
-
-    .visa {
-        border-color: #1a1f71;
-        color: #1a1f71;
-        background: #fff;
-    }
-    .mastercard {
-        border-color: #ff5f00;
-        color: #ff5f00;
-        background: #fff;
-    }
-    .paypal {
-        border-color: #003087;
-        color: #003087;
-        background: #fff;
-    }
-    .applepay {
-        border-color: #000000;
+    .badge-card.bg-light {
+        background-color: #e0e0e0;
         color: #000;
-        background: #fff;
+        border: none;
     }
-    .gpay {
-        border-color: #4285f4;
-        color: #4285f4;
-        background: #fff;
+    .badge-card.bg-blue {
+        background-color: #4285f4;
+        color: white;
+        border: none;
+    }
+    .badge-card.bg-orange {
+        background-color: #f79e1b;
+        color: black;
+        border: none;
+    }
+    .badge-card.bg-light-blue {
+        background-color: #0079c1;
+        color: white;
+        border: none;
     }
 
-    /* Riga finale inferiore */
-    .footer-bottom-row {
+    /* Linea orizzontale */
+    .footer-divider {
+        border: 0;
+        border-top: 1px solid #1a1a1a;
+        margin: 24px 0;
+    }
+
+    /* Copyright Row */
+    .footer-middle-row {
         text-align: left;
-        border-top: 1px solid rgba(255, 255, 255, 0.04);
-        padding-top: 20px;
+        margin-bottom: 40px;
     }
-
     .footer-copyright {
-        font-size: 0.72rem;
-        color: rgba(255, 255, 255, 0.5);
         margin: 0;
-        letter-spacing: 0.3px;
+        color: #6a6a6a;
+        font-size: 0.75rem;
     }
-
-    .bullet-separator {
-        margin: 0 6px;
-        color: rgba(255, 255, 255, 0.3);
-    }
-
     .footer-link {
-        color: rgba(255, 255, 255, 0.5);
+        color: #6a6a6a;
         text-decoration: none;
-        transition: color 0.2s ease;
+        transition: color 0.2s;
     }
-
     .footer-link:hover {
-        color: #ffffff;
-        text-decoration: underline;
+        color: white;
+    }
+    .dot-separator {
+        margin: 0 4px;
+        color: #444;
     }
 
-    /* ==========================================================================
-     STRATEGIA RESPONSIVE AGGIORNATA (Stile esatto image_de07e5.png)
-     ========================================================================== */
+    /* Social Row */
+    .footer-bottom-row {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+    }
+    .social-heading {
+        margin: 0;
+        font-size: 0.75rem;
+        letter-spacing: 2px;
+        color: #8b8b8b;
+        font-weight: bold;
+    }
+    .social-icons {
+        display: flex;
+        gap: 16px;
+    }
+    .social-icons a {
+        color: #8b8b8b;
+        transition: color 0.2s;
+    }
+    .social-icons a:hover {
+        color: white;
+    }
+
+    /* Classi Utilità */
+    .hidden {
+        display: none !important;
+    }
+    .visibility-hidden {
+        opacity: 0;
+        pointer-events: none;
+    }
+    .disclosure__list::-webkit-scrollbar {
+        width: 4px;
+    }
+    .disclosure__list::-webkit-scrollbar-track {
+        background: #000;
+    }
+    .disclosure__list::-webkit-scrollbar-thumb {
+        background: #222;
+    }
+
+    /* Responsive mobile */
     @media (max-width: 768px) {
-        .site-footer {
-            padding-bottom: 30px;
-        }
-
-        .footer-divider {
-            margin-bottom: 30px;
-        }
-
-        /* Impila gli elementi verticalmente e li allinea al centro esatto */
-        .footer-middle-row {
+        .footer-top-row {
             flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            gap: 32px; /* Spaziatura bilanciata tra selettore e carte */
-            margin-bottom: 35px;
+            align-items: flex-start;
         }
-
-        /* Centra la label e il box del Paese */
-        .region-section {
-            align-items: center;
-            text-align: center;
+        .footer-payment-badges {
+            justify-content: flex-start;
+            width: 100%;
         }
-
-        /* Forziamo le icone dei pagamenti a distribuirsi dal centro */
-        .payment-methods {
-            justify-content: center;
-        }
-
-        /* Centratura del testo di copyright e dei link legali */
-        .footer-bottom-row {
-            text-align: center;
-            padding-top: 24px;
-        }
-
-        .footer-copyright {
-            line-height: 2;
-            font-size: 0.75rem;
+        .site-footer {
+            padding: 32px 24px;
         }
     }
 </style>
