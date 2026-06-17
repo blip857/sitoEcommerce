@@ -76,7 +76,7 @@ const countries = [
         code: "BH",
         englishName: "Bahrain",
         name: "Bahrain",
-        currency: "BHD .د.ب",
+        currency: "BHD .د.b",
     },
     {
         code: "BD",
@@ -148,7 +148,14 @@ const countries = [
             </svg>
         </button>
         <div class="desktop-items">
-            <a href="#">VESTIARIO ▾</a>
+            <div class="dropdown">
+                <a href="#" class="dropdown-trigger">VESTIARIO ▾</a>
+                <div class="dropdown-menu">
+                    <a href="#">Visualizza Tutto</a>
+                    <a href="#">Magliette</a>
+                    <a href="#">Felpe</a>
+                </div>
+            </div>
             <a href="#">ACCESSORI ▾</a>
             <a href="#">CONTATTI</a>
         </div>
@@ -492,7 +499,6 @@ const countries = [
 </script>
 
 <style>
-    /* ... (Il tuo CSS rimane identico ed inalterato) ... */
     .navbar {
         background-color: #111111;
         color: white;
@@ -712,6 +718,57 @@ const countries = [
     .disclosure__list::-webkit-scrollbar-thumb:hover {
         background: #555;
     }
+
+    /* STILI AGGIUNTIVI: Dropdown Vestiario */
+    .dropdown {
+        position: relative;
+        display: inline-block;
+    }
+    .dropdown-trigger {
+        cursor: pointer;
+    }
+    .dropdown-menu {
+        position: absolute;
+        top: calc(100% + 15px);
+        left: 0;
+        background-color: #000000;
+        border: 1px solid #222;
+        min-width: 180px;
+        display: none;
+        flex-direction: column;
+        box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.7);
+        z-index: 999;
+        padding: 6px 0;
+    }
+    .dropdown-menu a {
+        padding: 10px 16px;
+        color: #ccc !important;
+        font-size: 0.8rem;
+        font-weight: normal;
+        letter-spacing: 0.5px;
+        text-transform: none;
+        display: block;
+        transition:
+            background 0.15s,
+            color 0.15s;
+    }
+    .dropdown-menu a:hover {
+        background-color: #161616;
+        color: #ff9f00 !important;
+    }
+    .dropdown:hover .dropdown-menu {
+        display: flex;
+    }
+    /* Area cuscinetto invisibile per evitare la chiusura del menù quando ci si sposta con il mouse */
+    .dropdown::after {
+        content: "";
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        height: 18px;
+    }
+
     @media (max-width: 1024px) {
         .desktop-items {
             display: none !important;
