@@ -156,7 +156,16 @@ const countries = [
                     <a href="#">Felpe</a>
                 </div>
             </div>
-            <a href="#">ACCESSORI ▾</a>
+            {
+                /* MODIFICATO: Aggiunto sottomenù a discesa per la sezione Accessori */
+            }
+            <div class="dropdown">
+                <a href="#" class="dropdown-trigger">ACCESSORI ▾</a>
+                <div class="dropdown-menu">
+                    <a href="#">Berretti</a>
+                    <a href="#">Adesivi</a>
+                </div>
+            </div>
             <a href="#">CONTATTI</a>
         </div>
     </div>
@@ -719,7 +728,7 @@ const countries = [
         background: #555;
     }
 
-    /* STILI AGGIUNTIVI: Dropdown Vestiario */
+    /* STILI: Dropdown Generici (Vestiario e Accessori) */
     .dropdown {
         position: relative;
         display: inline-block;
