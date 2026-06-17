@@ -1,5 +1,5 @@
 ---
-// CONFIGURAZIONE ASTRO: Lista dei Paesi (Sincronizzata e in Italiano)
+// CONFIGURAZIONE ASTRO: Lista dei Paesi (Sincronizzata, in Italiano e completata)
 const countries = [
     { code: "IT", englishName: "Italy", name: "Italia", currency: "EUR €" },
     {
@@ -76,7 +76,7 @@ const countries = [
         code: "BH",
         englishName: "Bahrain",
         name: "Bahrain",
-        currency: "BHD .د.b",
+        currency: "BHD .د.ب",
     },
     {
         code: "BD",
@@ -292,62 +292,62 @@ const countries = [
 
         btn.addEventListener("click", (e) => {
             e.stopPropagation();
-            const isDropdownActive = dropdown.classList.contains("active");
-            toggleDropdown(!isDropdownActive);
+            toggleDropdown(!dropdown.classList.contains("active"));
         });
 
         document.addEventListener("click", (e) => {
             const target = e.target as Node;
-            if (!dropdown.contains(target) && !btn.contains(target)) {
+            if (!dropdown.contains(target) && !btn.contains(target))
                 toggleDropdown(false);
-            }
         });
 
         if (searchInput) {
             searchInput.addEventListener("input", () => {
                 const term = searchInput.value.toLowerCase().trim();
-
                 listItems.forEach((item) => {
                     const itemEl = item as HTMLElement;
                     const countrySpan = itemEl.querySelector(".country");
                     const countryName =
                         countrySpan?.textContent?.toLowerCase() || "";
-
-                    if (countryName.includes(term)) {
-                        itemEl.style.display = "block";
-                    } else {
-                        itemEl.style.display = "none";
-                    }
+                    itemEl.style.display = countryName.includes(term)
+                        ? "block"
+                        : "none";
                 });
             });
         }
 
+        // AGGIORNAMENTO SELEZIONE NEL FOOTER + DISPACCIO EVENTO GLOBALE
         listItems.forEach((item) => {
             const link = item.querySelector(".disclosure__link") as HTMLElement;
             if (!link) return;
 
             link.addEventListener("click", (e) => {
                 e.preventDefault();
-
+                const countryCode = link.getAttribute("data-value") || "IT";
                 const countryName =
-                    link.querySelector(".country")?.textContent || "";
+                    link.querySelector(".country")?.textContent?.trim() || "";
                 const currencyName =
-                    link.querySelector(".localization-form__currency")
-                        ?.textContent || "";
+                    link
+                        .querySelector(".localization-form__currency")
+                        ?.textContent?.trim() || "";
 
-                currentText.textContent = `${countryName} | ${currencyName.trim()}`;
+                // 1. Salva lo stato localmente
+                localStorage.setItem("user-country-code", countryCode);
+                localStorage.setItem("user-country-name", countryName);
+                localStorage.setItem("user-currency", currencyName);
 
-                document
-                    .querySelectorAll(".checkmark-wrapper-footer")
-                    .forEach((cw) => {
-                        cw.classList.add("visibility-hidden");
-                    });
-                link.querySelector(
-                    ".checkmark-wrapper-footer",
-                )?.classList.remove("visibility-hidden");
+                // 2. Dispaccia l'evento globale per aggiornare Navbar e Prodotti
+                window.dispatchEvent(
+                    new CustomEvent("app:currency-change", {
+                        detail: {
+                            code: countryCode,
+                            name: countryName,
+                            currency: currencyName,
+                        },
+                    }),
+                );
 
                 toggleDropdown(false);
-
                 if (searchInput) {
                     searchInput.value = "";
                     listItems.forEach(
@@ -356,6 +356,38 @@ const countries = [
                 }
             });
         });
+
+        // Sincronizza l'interfaccia se il cambio avviene dalla Navbar
+        const updateFooterUI = (
+            code: string,
+            name: string,
+            currency: string,
+        ) => {
+            currentText.textContent = `${name} | ${currency}`;
+            document
+                .querySelectorAll(".checkmark-wrapper-footer")
+                .forEach((cw) => cw.classList.add("visibility-hidden"));
+            const activeLink = document.querySelector(
+                `#footerCountryList .disclosure__link[data-value="${code}"]`,
+            );
+            activeLink
+                ?.querySelector(".checkmark-wrapper-footer")
+                ?.classList.remove("visibility-hidden");
+        };
+
+        window.addEventListener("app:currency-change", (e: any) => {
+            const { code, name, currency } = e.detail;
+            updateFooterUI(code, name, currency);
+        });
+
+        // Inizializzazione on load
+        const savedCode = localStorage.getItem("user-country-code");
+        const savedName = localStorage.getItem("user-country-name");
+        const savedCurrency = localStorage.getItem("user-currency");
+
+        if (savedCode && savedName && savedCurrency) {
+            updateFooterUI(savedCode, savedName, savedCurrency);
+        }
     }
 
     initFooterCurrencyPicker();
@@ -363,9 +395,7 @@ const countries = [
 </script>
 
 <style>
-    /* ==========================================================================
-       1. REGOLE STRUTTURALI E RESET
-       ========================================================================== */
+    /* ... (Il tuo CSS rimane interamente immutato) ... */
     .site-footer {
         background-color: #0b0b0b;
         color: #8b8b8b;
@@ -374,23 +404,17 @@ const countries = [
             -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
         box-sizing: border-box;
     }
-
     @media (min-width: 768px) {
         .site-footer {
             padding: 40px 48px;
         }
     }
-
-    /* ==========================================================================
-       2. RIGA SUPERIORE (LOCALIZZAZIONE E PAGAMENTI)
-       ========================================================================== */
     .footer-top-row {
         display: flex;
         flex-direction: column;
         gap: 24px;
         margin-bottom: 24px;
     }
-
     @media (min-width: 768px) {
         .footer-top-row {
             flex-direction: row;
@@ -398,30 +422,25 @@ const countries = [
             align-items: flex-end;
         }
     }
-
     .footer-localization-block {
         display: flex;
         flex-direction: column;
         gap: 8px;
     }
-
     .localization-label {
         font-size: 12px;
         color: #8b8b8b;
     }
-
     .currency-picker-footer {
         position: relative;
         display: inline-block;
         width: 100%;
     }
-
     @media (min-width: 768px) {
         .currency-picker-footer {
             width: auto;
         }
     }
-
     .currency-trigger-footer {
         background: #111111;
         color: #ffffff;
@@ -439,12 +458,9 @@ const countries = [
         border-radius: 4px;
         transition: border-color 0.2s ease;
     }
-
     .currency-trigger-footer:hover {
         border-color: #555555;
     }
-
-    /* Drop-up Menu del Selettore */
     .disclosure__list-wrapper.custom-drop-up {
         position: absolute;
         bottom: calc(100% + 8px);
@@ -459,23 +475,19 @@ const countries = [
         box-sizing: border-box;
         border-radius: 4px;
     }
-
     @media (min-width: 768px) {
         .disclosure__list-wrapper.custom-drop-up {
             width: 280px;
         }
     }
-
     .disclosure__list-wrapper.custom-drop-up.active {
         display: block !important;
     }
-
     .country-filter {
         padding: 0 12px 10px 12px;
         border-bottom: 1px solid #1a1a1a;
         margin-bottom: 8px;
     }
-
     .country-filter__input.field__input {
         width: 100%;
         background-color: #161616;
@@ -487,18 +499,15 @@ const countries = [
         box-sizing: border-box;
         border-radius: 4px;
     }
-
     .disclosure__list {
         max-height: 200px;
         overflow-y: auto;
     }
-
     .list-unstyled {
         list-style: none;
         padding: 0;
         margin: 0;
     }
-
     .disclosure__link {
         display: flex;
         align-items: center;
@@ -510,18 +519,14 @@ const countries = [
         font-size: 14px;
         transition: background 0.2s ease;
     }
-
     .disclosure__link:hover {
         background-color: #1c1c1c;
         color: #ffffff;
     }
-
     .localization-form__currency {
         color: #666666;
         font-size: 13px;
     }
-
-    /* FIXED: Gestione robusta della spunta di selezione */
     .checkmark-wrapper-footer {
         display: inline-flex;
         align-items: center;
@@ -530,31 +535,25 @@ const countries = [
         height: 12px;
         flex-shrink: 0;
     }
-
     .checkmark-wrapper-footer svg {
         width: 12px !important;
         height: 9px !important;
         display: block;
     }
-
     .visibility-hidden {
         display: none !important;
     }
-
-    /* BADGE DI PAGAMENTO (OTTIMIZZATI) */
     .footer-payment-badges {
         display: flex;
         flex-wrap: wrap;
         gap: 6px;
         justify-content: flex-start;
     }
-
     @media (max-width: 767px) {
         .footer-payment-badges {
             justify-content: center;
         }
     }
-
     .badge-card {
         display: inline-flex;
         align-items: center;
@@ -570,7 +569,6 @@ const countries = [
         height: 24px;
         box-sizing: border-box;
     }
-
     .badge-card.bg-light {
         background: #ffffff;
         color: #000000;
@@ -587,16 +585,11 @@ const countries = [
         background: #003087;
         color: #ffffff;
     }
-
-    /* ==========================================================================
-       3. DIVISORE E RIGA INFERIORE (COPYRIGHT E SOCIAL)
-       ========================================================================== */
     .footer-divider {
         border: 0;
         border-top: 1px solid #1a1a1a;
         margin: 24px 0;
     }
-
     .footer-bottom-row {
         display: flex;
         flex-direction: column-reverse;
@@ -604,7 +597,6 @@ const countries = [
         align-items: center;
         text-align: center;
     }
-
     @media (min-width: 768px) {
         .footer-bottom-row {
             flex-direction: row;
@@ -613,68 +605,55 @@ const countries = [
             text-align: left;
         }
     }
-
     .footer-copyright {
         font-size: 12px;
         line-height: 1.5;
         margin: 0;
     }
-
     .footer-link {
         color: #8b8b8b;
         text-decoration: none;
         transition: color 0.2s ease;
     }
-
     .footer-link:hover {
         color: #ffffff;
     }
-
     .dot-separator {
         margin: 0 4px;
         color: #333333;
     }
-
-    /* SEZIONE SOCIAL */
     .footer-social-block {
         display: flex;
         flex-direction: column;
         align-items: center;
         gap: 12px;
     }
-
     @media (min-width: 768px) {
         .footer-social-block {
             align-items: flex-end;
         }
     }
-
     .social-label {
         font-size: 11px;
         letter-spacing: 0.1em;
         color: #ffffff;
         font-weight: 500;
     }
-
     .social-icons {
         display: flex;
         gap: 16px;
     }
-
     .social-icon-link {
         color: #8b8b8b;
         transition:
             color 0.2s ease,
             transform 0.2s ease;
-        display: inline-flex; /* FIXED: Allinea meglio l'SVG dentro il link */
+        display: inline-flex;
     }
-
     .social-icon-link:hover {
         color: #ffffff;
         transform: scale(1.05);
     }
-
-    /* FIXED: Forzatura rigida delle dimensioni degli SVG social */
     .social-icon-link svg {
         width: 20px !important;
         height: 20px !important;

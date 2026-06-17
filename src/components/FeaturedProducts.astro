@@ -1,50 +1,47 @@
 ---
 // Componente Vetrina: Classici OcchiPieniDi (Griglia a 4 colonne)
-
 const classici = [
     {
         id: 1,
         nome: "SILAS BLAZER",
         prezzo: "39,90",
         immagine:
-            "https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?q=80&w=500&auto=format&fit=crop", // Felpa grigia croma
-        colori: [], // Nessun selettore visibile nello screenshot
+            "https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?q=80&w=500&auto=format&fit=crop",
+        colori: [],
     },
     {
         id: 2,
         nome: "ACAB T-SHIRT",
         prezzo: "26,90",
         immagine:
-            "https://images.unsplash.com/photo-1618354691373-d851c5c3a990?q=80&w=500&auto=format&fit=crop", // T-shirt nera
-        colori: ["#000000", "#1e3a8a", "#ffffff"], // Nero, Reale, Bianco
+            "https://images.unsplash.com/photo-1618354691373-d851c5c3a990?q=80&w=500&auto=format&fit=crop",
+        colori: ["#000000", "#1e3a8a", "#ffffff"],
     },
     {
         id: 3,
         nome: "FELPA CON CAPPUCCIO HELFRI RICAMATA",
         prezzo: "49,90",
         immagine:
-            "https://images.unsplash.com/photo-1556821840-3a63f95609a7?q=80&w=500&auto=format&fit=crop", // Hoodie nera
-        colori: ["#000000", "#9ca3af"], // Nero, Grigio Sportivo
+            "https://images.unsplash.com/photo-1556821840-3a63f95609a7?q=80&w=500&auto=format&fit=crop",
+        colori: ["#000000", "#9ca3af"],
     },
     {
         id: 4,
         nome: "FELPA ACAB",
         prezzo: "39,90",
         immagine:
-            "https://images.unsplash.com/photo-1620799139507-2a76f79a2f4d?q=80&w=500&auto=format&fit=crop", // Felpa girocollo grigia
-        colori: ["#9ca3af", "#000000", "#0f172a"], // Grigio Sportivo, Nero, Marina
+            "https://images.unsplash.com/photo-1620799139507-2a76f79a2f4d?q=80&w=500&auto=format&fit=crop",
+        colori: ["#9ca3af", "#000000", "#0f172a"],
     },
 ];
 ---
 
 <section class="featured-section">
-    <!-- Intestazione della sezione con link laterale -->
     <div class="featured-header">
         <h2 class="featured-title">CLASSICI OCCHIPIENIDI</h2>
         <a href="#" class="all-products-link">ALTRI PRODOTTI</a>
     </div>
 
-    <!-- Griglia Prodotti -->
     <div class="featured-grid">
         {
             classici.map((prodotto) => (
@@ -58,7 +55,6 @@ const classici = [
                     </div>
 
                     <div class="product-info">
-                        {/* Mostra i quadratini dei colori solo se presenti nell'array */}
                         {prodotto.colori.length > 0 && (
                             <div class="color-swatches">
                                 {prodotto.colori.map((colore) => (
@@ -71,7 +67,13 @@ const classici = [
                         )}
 
                         <h3 class="product-name">{prodotto.nome}</h3>
-                        <p class="product-price">€{prodotto.prezzo}</p>
+                        {/* MODIFICATO: Aggiunto data-base-price per la gestione dinamica */}
+                        <p
+                            class="product-price"
+                            data-base-price={prodotto.prezzo}
+                        >
+                            €{prodotto.prezzo}
+                        </p>
                     </div>
                 </div>
             ))
@@ -79,8 +81,43 @@ const classici = [
     </div>
 </section>
 
+<script>
+    function listenToCurrencyChanges() {
+        const priceElements = document.querySelectorAll(".product-price");
+
+        const updatePrices = (currencyStr: string) => {
+            // Estrae il simbolo puro (es: "USD $" -> "$", "EUR €" -> "€")
+            const parts = currencyStr.trim().split(" ");
+            const symbol = parts[1] || parts[0];
+
+            priceElements.forEach((el) => {
+                const basePrice = el.getAttribute("data-base-price");
+                if (basePrice) {
+                    // Imposta il formato corretto (es: $ 26,90)
+                    el.textContent = `${symbol} ${basePrice}`;
+                }
+            });
+        };
+
+        // Ascolta l'evento lanciato dalla Navbar o dal Footer
+        window.addEventListener("app:currency-change", (e: any) => {
+            updatePrices(e.detail.currency);
+        });
+
+        // Controlla se c'è un valore pre-salvato al caricamento iniziale
+        const savedCurrency = localStorage.getItem("user-currency");
+        if (savedCurrency) {
+            updatePrices(savedCurrency);
+        }
+    }
+
+    // Esegui la logica e preservala ad ogni cambio pagina di Astro
+    listenToCurrencyChanges();
+    document.addEventListener("astro:page-load", listenToCurrencyChanges);
+</script>
+
 <style>
-    /* ... (Mantieni inalterati gli stili base del Desktop scritti in precedenza) ... */
+    /* ... (Il tuo CSS rimane interamente immutato) ... */
     .featured-section {
         padding: 40px 24px 60px 24px;
         background-color: #111111;
@@ -178,33 +215,23 @@ const classici = [
         margin: 0;
         font-weight: 500;
     }
-
-    /* ==========================================================================
-     STRATEGIA RESPONSIVE AGGIORNATA (Stile image_79e113.png)
-     ========================================================================== */
     @media (max-width: 850px) {
-        /* Sposta il link "ALTRI PRODOTTI" sotto il titolo */
         .featured-header {
             flex-direction: column;
             align-items: flex-start;
             gap: 12px;
             margin-bottom: 25px;
         }
-
         .featured-title {
             font-size: 1.6rem;
         }
-
         .all-products-link {
             font-size: 0.75rem;
         }
-
-        /* Mantiene tassativamente la struttura a 2 colonne parallele */
         .featured-grid {
             grid-template-columns: repeat(2, 1fr);
             gap: 16px;
         }
-
         .product-name {
             font-size: 0.8rem;
         }
