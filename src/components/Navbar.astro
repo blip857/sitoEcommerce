@@ -1,120 +1,41 @@
 ---
 // CONFIGURAZIONE ASTRO: Lista dei Paesi (Sincronizzata e in Italiano)
 import CartDrawer from './CartDrawer.astro';
+
 const countries = [
     { code: "IT", englishName: "Italy", name: "Italia", currency: "EUR €" },
-    {
-        code: "US",
-        englishName: "UnitedStates",
-        name: "Stati Uniti",
-        currency: "USD $",
-    },
-    {
-        code: "GB",
-        englishName: "UnitedKingdom",
-        name: "Regno Unito",
-        currency: "GBP £",
-    },
+    { code: "US", englishName: "UnitedStates", name: "Stati Uniti", currency: "USD $" },
+    { code: "GB", englishName: "UnitedKingdom", name: "Regno Unito", currency: "GBP £" },
     { code: "FR", englishName: "France", name: "Francia", currency: "EUR €" },
     { code: "DE", englishName: "Germany", name: "Germania", currency: "EUR €" },
     { code: "ES", englishName: "Spain", name: "Spagna", currency: "EUR €" },
-    {
-        code: "AF",
-        englishName: "Afghanistan",
-        name: "Afghanistan",
-        currency: "USD $",
-    },
-    {
-        code: "AX",
-        englishName: "AlandIslands",
-        name: "Isole Åland",
-        currency: "USD $",
-    },
+    { code: "AF", englishName: "Afghanistan", name: "Afghanistan", currency: "USD $" },
+    { code: "AX", englishName: "AlandIslands", name: "Isole Åland", currency: "USD $" },
     { code: "AL", englishName: "Albania", name: "Albania", currency: "ALL L" },
-    {
-        code: "DZ",
-        englishName: "Algeria",
-        name: "Algeria",
-        currency: "DZD د.ج",
-    },
+    { code: "DZ", englishName: "Algeria", name: "Algeria", currency: "DZD د.ج" },
     { code: "AD", englishName: "Andorra", name: "Andorra", currency: "EUR €" },
     { code: "AO", englishName: "Angola", name: "Angola", currency: "AOA Kz" },
-    {
-        code: "AI",
-        englishName: "Anguilla",
-        name: "Anguilla",
-        currency: "XCD $",
-    },
-    {
-        code: "AG",
-        englishName: "AntiguaBarbuda",
-        name: "Antigua e Barbuda",
-        currency: "XCD $",
-    },
-    {
-        code: "AR",
-        englishName: "Argentina",
-        name: "Argentina",
-        currency: "ARS $",
-    },
+    { code: "AI", englishName: "Anguilla", name: "Anguilla", currency: "XCD $" },
+    { code: "AG", englishName: "AntiguaBarbuda", name: "Antigua e Barbuda", currency: "XCD $" },
+    { code: "AR", englishName: "Argentina", name: "Argentina", currency: "ARS $" },
     { code: "AM", englishName: "Armenia", name: "Armenia", currency: "AMD ֏" },
     { code: "AW", englishName: "Aruba", name: "Aruba", currency: "AWG ƒ" },
-    {
-        code: "AU",
-        englishName: "Australia",
-        name: "Australia",
-        currency: "AUD $",
-    },
+    { code: "AU", englishName: "Australia", name: "Australia", currency: "AUD $" },
     { code: "AT", englishName: "Austria", name: "Austria", currency: "EUR €" },
-    {
-        code: "AZ",
-        englishName: "Azerbaijan",
-        name: "Azerbaijan",
-        currency: "AZN ₼",
-    },
+    { code: "AZ", englishName: "Azerbaijan", name: "Azerbaijan", currency: "AZN ₼" },
     { code: "BS", englishName: "Bahamas", name: "Bahamas", currency: "BSD $" },
-    {
-        code: "BH",
-        englishName: "Bahrain",
-        name: "Bahrain",
-        currency: "BHD .د.b",
-    },
-    {
-        code: "BD",
-        englishName: "Bangladesh",
-        name: "Bangladesh",
-        currency: "BDT ৳",
-    },
-    {
-        code: "BB",
-        englishName: "Barbados",
-        name: "Barbados",
-        currency: "BBD $",
-    },
-    {
-        code: "BY",
-        englishName: "Belarus",
-        name: "Bielorussia",
-        currency: "BYN Br",
-    },
+    { code: "BH", englishName: "Bahrain", name: "Bahrain", currency: "BHD .د.b" },
+    { code: "BD", englishName: "Bangladesh", name: "Bangladesh", currency: "BDT ৳" },
+    { code: "BB", englishName: "Barbados", name: "Barbados", currency: "BBD $" },
+    { code: "BY", englishName: "Belarus", name: "Bielorussia", currency: "BYN Br" },
     { code: "BE", englishName: "Belgium", name: "Belgio", currency: "EUR €" },
     { code: "BZ", englishName: "Belize", name: "Belize", currency: "BZD Z$" },
     { code: "BJ", englishName: "Benin", name: "Benin", currency: "XOF Fr" },
     { code: "BM", englishName: "Bermuda", name: "Bermuda", currency: "BMD $" },
     { code: "BT", englishName: "Bhutan", name: "Bhutan", currency: "BTN Nu." },
     { code: "BO", englishName: "Bolivia", name: "Bolivia", currency: "BOB $b" },
-    {
-        code: "BA",
-        englishName: "BosniaHerzegovina",
-        name: "Bosnia ed Erzegovina",
-        currency: "BAM KM",
-    },
-    {
-        code: "CH",
-        englishName: "Switzerland",
-        name: "Svizzera",
-        currency: "CHF CHF",
-    },
+    { code: "BA", englishName: "BosniaHerzegovina", name: "Bosnia ed Erzegovina", currency: "BAM KM" },
+    { code: "CH", englishName: "Switzerland", name: "Svizzera", currency: "CHF CHF" },
     { code: "JP", englishName: "Japan", name: "Giappone", currency: "JPY ¥" },
 ];
 ---
@@ -122,28 +43,14 @@ const countries = [
 <nav class="navbar">
     <div class="nav-left">
         <button class="mobile-icon menu-hamburger" aria-label="Apri menu">
-            <svg
-                viewBox="0 0 24 24"
-                width="24"
-                height="24"
-                stroke="currentColor"
-                stroke-width="2.5"
-                fill="none"
-            >
+            <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2.5" fill="none">
                 <line x1="3" y1="12" x2="21" y2="12"></line>
                 <line x1="3" y1="6" x2="21" y2="6"></line>
                 <line x1="3" y1="18" x2="21" y2="18"></line>
             </svg>
         </button>
         <button class="mobile-icon menu-search" aria-label="Cerca">
-            <svg
-                viewBox="0 0 24 24"
-                width="22"
-                height="22"
-                stroke="currentColor"
-                stroke-width="2.5"
-                fill="none"
-            >
+            <svg viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" stroke-width="2.5" fill="none">
                 <circle cx="11" cy="11" r="8"></circle>
                 <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
             </svg>
@@ -157,9 +64,6 @@ const countries = [
                     <a href="#">Felpe</a>
                 </div>
             </div>
-            {
-                /* MODIFICATO: Aggiunto sottomenù a discesa per la sezione Accessori */
-            }
             <div class="dropdown">
                 <a href="#" class="dropdown-trigger">ACCESSORI ▾</a>
                 <div class="dropdown-menu">
@@ -176,175 +80,86 @@ const countries = [
     </div>
 
     <div class="nav-right">
+        <!-- ICONE MOBILE (visibili sotto i 1024px) -->
+        <a href="#" class="mobile-icon menu-profile" aria-label="Account">
+            <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2.5" fill="none">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+        </a>
+        <button class="mobile-icon menu-cart btn-cart" aria-label="Carrello">
+            <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2.5" fill="none">
+                <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+                <line x1="3" y1="6" x2="21" y2="6"></line>
+                <path d="M16 10a4 4 0 0 1-8 0"></path>
+            </svg>
+        </button>
+
         <div class="desktop-items">
             <div class="currency-picker">
-                <button
-                    class="currency-trigger"
-                    id="currencyBtn"
-                    aria-haspopup="listbox"
-                    aria-expanded="false"
-                >
+                <button class="currency-trigger" id="currencyBtn" aria-haspopup="listbox" aria-expanded="false">
                     <span class="current-selected-text">Italia (EUR €)</span>
                     <span class="chevron-arrow">＾</span>
                 </button>
 
-                <div
-                    class="disclosure__list-wrapper country-selector"
-                    id="currencyDropdown"
-                >
+                <div class="disclosure__list-wrapper country-selector" id="currencyDropdown">
                     <div class="country-filter">
                         <div class="field">
-                            <input
-                                class="country-filter__input field__input"
-                                id="country-filter-input"
-                                type="search"
-                                placeholder="Search"
-                                autocomplete="off"
-                                spellcheck="false"
-                            />
-                            <button
-                                type="reset"
-                                class="country-filter__reset-button field__button hidden"
-                                id="filterResetBtn"
-                                aria-label="Clear search"
-                            >
-                                <svg
-                                    fill="none"
-                                    stroke="currentColor"
-                                    class="icon icon-close"
-                                    viewBox="0 0 18 18"
-                                >
-                                    <circle
-                                        cx="9"
-                                        cy="9"
-                                        r="8.5"
-                                        stroke-opacity=".2"></circle>
-                                    <path
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        stroke-width="1.5"
-                                        d="M11.83 11.83 6.172 6.17M6.229 11.885l5.544-5.77"
-                                    ></path>
+                            <input class="country-filter__input field__input" id="country-filter-input" type="search" placeholder="Search" autocomplete="off" spellcheck="false" />
+                            <button type="reset" class="country-filter__reset-button field__button hidden" id="filterResetBtn" aria-label="Clear search">
+                                <svg fill="none" stroke="currentColor" class="icon icon-close" viewBox="0 0 18 18">
+                                    <circle cx="9" cy="9" r="8.5" stroke-opacity=".2"></circle>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M11.83 11.83 6.172 6.17M6.229 11.885l5.544-5.77"></path>
                                 </svg>
                             </button>
-                            <div
-                                class="country-filter__search-icon field__button"
-                            >
-                                <svg
-                                    fill="none"
-                                    class="icon icon-search"
-                                    viewBox="0 0 18 19"
-                                >
-                                    <path
-                                        fill="currentColor"
-                                        fill-rule="evenodd"
-                                        d="M11.03 11.68A5.784 5.784 0 1 1 2.85 3.5a5.784 5.784 0 0 1 8.18 8.18m.26 1.12a6.78 6.78 0 1 1 .72-.7l5.4 5.4a.5.5 0 1 1-.71.7z"
-                                        clip-rule="evenodd"></path>
+                            <div class="country-filter__search-icon field__button">
+                                <svg fill="none" class="icon icon-search" viewBox="0 0 18 19">
+                                    <path fill="currentColor" fill-rule="evenodd" d="M11.03 11.68A5.784 5.784 0 1 1 2.85 3.5a5.784 5.784 0 0 1 8.18 8.18m.26 1.12a6.78 6.78 0 1 1 .72-.7l5.4 5.4a.5.5 0 1 1-.71.7z" clip-rule="evenodd"></path>
                                 </svg>
                             </div>
                         </div>
-                        <button
-                            class="country-selector__close-button"
-                            id="closeDropdownBtn"
-                            type="button"
-                            aria-label="Close"
-                        >
-                            <svg
-                                fill="none"
-                                class="icon icon-close"
-                                viewBox="0 0 18 17"
-                            >
-                                <path
-                                    fill="currentColor"
-                                    d="M.865 15.978a.5.5 0 0 0 .707.707l7.433-7.431 7.579 7.282a.501.501 0 0 0 .846-.37.5.5 0 0 0-.153-.351L9.712 8.546l7.417-7.416a.5.5 0 1 0-.707-.708L8.991 7.853 1.413.573a.5.5 0 1 0-.693.72l7.563 7.268z"
-                                ></path>
+                        <button class="country-selector__close-button" id="closeDropdownBtn" type="button" aria-label="Close">
+                            <svg fill="none" class="icon icon-close" viewBox="0 0 18 17">
+                                <path fill="currentColor" d="M.865 15.978a.5.5 0 0 0 .707.707l7.433-7.431 7.579 7.282a.501.501 0 0 0 .846-.37.5.5 0 0 0-.153-.351L9.712 8.546l7.417-7.416a.5.5 0 1 0-.707-.708L8.991 7.853 1.413.573a.5.5 0 1 0-.693.72l7.563 7.268z"></path>
                             </svg>
                         </button>
                     </div>
 
                     <div class="disclosure__list country-selector__list">
-                        <ul
-                            role="list"
-                            class="list-unstyled countries"
-                            id="countryList"
-                        >
-                            {
-                                countries.map((country) => (
-                                    <li class="disclosure__item" tabindex="-1">
-                                        <a
-                                            class="disclosure__link"
-                                            href="#"
-                                            data-value={country.code}
-                                            id={`Navbar-${country.englishName}`}
-                                        >
-                                            <span
-                                                class={`checkmark-wrapper ${country.code === "IT" ? "" : "visibility-hidden"}`}
-                                            >
-                                                <svg
-                                                    viewBox="0 0 12 9"
-                                                    fill="none"
-                                                    stroke="currentColor"
-                                                    stroke-width="2"
-                                                >
-                                                    <path
-                                                        d="M1 4.5L4 7.5L11 1"
-                                                        stroke-linecap="round"
-                                                        stroke-linejoin="round"
-                                                    />
-                                                </svg>
-                                            </span>
-                                            <span class="country">
-                                                {country.name}
-                                            </span>
-                                            <span class="localization-form__currency">
-                                                {country.currency}
-                                            </span>
-                                        </a>
-                                    </li>
-                                ))
-                            }
+                        <ul role="list" class="list-unstyled countries" id="countryList">
+                            {countries.map((country) => (
+                                <li class="disclosure__item" tabindex="-1">
+                                    <a class="disclosure__link" href="#" data-value={country.code} id={`Navbar-${country.englishName}`}>
+                                        <span class={`checkmark-wrapper ${country.code === "IT" ? "" : "visibility-hidden"}`}>
+                                            <svg viewBox="0 0 12 9" fill="none" stroke="currentColor" stroke-width="2">
+                                                <path d="M1 4.5L4 7.5L11 1" stroke-linecap="round" stroke-linejoin="round"/>
+                                            </svg>
+                                        </span>
+                                        <span class="country">{country.name}</span>
+                                        <span class="localization-form__currency">{country.currency}</span>
+                                    </a>
+                                </li>
+                            ))}
                         </ul>
                     </div>
                 </div>
             </div>
 
             <a href="#" class="icon-link" aria-label="Cerca">
-                <svg
-                    viewBox="0 0 24 24"
-                    width="20"
-                    height="20"
-                    stroke="currentColor"
-                    stroke-width="2.5"
-                    fill="none"
-                >
+                <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2.5" fill="none">
                     <circle cx="11" cy="11" r="8"></circle>
                     <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
                 </svg>
             </a>
             <a href="#" class="icon-link" aria-label="Account">
-                <svg
-                    viewBox="0 0 24 24"
-                    width="20"
-                    height="20"
-                    stroke="currentColor"
-                    stroke-width="2.5"
-                    fill="none"
-                >
+                <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2.5" fill="none">
                     <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                     <circle cx="12" cy="7" r="4"></circle>
                 </svg>
             </a>
             <a href="#" class="icon-link btn-wagen" aria-label="Carrello">
-                <svg
-                    viewBox="0 0 24 24"
-                    width="20"
-                    height="20"
-                    stroke="currentColor"
-                    stroke-width="2.5"
-                    fill="none"
-                >
-                    <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"
-                    ></path>
+                <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2.5" fill="none">
+                    <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
                     <line x1="3" y1="6" x2="21" y2="6"></line>
                     <path d="M16 10a4 4 0 0 1-8 0"></path>
                 </svg>
@@ -404,25 +219,13 @@ const countries = [
     function initAdvancedCurrencyPicker() {
         const btn = document.getElementById("currencyBtn");
         const dropdown = document.getElementById("currencyDropdown");
-        const searchInput = document.getElementById(
-            "country-filter-input",
-        ) as HTMLInputElement | null;
+        const searchInput = document.getElementById("country-filter-input") as HTMLInputElement | null;
         const resetBtn = document.getElementById("filterResetBtn");
         const closeBtn = document.getElementById("closeDropdownBtn");
-        const listItems = document.querySelectorAll(
-            "#countryList .disclosure__item",
-        );
+        const listItems = document.querySelectorAll("#countryList .disclosure__item");
         const currentText = document.querySelector(".current-selected-text");
 
-        if (
-            !btn ||
-            !dropdown ||
-            !searchInput ||
-            !currentText ||
-            !resetBtn ||
-            !closeBtn
-        )
-            return;
+        if (!btn || !dropdown || !searchInput || !currentText || !resetBtn || !closeBtn) return;
 
         const toggleDropdown = (show: boolean) => {
             if (show) {
@@ -443,41 +246,28 @@ const countries = [
 
         document.addEventListener("click", (e) => {
             const target = e.target as Node;
-            if (!dropdown.contains(target) && !btn.contains(target))
-                toggleDropdown(false);
+            if (!dropdown.contains(target) && !btn.contains(target)) toggleDropdown(false);
         });
 
         searchInput.addEventListener("input", () => {
             const term = searchInput.value.toLowerCase().trim();
-            if (term.length > 0) {
-                resetBtn.classList.remove("hidden");
-            } else {
-                resetBtn.classList.add("hidden");
-            }
+            if (term.length > 0) { resetBtn.classList.remove("hidden"); } else { resetBtn.classList.add("hidden"); }
 
             listItems.forEach((item) => {
                 const itemEl = item as HTMLElement;
                 const countrySpan = itemEl.querySelector(".country");
-                const countryName =
-                    countrySpan?.textContent?.toLowerCase() || "";
-                if (countryName.includes(term)) {
-                    itemEl.style.display = "block";
-                } else {
-                    itemEl.style.display = "none";
-                }
+                const countryName = countrySpan?.textContent?.toLowerCase() || "";
+                if (countryName.includes(term)) { itemEl.style.display = "block"; } else { itemEl.style.display = "none"; }
             });
         });
 
         resetBtn.addEventListener("click", () => {
             searchInput.value = "";
             resetBtn.classList.add("hidden");
-            listItems.forEach(
-                (item) => ((item as HTMLElement).style.display = "block"),
-            );
+            listItems.forEach((item) => ((item as HTMLElement).style.display = "block"));
             searchInput.focus();
         });
 
-        // AGGIORNAMENTO LOGICA SELEZIONE NAZIONE CON EVENTO GLOBALE
         listItems.forEach((item) => {
             const link = item.querySelector(".disclosure__link") as HTMLElement;
             if (!link) return;
@@ -485,67 +275,36 @@ const countries = [
             link.addEventListener("click", (e) => {
                 e.preventDefault();
                 const countryCode = link.getAttribute("data-value") || "IT";
-                const countryName =
-                    link.querySelector(".country")?.textContent?.trim() || "";
-                const currencyName =
-                    link
-                        .querySelector(".localization-form__currency")
-                        ?.textContent?.trim() || "";
+                const countryName = link.querySelector(".country")?.textContent?.trim() || "";
+                const currencyName = link.querySelector(".localization-form__currency")?.textContent?.trim() || "";
 
-                // 1. Salva lo stato localmente
                 localStorage.setItem("user-country-code", countryCode);
                 localStorage.setItem("user-country-name", countryName);
                 localStorage.setItem("user-currency", currencyName);
 
-                // 2. Dispaccia l'evento globale per gli altri componenti
-                window.dispatchEvent(
-                    new CustomEvent("app:currency-change", {
-                        detail: {
-                            code: countryCode,
-                            name: countryName,
-                            currency: currencyName,
-                        },
-                    }),
-                );
-
+                window.dispatchEvent(new CustomEvent("app:currency-change", { detail: { code: countryCode, name: countryName, currency: currencyName } }));
                 toggleDropdown(false);
                 searchInput.value = "";
                 resetBtn.classList.add("hidden");
-                listItems.forEach(
-                    (i) => ((i as HTMLElement).style.display = "block"),
-                );
+                listItems.forEach((i) => ((i as HTMLElement).style.display = "block"));
             });
         });
 
-        // Sincronizza l'interfaccia grafica in base ai dati dell'evento (es. se cambiato dal footer)
-        const updateNavbarUI = (
-            code: string,
-            name: string,
-            currency: string,
-        ) => {
+        const updateNavbarUI = (code: string, name: string, currency: string) => {
             currentText.textContent = `${name} (${currency})`;
-            document
-                .querySelectorAll(".checkmark-wrapper")
-                .forEach((cw) => cw.classList.add("visibility-hidden"));
-            const activeLink = document.querySelector(
-                `#countryList .disclosure__link[data-value="${code}"]`,
-            );
-            activeLink
-                ?.querySelector(".checkmark-wrapper")
-                ?.classList.remove("visibility-hidden");
+            document.querySelectorAll(".checkmark-wrapper").forEach((cw) => cw.classList.add("visibility-hidden"));
+            const activeLink = document.querySelector(`#countryList .disclosure__link[data-value="${code}"]`);
+            activeLink?.querySelector(".checkmark-wrapper")?.classList.remove("visibility-hidden");
         };
 
-        // Ascolta i cambiamenti provenienti da altrove
         window.addEventListener("app:currency-change", (e: any) => {
             const { code, name, currency } = e.detail;
             updateNavbarUI(code, name, currency);
         });
 
-        // Inizializzazione allo stato salvato (on load)
         const savedCode = localStorage.getItem("user-country-code");
         const savedName = localStorage.getItem("user-country-name");
         const savedCurrency = localStorage.getItem("user-currency");
-
         if (savedCode && savedName && savedCurrency) { updateNavbarUI(savedCode, savedName, savedCurrency); }
     }
 
@@ -556,12 +315,10 @@ const countries = [
 
         if (!hamburger || !overlay) return;
 
-        // Reset to initial closed state on load/page transitions
         hamburger.classList.remove("active");
         overlay.classList.remove("active");
         document.body.style.overflow = "";
 
-        // If already initialized on this DOM element, skip binding to avoid duplicate listeners
         if (overlay.getAttribute("data-initialized") === "true") return;
         overlay.setAttribute("data-initialized", "true");
 
@@ -594,11 +351,9 @@ const countries = [
         });
     }
 
-    // Initial page load
     initAdvancedCurrencyPicker();
     initMobileMenu();
 
-    // Re-bind scripts when Astro view transition completes
     document.addEventListener("astro:page-load", () => {
         const overlay = document.getElementById("mobileMenuOverlay");
         if (overlay) {
@@ -610,275 +365,62 @@ const countries = [
 </script>
 
 <style>
-    .navbar {
-        background-color: #111111;
-        color: white;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 0 24px;
-        height: 70px;
-        font-family: sans-serif;
-        font-weight: bold;
-        font-size: 0.85rem;
-        letter-spacing: 1px;
-        border-bottom: 1px solid #1a1a1a;
-        position: relative;
-        z-index: 100;
-    }
-    .nav-left,
-    .nav-right,
-    .desktop-items {
-        display: flex;
-        align-items: center;
-        gap: 24px;
-    }
-    .navbar a {
-        color: white;
-        text-decoration: none;
-        transition: color 0.2s;
-    }
-    .navbar a:hover,
-    .icon-link:hover {
-        color: #ff9f00;
-    }
-    .icon-link {
-        color: white;
-        display: inline-flex;
-        align-items: center;
-    }
-    .btn-wagen {
-        border-left: 1px solid #333;
-        padding-left: 24px;
-    }
-    .logo-placeholder {
-        font-size: 1.2rem;
-        letter-spacing: 3px;
-        font-weight: 900;
-        text-transform: uppercase;
-    }
-    button.mobile-icon {
+    .navbar { background-color: #111111; color: white; display: flex; justify-content: space-between; align-items: center; padding: 0 24px; height: 70px; font-family: sans-serif; font-weight: bold; font-size: 0.85rem; letter-spacing: 1px; border-bottom: 1px solid #1a1a1a; position: relative; z-index: 100; }
+    .nav-left, .nav-right, .desktop-items { display: flex; align-items: center; gap: 24px; }
+    .navbar a { color: white; text-decoration: none; transition: color 0.2s; }
+    .navbar a:hover, .icon-link:hover { color: #ff9f00; }
+    .icon-link { color: white; display: inline-flex; align-items: center; }
+    .btn-wagen { border-left: 1px solid #333; padding-left: 24px; }
+    .logo-placeholder { font-size: 1.2rem; letter-spacing: 3px; font-weight: 900; text-transform: uppercase; }
+    .mobile-icon {
         background: none;
         border: none;
         color: white;
         cursor: pointer;
         display: none !important;
-    }
-    .currency-picker {
-        position: relative;
-        display: inline-block;
-    }
-    .currency-trigger {
-        background: transparent;
-        border: none;
-        color: white;
-        font-family: sans-serif;
-        font-size: 0.85rem;
-        font-weight: bold;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        gap: 6px;
-    }
-    .chevron-arrow {
-        font-size: 0.6rem;
-        transform: rotate(180deg);
-        transition: transform 0.2s;
-    }
-    .currency-trigger[aria-expanded="true"] .chevron-arrow {
-        transform: rotate(0deg);
-    }
-    .disclosure__list-wrapper {
-        position: absolute;
-        top: calc(100% + 15px);
-        right: 0;
-        background-color: #000000;
-        border: 1px solid #222;
-        width: 320px;
-        display: none;
-        flex-direction: column;
-        box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.7);
-        z-index: 999;
-    }
-    .disclosure__list-wrapper.active {
-        display: flex;
-    }
-    .country-filter {
-        display: flex;
-        align-items: center;
-        padding: 12px;
-        gap: 8px;
-        border-bottom: 1px solid #222;
-    }
-    .field {
-        position: relative;
-        flex-grow: 1;
-        display: flex;
-        align-items: center;
-    }
-    .field__input {
-        width: 100%;
-        background: #111;
-        border: 1px solid #444;
-        color: white;
-        padding: 8px 32px 8px 32px;
-        font-size: 0.85rem;
-        outline: none;
-    }
-    .field__input:focus {
-        border-color: #ff9f00;
-    }
-    .field__button {
-        position: absolute;
-        background: none;
-        border: none;
-        color: #888;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-    }
-    .country-filter__search-icon {
-        left: 10px;
-        pointer-events: none;
-    }
-    .country-filter__reset-button {
-        right: 10px;
-        color: white;
-    }
-    .country-filter__reset-button svg,
-    .country-filter__search-icon svg {
-        width: 14px;
-        height: 14px;
-    }
-    .country-selector__close-button {
-        background: none;
-        border: none;
-        color: #888;
-        cursor: pointer;
-        padding: 4px;
-    }
-    .country-selector__close-button:hover {
-        color: white;
-    }
-    .country-selector__close-button svg {
-        width: 16px;
-        height: 16px;
-    }
-    .disclosure__list {
-        max-height: 250px;
-        overflow-y: auto;
-    }
-    .list-unstyled {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-    }
-    .disclosure__link {
-        display: flex;
-        align-items: center;
-        padding: 10px 16px;
-        color: #ccc !important;
-        font-size: 0.9rem;
-        font-weight: normal;
-        transition: background 0.15s;
-    }
-    .disclosure__link:hover {
-        background-color: #161616;
-        color: white !important;
-    }
-    .checkmark-wrapper {
-        display: inline-flex;
+        text-decoration: none;
         align-items: center;
         justify-content: center;
-        width: 16px;
-        height: 16px;
-        margin-right: 12px;
-        color: #ff9f00;
-        flex-shrink: 0;
     }
-    .checkmark-wrapper svg {
-        width: 12px;
-        height: 12px;
-    }
-    .country {
-        flex-grow: 1;
-        text-align: left;
-    }
-    .localization-form__currency {
-        color: #666;
-        font-size: 0.8rem;
-        margin-left: 8px;
-    }
-    .hidden {
-        display: none !important;
-    }
-    .visibility-hidden {
-        opacity: 0;
-        pointer-events: none;
-    }
-    .disclosure__list::-webkit-scrollbar {
-        width: 6px;
-    }
-    .disclosure__list::-webkit-scrollbar-track {
-        background: #000;
-    }
-    .disclosure__list::-webkit-scrollbar-thumb {
-        background: #333;
-        border-radius: 3px;
-    }
-    .disclosure__list::-webkit-scrollbar-thumb:hover {
-        background: #555;
-    }
+    .currency-picker { position: relative; display: inline-block; }
+    .currency-trigger { background: transparent; border: none; color: white; font-family: sans-serif; font-size: 0.85rem; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 6px; }
+    .chevron-arrow { font-size: 0.6rem; transform: rotate(180deg); transition: transform 0.2s; }
+    .currency-trigger[aria-expanded="true"] .chevron-arrow { transform: rotate(0deg); }
+    .disclosure__list-wrapper { position: absolute; top: calc(100% + 15px); right: 0; background-color: #000000; border: 1px solid #222; width: 320px; display: none; flex-direction: column; box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.7); z-index: 999; }
+    .disclosure__list-wrapper.active { display: flex; }
+    .country-filter { display: flex; align-items: center; padding: 12px; gap: 8px; border-bottom: 1px solid #222; }
+    .field { position: relative; flex-grow: 1; display: flex; align-items: center; }
+    .field__input { width: 100%; background: #111; border: 1px solid #444; color: white; padding: 8px 32px 8px 32px; font-size: 0.85rem; outline: none; }
+    .field__input:focus { border-color: #ff9f00; }
+    .field__button { position: absolute; background: none; border: none; color: #888; cursor: pointer; display: flex; align-items: center; }
+    .country-filter__search-icon { left: 10px; pointer-events: none; }
+    .country-filter__reset-button { right: 10px; color: white; }
+    .country-filter__reset-button svg, .country-filter__search-icon svg { width: 14px; height: 14px; }
+    .country-selector__close-button { background: none; border: none; color: #888; cursor: pointer; padding: 4px; }
+    .country-selector__close-button:hover { color: white; }
+    .country-selector__close-button svg { width: 16px; height: 16px; }
+    .disclosure__list { max-height: 250px; overflow-y: auto; }
+    .list-unstyled { list-style: none; padding: 0; margin: 0; }
+    .disclosure__link { display: flex; align-items: center; padding: 10px 16px; color: #ccc !important; font-size: 0.9rem; font-weight: normal; transition: background 0.15s; }
+    .disclosure__link:hover { background-color: #161616; color: white !important; }
+    .checkmark-wrapper { display: inline-flex; align-items: center; justify-content: center; width: 16px; height: 16px; margin-right: 12px; color: #ff9f00; flex-shrink: 0; }
+    .checkmark-wrapper svg { width: 12px; height: 12px; }
+    .country { flex-grow: 1; text-align: left; }
+    .localization-form__currency { color: #666; font-size: 0.8rem; margin-left: 8px; }
+    .hidden { display: none !important; }
+    .visibility-hidden { opacity: 0; pointer-events: none; }
+    .disclosure__list::-webkit-scrollbar { width: 6px; }
+    .disclosure__list::-webkit-scrollbar-track { background: #000; }
+    .disclosure__list::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
+    .disclosure__list::-webkit-scrollbar-thumb:hover { background: #555; }
 
-    /* STILI: Dropdown Generici (Vestiario e Accessori) */
-    .dropdown {
-        position: relative;
-        display: inline-block;
-    }
-    .dropdown-trigger {
-        cursor: pointer;
-    }
-    .dropdown-menu {
-        position: absolute;
-        top: calc(100% + 15px);
-        left: 0;
-        background-color: #000000;
-        border: 1px solid #222;
-        min-width: 180px;
-        display: none;
-        flex-direction: column;
-        box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.7);
-        z-index: 999;
-        padding: 6px 0;
-    }
-    .dropdown-menu a {
-        padding: 10px 16px;
-        color: #ccc !important;
-        font-size: 0.8rem;
-        font-weight: normal;
-        letter-spacing: 0.5px;
-        text-transform: none;
-        display: block;
-        transition:
-            background 0.15s,
-            color 0.15s;
-    }
-    .dropdown-menu a:hover {
-        background-color: #161616;
-        color: #ff9f00 !important;
-    }
-    .dropdown:hover .dropdown-menu {
-        display: flex;
-    }
-    /* Area cuscinetto invisibile per evitare la chiusura del menù quando ci si sposta con il mouse */
-    .dropdown::after {
-        content: "";
-        position: absolute;
-        top: 100%;
-        left: 0;
-        width: 100%;
-        height: 18px;
-    }
+    .dropdown { position: relative; display: inline-block; }
+    .dropdown-trigger { cursor: pointer; }
+    .dropdown-menu { position: absolute; top: calc(100% + 15px); left: 0; background-color: #000000; border: 1px solid #222; min-width: 180px; display: none; flex-direction: column; box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.7); z-index: 999; padding: 6px 0; }
+    .dropdown-menu a { padding: 10px 16px; color: #ccc !important; font-size: 0.8rem; font-weight: normal; letter-spacing: 0.5px; text-transform: none; display: block; transition: background 0.15s, color 0.15s; }
+    .dropdown-menu a:hover { background-color: #161616; color: #ff9f00 !important; }
+    .dropdown:hover .dropdown-menu { display: flex; }
+    .dropdown::after { content: ""; position: absolute; top: 100%; left: 0; width: 100%; height: 18px; }
 
     /* Hamburger to X transition */
     .menu-hamburger svg line {
@@ -1017,7 +559,7 @@ const countries = [
 
     @media (max-width: 1024px) {
         .desktop-items { display: none !important; }
-        button.mobile-icon { display: inline-flex !important; }
+        .mobile-icon { display: inline-flex !important; }
         .navbar { padding: 0 16px; height: 60px; }
         .logo-placeholder { font-size: 1rem; }
         .nav-left, .nav-right { gap: 16px; }

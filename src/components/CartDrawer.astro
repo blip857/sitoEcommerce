@@ -22,12 +22,12 @@
 
 <script>
     function initCartDrawer() {
-        const cartBtn = document.querySelector(".btn-wagen");
+        const cartBtns = document.querySelectorAll(".btn-wagen, .btn-cart");
         const cartDrawer = document.getElementById("cartDrawer");
         const cartOverlay = document.getElementById("cartOverlay");
         const cartClose = document.querySelector(".cart-close");
 
-        if (!cartBtn || !cartDrawer || !cartOverlay || !cartClose) return;
+        if (!cartDrawer || !cartOverlay || !cartClose) return;
 
         // Impedisce la registrazione di listener duplicati durante la navigazione Astro (View Transitions)
         if (cartDrawer.getAttribute("data-initialized") === "true") return;
@@ -46,7 +46,10 @@
             document.body.style.overflow = "";
         };
 
-        cartBtn.addEventListener("click", openCart);
+        cartBtns.forEach(btn => {
+            btn.addEventListener("click", openCart);
+        });
+
         cartClose.addEventListener("click", closeCart);
         cartOverlay.addEventListener("click", closeCart);
 
