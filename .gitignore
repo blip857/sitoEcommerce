@@ -34,3 +34,6 @@ desktop.ini
 *.njsproj
 *.sln
 *.swp
+
+# AI development private logs
+.ai-logs/

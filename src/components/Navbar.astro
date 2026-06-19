@@ -1,5 +1,6 @@
 ---
 // CONFIGURAZIONE ASTRO: Lista dei Paesi (Sincronizzata e in Italiano)
+import CartDrawer from './CartDrawer.astro';
 const countries = [
     { code: "IT", englishName: "Italy", name: "Italia", currency: "EUR €" },
     {
@@ -351,6 +352,8 @@ const countries = [
         </div>
     </div>
 </nav>
+
+<CartDrawer />
 
 <!-- MOBILE MENU OVERLAY -->
 <div class="mobile-menu-overlay" id="mobileMenuOverlay">
