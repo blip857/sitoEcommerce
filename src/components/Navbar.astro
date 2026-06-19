@@ -352,6 +352,51 @@ const countries = [
     </div>
 </nav>
 
+<!-- MOBILE MENU OVERLAY -->
+<div class="mobile-menu-overlay" id="mobileMenuOverlay">
+    <div class="mobile-menu-items">
+        <!-- VESTIARIO ACCORDION -->
+        <div class="mobile-menu-item">
+            <div class="menu-row">
+                <a href="#">VESTIARIO</a>
+                <button class="submenu-toggle" aria-label="Espandi sottomenù Vestiario" aria-expanded="false">
+                    <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" class="chevron-icon">
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                    </svg>
+                </button>
+            </div>
+            <div class="mobile-submenu">
+                <a href="#">Magliette</a>
+                <a href="#">Felpe</a>
+                <a href="#">Visualizza tutto</a>
+            </div>
+        </div>
+
+        <!-- ACCESSORI ACCORDION -->
+        <div class="mobile-menu-item">
+            <div class="menu-row">
+                <a href="#">ACCESSORI</a>
+                <button class="submenu-toggle" aria-label="Espandi sottomenù Accessori" aria-expanded="false">
+                    <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" class="chevron-icon">
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                    </svg>
+                </button>
+            </div>
+            <div class="mobile-submenu">
+                <a href="#">Berretti</a>
+                <a href="#">Adesivi</a>
+            </div>
+        </div>
+
+        <!-- CONTATTI LINK -->
+        <div class="mobile-menu-item">
+            <div class="menu-row">
+                <a href="#">CONTATTI</a>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
     function initAdvancedCurrencyPicker() {
         const btn = document.getElementById("currencyBtn");
@@ -498,13 +543,67 @@ const countries = [
         const savedName = localStorage.getItem("user-country-name");
         const savedCurrency = localStorage.getItem("user-currency");
 
-        if (savedCode && savedName && savedCurrency) {
-            updateNavbarUI(savedCode, savedName, savedCurrency);
-        }
+        if (savedCode && savedName && savedCurrency) { updateNavbarUI(savedCode, savedName, savedCurrency); }
     }
 
+    function initMobileMenu() {
+        const hamburger = document.querySelector(".menu-hamburger");
+        const overlay = document.getElementById("mobileMenuOverlay");
+        const toggles = document.querySelectorAll(".submenu-toggle");
+
+        if (!hamburger || !overlay) return;
+
+        // Reset to initial closed state on load/page transitions
+        hamburger.classList.remove("active");
+        overlay.classList.remove("active");
+        document.body.style.overflow = "";
+
+        // If already initialized on this DOM element, skip binding to avoid duplicate listeners
+        if (overlay.getAttribute("data-initialized") === "true") return;
+        overlay.setAttribute("data-initialized", "true");
+
+        hamburger.addEventListener("click", () => {
+            const isActive = hamburger.classList.toggle("active");
+            overlay.classList.toggle("active");
+            if (isActive) {
+                document.body.style.overflow = "hidden";
+            } else {
+                document.body.style.overflow = "";
+            }
+        });
+
+        toggles.forEach(toggle => {
+            toggle.addEventListener("click", (e) => {
+                e.stopPropagation();
+                const parent = toggle.closest(".mobile-menu-item");
+                const submenu = parent?.querySelector(".mobile-submenu") as HTMLElement;
+                if (parent && submenu) {
+                    const isOpen = parent.classList.toggle("open");
+                    if (isOpen) {
+                        submenu.style.maxHeight = submenu.scrollHeight + "px";
+                        toggle.setAttribute("aria-expanded", "true");
+                    } else {
+                        submenu.style.maxHeight = "0px";
+                        toggle.setAttribute("aria-expanded", "false");
+                    }
+                }
+            });
+        });
+    }
+
+    // Initial page load
     initAdvancedCurrencyPicker();
-    document.addEventListener("astro:page-load", initAdvancedCurrencyPicker);
+    initMobileMenu();
+
+    // Re-bind scripts when Astro view transition completes
+    document.addEventListener("astro:page-load", () => {
+        const overlay = document.getElementById("mobileMenuOverlay");
+        if (overlay) {
+            overlay.removeAttribute("data-initialized");
+        }
+        initAdvancedCurrencyPicker();
+        initMobileMenu();
+    });
 </script>
 
 <style>
@@ -778,23 +877,146 @@ const countries = [
         height: 18px;
     }
 
-    @media (max-width: 1024px) {
-        .desktop-items {
+    /* Hamburger to X transition */
+    .menu-hamburger svg line {
+        transition: transform 0.3s ease, opacity 0.3s ease;
+        transform-origin: 12px 12px;
+    }
+    .menu-hamburger.active svg line:nth-child(1) {
+        transform: translateY(6px) rotate(45deg);
+    }
+    .menu-hamburger.active svg line:nth-child(2) {
+        opacity: 0;
+    }
+    .menu-hamburger.active svg line:nth-child(3) {
+        transform: translateY(-6px) rotate(-45deg);
+    }
+
+    /* Mobile Menu Overlay */
+    .mobile-menu-overlay {
+        position: fixed;
+        top: 60px;
+        left: 0;
+        width: 100%;
+        height: calc(100vh - 60px);
+        height: calc(100dvh - 60px);
+        background-color: #111111;
+        z-index: 90;
+        transform: translateX(-100%);
+        transition: transform 0.3s ease-in-out;
+        overflow-y: auto;
+        padding: 24px;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .mobile-menu-overlay.active {
+        transform: translateX(0);
+    }
+
+    @media (min-width: 1025px) {
+        .mobile-menu-overlay {
             display: none !important;
         }
-        button.mobile-icon {
-            display: inline-flex !important;
-        }
-        .navbar {
-            padding: 0 16px;
-            height: 60px;
-        }
-        .logo-placeholder {
-            font-size: 1rem;
-        }
-        .nav-left,
-        .nav-right {
-            gap: 16px;
-        }
+    }
+
+    /* Accordion Menu */
+    .mobile-menu-items {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .mobile-menu-item {
+        border-bottom: 1px solid #222;
+    }
+
+    .menu-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 18px 0;
+    }
+
+    .menu-row a {
+        font-family: sans-serif;
+        font-size: 1rem;
+        font-weight: bold;
+        letter-spacing: 1.5px;
+        color: white;
+        text-decoration: none;
+        text-transform: uppercase;
+        flex-grow: 1;
+        transition: color 0.2s;
+    }
+
+    .menu-row a:hover {
+        color: #ff9f00;
+    }
+
+    .submenu-toggle {
+        background: none;
+        border: none;
+        color: white;
+        cursor: pointer;
+        padding: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: color 0.2s;
+    }
+
+    .submenu-toggle:hover {
+        color: #ff9f00;
+    }
+
+    .chevron-icon {
+        transition: transform 0.3s ease;
+    }
+
+    .mobile-menu-item.open .chevron-icon {
+        transform: rotate(180deg);
+    }
+
+    .mobile-submenu {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease-out;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        padding-left: 16px;
+    }
+
+    .mobile-submenu a {
+        font-family: sans-serif;
+        font-size: 0.9rem;
+        font-weight: normal;
+        color: #888;
+        text-decoration: none;
+        padding: 6px 0;
+        transition: color 0.2s, padding-left 0.2s;
+    }
+
+    .mobile-submenu a:hover {
+        color: #ff9f00;
+        padding-left: 4px;
+    }
+
+    .mobile-submenu a:first-child {
+        padding-top: 2px;
+    }
+
+    .mobile-submenu a:last-child {
+        padding-bottom: 18px;
+    }
+
+    @media (max-width: 1024px) {
+        .desktop-items { display: none !important; }
+        button.mobile-icon { display: inline-flex !important; }
+        .navbar { padding: 0 16px; height: 60px; }
+        .logo-placeholder { font-size: 1rem; }
+        .nav-left, .nav-right { gap: 16px; }
     }
 </style>

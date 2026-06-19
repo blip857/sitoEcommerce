@@ -1,5 +1,6 @@
 # build output
 dist/
+
 # generated types
 .astro/
 
@@ -12,13 +13,24 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 
-
 # environment variables
 .env
 .env.production
+.env.local
+
+# Windows-specific files (Aggiunto per il tuo sistema)
+Thumbs.db
+desktop.ini
+*.lnk
 
 # macOS-specific files
 .DS_Store
 
-# jetbrains setting folder
+# IDEs and Editors (Aggiunto per VS Code)
 .idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp
