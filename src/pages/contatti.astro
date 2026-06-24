@@ -46,19 +46,19 @@ import SocialConnect from "../components/SocialConnect.astro";
           <form class="contact-form" onsubmit="event.preventDefault();">
             <div class="form-row">
               <div class="form-group half-width">
-                <input type="text" id="name" name="name" placeholder="Nome *" required minlength="2" class="form-input" />
+                <input type="text" id="name" name="name" placeholder="Nome *" required minlength="2" pattern="[a-zA-ZÀ-ÿ\s]{2,50}" title="Il nome deve contenere solo lettere e spazi (tra 2 e 50 caratteri)." class="form-input" />
               </div>
               <div class="form-group half-width">
-                <input type="email" id="email" name="email" placeholder="Email *" required class="form-input" />
+                <input type="email" id="email" name="email" placeholder="Email *" required pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}" title="Inserisci un indirizzo email valido (es. nome@dominio.it)." class="form-input" />
               </div>
             </div>
 
             <div class="form-group full-width">
-              <input type="tel" id="phone" name="phone" placeholder="Numero di telefono" class="form-input" />
+              <input type="tel" id="phone" name="phone" placeholder="Numero di telefono" pattern="[\+]?[0-9\s\-]{6,20}" title="Il numero di telefono può contenere solo numeri, spazi, trattini e l'eventuale '+' iniziale (tra 6 e 20 caratteri)." class="form-input" />
             </div>
 
             <div class="form-group full-width">
-              <textarea id="comment" name="comment" rows="6" placeholder="Commento *" required minlength="15" class="form-input text-area"></textarea>
+              <textarea id="comment" name="comment" rows="6" placeholder="Commento *" required minlength="15" title="Il commento deve contenere almeno 15 caratteri." class="form-input text-area"></textarea>
             </div>
 
             <div class="form-submit">
@@ -187,6 +187,12 @@ import SocialConnect from "../components/SocialConnect.astro";
     outline: none;
     border-color: #666666;
     background-color: #222222;
+  }
+
+  /* Red border and light red background for invalid input values that are partially filled */
+  .form-input:invalid:not(:placeholder-shown) {
+    border-color: #ff4d4d;
+    background-color: #241515;
   }
 
   .text-area {
