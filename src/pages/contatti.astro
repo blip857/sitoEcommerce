@@ -2,6 +2,19 @@
 import Navbar from "../components/Navbar.astro";
 import Footer from "../components/Footer.astro";
 import SocialConnect from "../components/SocialConnect.astro";
+
+const countries = [
+  { code: "IT", name: "Italia", prefix: "+39", minDigits: 9, maxDigits: 10 },
+  { code: "US", name: "Stati Uniti", prefix: "+1", minDigits: 10, maxDigits: 10 },
+  { code: "GB", name: "Regno Unito", prefix: "+44", minDigits: 10, maxDigits: 10 },
+  { code: "FR", name: "Francia", prefix: "+33", minDigits: 9, maxDigits: 9 },
+  { code: "DE", name: "Germania", prefix: "+49", minDigits: 10, maxDigits: 11 },
+  { code: "ES", name: "Spagna", prefix: "+34", minDigits: 9, maxDigits: 9 },
+  { code: "NL", name: "Paesi Bassi", prefix: "+31", minDigits: 9, maxDigits: 9 },
+  { code: "BE", name: "Belgio", prefix: "+32", minDigits: 9, maxDigits: 9 },
+  { code: "CH", name: "Svizzera", prefix: "+41", minDigits: 9, maxDigits: 9 },
+  { code: "AT", name: "Austria", prefix: "+43", minDigits: 4, maxDigits: 13 }
+];
 ---
 
 <html lang="it">
@@ -56,14 +69,15 @@ import SocialConnect from "../components/SocialConnect.astro";
             <div class="form-group full-width">
               <div class="phone-input-group">
                 <select id="phone-prefix" name="phone-prefix" class="form-select" aria-label="Prefisso internazionale">
-                  <option value="+39" selected>+39 (IT)</option>
-                  <option value="+1">+1 (US)</option>
-                  <option value="+44">+44 (GB)</option>
-                  <option value="+33">+33 (FR)</option>
-                  <option value="+34">+34 (ES)</option>
+                  {countries.map((country) => (
+                    <option value={country.prefix} data-min={country.minDigits} data-max={country.maxDigits} selected={country.code === "IT"}>
+                      {country.prefix} ({country.code}) - {country.minDigits === country.maxDigits ? `${country.minDigits} cifre` : `${country.minDigits}-${country.maxDigits} cifre`}
+                    </option>
+                  ))}
                 </select>
-                <input type="tel" id="phone" name="phone" placeholder="Numero di telefono" pattern="[0-9]{6,15}" inputmode="numeric" title="Il numero di telefono deve contenere solo cifre numeriche (tra 6 e 15 cifre)." class="form-input phone-number-input" />
+                <input type="tel" id="phone" name="phone" placeholder="Numero di telefono" pattern="[0-9]{4,15}" inputmode="numeric" title="Il numero di telefono deve contenere solo cifre numeriche." class="form-input phone-number-input" />
               </div>
+              <span class="error-message" id="phone-error" style="display: none;">Il numero di telefono non corrisponde alla lunghezza richiesta per questo paese.</span>
             </div>
 
             <div class="form-group full-width">
@@ -214,6 +228,13 @@ import SocialConnect from "../components/SocialConnect.astro";
 
   .phone-number-input {
     flex: 1;
+  }
+
+  .error-message {
+    color: #ff4d4d;
+    font-size: 0.8rem;
+    margin-top: 6px;
+    font-family: inherit;
   }
 
   .form-input::placeholder {
