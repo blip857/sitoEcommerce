@@ -31,33 +31,46 @@ import SocialConnect from "../components/SocialConnect.astro";
     <main class="contact-container">
       <h1 class="contact-title">Contatti</h1>
 
-      <!-- Contact Form -->
-      <form class="contact-form" onsubmit="event.preventDefault();">
-        <div class="form-row">
-          <div class="form-group half-width">
-            <input type="text" id="name" name="name" placeholder="Nome" class="form-input" />
-          </div>
-          <div class="form-group half-width">
-            <input type="email" id="email" name="email" placeholder="Email *" required class="form-input" />
-          </div>
+      <!-- Two-column grid container -->
+      <div class="contact-grid">
+        <!-- Left Column: Text Content -->
+        <div class="contact-info">
+          <h2 class="info-heading">Scrivici un messaggio</h2>
+          <p class="info-description">
+            Saremo lieti di prendere in carico la sua richiesta e la contatteremo al più presto.
+          </p>
         </div>
 
-        <div class="form-group full-width">
-          <input type="tel" id="phone" name="phone" placeholder="Numero di telefono" class="form-input" />
-        </div>
+        <!-- Right Column: Contact Form -->
+        <div class="contact-form-wrapper">
+          <form class="contact-form" onsubmit="event.preventDefault();">
+            <div class="form-row">
+              <div class="form-group half-width">
+                <input type="text" id="name" name="name" placeholder="Nome" class="form-input" />
+              </div>
+              <div class="form-group half-width">
+                <input type="email" id="email" name="email" placeholder="Email *" required class="form-input" />
+              </div>
+            </div>
 
-        <div class="form-group full-width">
-          <textarea id="comment" name="comment" rows="6" placeholder="Commento" class="form-input text-area"></textarea>
-        </div>
+            <div class="form-group full-width">
+              <input type="tel" id="phone" name="phone" placeholder="Numero di telefono" class="form-input" />
+            </div>
 
-        <div class="form-submit">
-          <button type="submit" class="submit-button">Invia</button>
-        </div>
-      </form>
+            <div class="form-group full-width">
+              <textarea id="comment" name="comment" rows="6" placeholder="Commento" class="form-input text-area"></textarea>
+            </div>
 
-      <!-- Newsletter block as shown in the mockup -->
+            <div class="form-submit">
+              <button type="submit" class="submit-button">Invia</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- Newsletter block with translated header -->
       <div class="newsletter-section">
-        <h2 class="newsletter-title">Subscribe to our emails</h2>
+        <h2 class="newsletter-title">Iscriviti alle nostre e-mail</h2>
         <div class="newsletter-form">
           <input type="email" placeholder="Email" class="newsletter-input" />
           <button type="button" class="newsletter-button" aria-label="Subscribe">
@@ -81,7 +94,7 @@ import SocialConnect from "../components/SocialConnect.astro";
 <style>
   /* Container layout styling */
   .contact-container {
-    max-width: 820px;
+    max-width: 960px;
     margin: 80px auto;
     padding: 0 24px;
   }
@@ -92,16 +105,47 @@ import SocialConnect from "../components/SocialConnect.astro";
     font-weight: 300;
     text-transform: uppercase;
     letter-spacing: 0.1em;
-    margin-bottom: 48px;
+    margin-bottom: 56px;
     color: #ffffff;
   }
 
-  /* Form grid and spacing */
+  /* Two-column grid layout */
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 64px;
+    align-items: start;
+    margin-bottom: 64px;
+  }
+
+  /* Left column styling */
+  .contact-info {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .info-heading {
+    font-size: 1.4rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #ffffff;
+    margin: 0;
+  }
+
+  .info-description {
+    font-size: 1.05rem;
+    line-height: 1.6;
+    color: #b0b0b0;
+    margin: 0;
+  }
+
+  /* Form grid and spacing (right column) */
   .contact-form {
     display: flex;
     flex-direction: column;
     gap: 16px;
-    margin-bottom: 64px;
   }
 
   .form-row {
@@ -176,7 +220,7 @@ import SocialConnect from "../components/SocialConnect.astro";
   .newsletter-section {
     border-top: 1px solid #222222;
     padding-top: 48px;
-    margin-top: 48px;
+    margin-top: 64px;
     display: flex;
     flex-direction: column;
     gap: 20px;
@@ -245,6 +289,12 @@ import SocialConnect from "../components/SocialConnect.astro";
     .contact-title {
       font-size: 2.2rem;
       margin-bottom: 32px;
+    }
+
+    .contact-grid {
+      grid-template-columns: 1fr;
+      gap: 40px;
+      margin-bottom: 48px;
     }
 
     .form-row {
