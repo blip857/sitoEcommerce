@@ -54,7 +54,16 @@ import SocialConnect from "../components/SocialConnect.astro";
             </div>
 
             <div class="form-group full-width">
-              <input type="tel" id="phone" name="phone" placeholder="Numero di telefono" pattern="[\+]?[0-9\s\-]{6,20}" title="Il numero di telefono può contenere solo numeri, spazi, trattini e l'eventuale '+' iniziale (tra 6 e 20 caratteri)." class="form-input" />
+              <div class="phone-input-group">
+                <select id="phone-prefix" name="phone-prefix" class="form-select" aria-label="Prefisso internazionale">
+                  <option value="+39" selected>+39 (IT)</option>
+                  <option value="+1">+1 (US)</option>
+                  <option value="+44">+44 (GB)</option>
+                  <option value="+33">+33 (FR)</option>
+                  <option value="+34">+34 (ES)</option>
+                </select>
+                <input type="tel" id="phone" name="phone" placeholder="Numero di telefono" pattern="[0-9]{6,15}" inputmode="numeric" title="Il numero di telefono deve contenere solo cifre numeriche (tra 6 e 15 cifre)." class="form-input phone-number-input" />
+              </div>
             </div>
 
             <div class="form-group full-width">
@@ -177,6 +186,34 @@ import SocialConnect from "../components/SocialConnect.astro";
     font-size: 0.95rem;
     font-family: inherit;
     transition: border-color 0.3s ease, background-color 0.3s ease;
+  }
+
+  .phone-input-group {
+    display: flex;
+    gap: 8px;
+    width: 100%;
+  }
+
+  .form-select {
+    background-color: #1a1a1a;
+    border: 1px solid #333333;
+    color: #ffffff;
+    padding: 16px 12px;
+    font-size: 0.95rem;
+    font-family: inherit;
+    transition: border-color 0.3s ease, background-color 0.3s ease;
+    cursor: pointer;
+    min-width: 110px;
+  }
+
+  .form-select:focus {
+    outline: none;
+    border-color: #666666;
+    background-color: #222222;
+  }
+
+  .phone-number-input {
+    flex: 1;
   }
 
   .form-input::placeholder {
