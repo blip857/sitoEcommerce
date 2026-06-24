@@ -46,7 +46,7 @@ import SocialConnect from "../components/SocialConnect.astro";
           <form class="contact-form" onsubmit="event.preventDefault();">
             <div class="form-row">
               <div class="form-group half-width">
-                <input type="text" id="name" name="name" placeholder="Nome" class="form-input" />
+                <input type="text" id="name" name="name" placeholder="Nome *" required minlength="2" class="form-input" />
               </div>
               <div class="form-group half-width">
                 <input type="email" id="email" name="email" placeholder="Email *" required class="form-input" />
@@ -58,7 +58,7 @@ import SocialConnect from "../components/SocialConnect.astro";
             </div>
 
             <div class="form-group full-width">
-              <textarea id="comment" name="comment" rows="6" placeholder="Commento" class="form-input text-area"></textarea>
+              <textarea id="comment" name="comment" rows="6" placeholder="Commento *" required minlength="15" class="form-input text-area"></textarea>
             </div>
 
             <div class="form-submit">
