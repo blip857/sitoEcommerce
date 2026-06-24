@@ -10,10 +10,34 @@ const countries = [
   { code: "FR", name: "Francia", prefix: "+33", minDigits: 9, maxDigits: 9 },
   { code: "DE", name: "Germania", prefix: "+49", minDigits: 10, maxDigits: 11 },
   { code: "ES", name: "Spagna", prefix: "+34", minDigits: 9, maxDigits: 9 },
-  { code: "NL", name: "Paesi Bassi", prefix: "+31", minDigits: 9, maxDigits: 9 },
+  { code: "AF", name: "Afghanistan", prefix: "+93", minDigits: 9, maxDigits: 9 },
+  { code: "AX", name: "Isole Åland", prefix: "+358", minDigits: 5, maxDigits: 12 },
+  { code: "AL", name: "Albania", prefix: "+355", minDigits: 9, maxDigits: 9 },
+  { code: "DZ", name: "Algeria", prefix: "+213", minDigits: 9, maxDigits: 9 },
+  { code: "AD", name: "Andorra", prefix: "+376", minDigits: 6, maxDigits: 6 },
+  { code: "AO", name: "Angola", prefix: "+244", minDigits: 9, maxDigits: 9 },
+  { code: "AI", name: "Anguilla", prefix: "+1", minDigits: 7, maxDigits: 7 },
+  { code: "AG", name: "Antigua e Barbuda", prefix: "+1", minDigits: 7, maxDigits: 7 },
+  { code: "AR", name: "Argentina", prefix: "+54", minDigits: 10, maxDigits: 10 },
+  { code: "AM", name: "Armenia", prefix: "+374", minDigits: 8, maxDigits: 8 },
+  { code: "AW", name: "Aruba", prefix: "+297", minDigits: 7, maxDigits: 7 },
+  { code: "AU", name: "Australia", prefix: "+61", minDigits: 9, maxDigits: 9 },
+  { code: "AT", name: "Austria", prefix: "+43", minDigits: 4, maxDigits: 13 },
+  { code: "AZ", name: "Azerbaijan", prefix: "+994", minDigits: 9, maxDigits: 9 },
+  { code: "BS", name: "Bahamas", prefix: "+1", minDigits: 7, maxDigits: 7 },
+  { code: "BH", name: "Bahrain", prefix: "+973", minDigits: 8, maxDigits: 8 },
+  { code: "BD", name: "Bangladesh", prefix: "+880", minDigits: 10, maxDigits: 10 },
+  { code: "BB", name: "Barbados", prefix: "+1", minDigits: 7, maxDigits: 7 },
+  { code: "BY", name: "Bielorussia", prefix: "+375", minDigits: 9, maxDigits: 9 },
   { code: "BE", name: "Belgio", prefix: "+32", minDigits: 9, maxDigits: 9 },
+  { code: "BZ", name: "Belize", prefix: "+501", minDigits: 7, maxDigits: 7 },
+  { code: "BJ", name: "Benin", prefix: "+229", minDigits: 8, maxDigits: 8 },
+  { code: "BM", name: "Bermuda", prefix: "+1", minDigits: 7, maxDigits: 7 },
+  { code: "BT", name: "Bhutan", prefix: "+975", minDigits: 8, maxDigits: 8 },
+  { code: "BO", name: "Bolivia", prefix: "+591", minDigits: 8, maxDigits: 8 },
+  { code: "BA", name: "Bosnia ed Erzegovina", prefix: "+387", minDigits: 8, maxDigits: 9 },
   { code: "CH", name: "Svizzera", prefix: "+41", minDigits: 9, maxDigits: 9 },
-  { code: "AT", name: "Austria", prefix: "+43", minDigits: 4, maxDigits: 13 }
+  { code: "JP", name: "Giappone", prefix: "+81", minDigits: 9, maxDigits: 10 }
 ];
 ---
 
@@ -71,7 +95,7 @@ const countries = [
                 <select id="phone-prefix" name="phone-prefix" class="form-select" aria-label="Prefisso internazionale">
                   {countries.map((country) => (
                     <option value={country.prefix} data-min={country.minDigits} data-max={country.maxDigits} selected={country.code === "IT"}>
-                      {country.prefix} ({country.code}) - {country.minDigits === country.maxDigits ? `${country.minDigits} cifre` : `${country.minDigits}-${country.maxDigits} cifre`}
+                      {country.prefix} ({country.code})
                     </option>
                   ))}
                 </select>
