@@ -1,43 +1,7 @@
 ---
-// CONFIGURAZIONE ASTRO: Lista dei Paesi (Sincronizzata e in Italiano)
+// Source of Truth: all country/currency data is imported from the central SSoT registry.
 import CartDrawer from './CartDrawer.astro';
-
-const countries = [
-    { code: "IT", englishName: "Italy", name: "Italia", currency: "EUR €" },
-    { code: "US", englishName: "UnitedStates", name: "Stati Uniti", currency: "USD $" },
-    { code: "GB", englishName: "UnitedKingdom", name: "Regno Unito", currency: "GBP £" },
-    { code: "FR", englishName: "France", name: "Francia", currency: "EUR €" },
-    { code: "DE", englishName: "Germany", name: "Germania", currency: "EUR €" },
-    { code: "ES", englishName: "Spain", name: "Spagna", currency: "EUR €" },
-    { code: "AF", englishName: "Afghanistan", name: "Afghanistan", currency: "USD $" },
-    { code: "AX", englishName: "AlandIslands", name: "Isole Åland", currency: "USD $" },
-    { code: "AL", englishName: "Albania", name: "Albania", currency: "ALL L" },
-    { code: "DZ", englishName: "Algeria", name: "Algeria", currency: "DZD د.ج" },
-    { code: "AD", englishName: "Andorra", name: "Andorra", currency: "EUR €" },
-    { code: "AO", englishName: "Angola", name: "Angola", currency: "AOA Kz" },
-    { code: "AI", englishName: "Anguilla", name: "Anguilla", currency: "XCD $" },
-    { code: "AG", englishName: "AntiguaBarbuda", name: "Antigua e Barbuda", currency: "XCD $" },
-    { code: "AR", englishName: "Argentina", name: "Argentina", currency: "ARS $" },
-    { code: "AM", englishName: "Armenia", name: "Armenia", currency: "AMD ֏" },
-    { code: "AW", englishName: "Aruba", name: "Aruba", currency: "AWG ƒ" },
-    { code: "AU", englishName: "Australia", name: "Australia", currency: "AUD $" },
-    { code: "AT", englishName: "Austria", name: "Austria", currency: "EUR €" },
-    { code: "AZ", englishName: "Azerbaijan", name: "Azerbaijan", currency: "AZN ₼" },
-    { code: "BS", englishName: "Bahamas", name: "Bahamas", currency: "BSD $" },
-    { code: "BH", englishName: "Bahrain", name: "Bahrain", currency: "BHD .د.b" },
-    { code: "BD", englishName: "Bangladesh", name: "Bangladesh", currency: "BDT ৳" },
-    { code: "BB", englishName: "Barbados", name: "Barbados", currency: "BBD $" },
-    { code: "BY", englishName: "Belarus", name: "Bielorussia", currency: "BYN Br" },
-    { code: "BE", englishName: "Belgium", name: "Belgio", currency: "EUR €" },
-    { code: "BZ", englishName: "Belize", name: "Belize", currency: "BZD Z$" },
-    { code: "BJ", englishName: "Benin", name: "Benin", currency: "XOF Fr" },
-    { code: "BM", englishName: "Bermuda", name: "Bermuda", currency: "BMD $" },
-    { code: "BT", englishName: "Bhutan", name: "Bhutan", currency: "BTN Nu." },
-    { code: "BO", englishName: "Bolivia", name: "Bolivia", currency: "BOB $b" },
-    { code: "BA", englishName: "BosniaHerzegovina", name: "Bosnia ed Erzegovina", currency: "BAM KM" },
-    { code: "CH", englishName: "Switzerland", name: "Svizzera", currency: "CHF CHF" },
-    { code: "JP", englishName: "Japan", name: "Giappone", currency: "JPY ¥" },
-];
+import { ECOMMERCE_REGISTRY } from '../config/ecommerce.config';
 ---
 
 <nav class="navbar">
@@ -127,7 +91,7 @@ const countries = [
 
                     <div class="disclosure__list country-selector__list">
                         <ul role="list" class="list-unstyled countries" id="countryList">
-                            {countries.map((country) => (
+                            {ECOMMERCE_REGISTRY.map((country) => (
                                 <li class="disclosure__item" tabindex="-1">
                                     <a class="disclosure__link" href="#" data-value={country.code} id={`Navbar-${country.englishName}`}>
                                         <span class={`checkmark-wrapper ${country.code === "IT" ? "" : "visibility-hidden"}`}>
@@ -136,7 +100,7 @@ const countries = [
                                             </svg>
                                         </span>
                                         <span class="country">{country.name}</span>
-                                        <span class="localization-form__currency">{country.currency}</span>
+                                        <span class="localization-form__currency">{country.currencyCode} {country.currencySymbol}</span>
                                     </a>
                                 </li>
                             ))}
