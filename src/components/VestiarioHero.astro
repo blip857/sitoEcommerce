@@ -1,0 +1,68 @@
+---
+/**
+ * @file VestiarioHero.astro
+ * @description Static presenter hero section for the Vestiario page.
+ *              Displays a dark, minimalist full-width banner with centered title.
+ */
+---
+
+<section class="vestiario-hero">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+        <h1 class="hero-title">VESTIARIO</h1>
+    </div>
+</section>
+
+<style>
+    .vestiario-hero {
+        position: relative;
+        height: 45vh;
+        min-height: 320px;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        background-color: #111111;
+        background-image: radial-gradient(circle at center, #222222 0%, #111111 100%);
+        overflow: hidden;
+    }
+
+    .hero-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.4);
+        z-index: 1;
+    }
+
+    .hero-content {
+        position: relative;
+        z-index: 2;
+        padding: 0 20px;
+    }
+
+    .hero-title {
+        font-family: sans-serif;
+        font-size: 3.5rem;
+        font-weight: 900;
+        letter-spacing: 6px;
+        color: #ffffff;
+        margin: 0;
+        text-transform: uppercase;
+    }
+
+    @media (max-width: 768px) {
+        .vestiario-hero {
+            height: 35vh;
+            min-height: 250px;
+        }
+
+        .hero-title {
+            font-size: 2.2rem;
+            letter-spacing: 3px;
+        }
+    }
+</style>

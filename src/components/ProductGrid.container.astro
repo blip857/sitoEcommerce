@@ -1,0 +1,52 @@
+---
+/**
+ * @file ProductGrid.container.astro
+ * @description Container component that fetches product data from ProductsFacadeService
+ *              and orchestrates the rendering of product cards within a responsive grid layout.
+ */
+import { ProductsFacadeService } from '../services/products.service';
+import ProductCard from '../islands/ProductCard.island.astro';
+
+const products = ProductsFacadeService.getAllVestiarioProducts();
+---
+
+<section class="product-grid-section">
+    <div class="grid-container">
+        {products.map((product) => (
+            <ProductCard product={product} />
+        ))}
+    </div>
+</section>
+
+<style>
+    .product-grid-section {
+        padding: 60px 24px;
+        background-color: #111111;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .grid-container {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 32px;
+    }
+
+    @media (max-width: 900px) {
+        .grid-container {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+    }
+
+    @media (max-width: 550px) {
+        .product-grid-section {
+            padding: 40px 16px;
+        }
+
+        .grid-container {
+            grid-template-columns: repeat(1, 1fr);
+            gap: 24px;
+        }
+    }
+</style>
