@@ -1,0 +1,78 @@
+---
+/**
+ * @file tshirt-jefer.astro
+ * @description Product detail route page for the "Jefer" T-shirt.
+ *              Integrates the ProductView interactive island, ProductDetails accordion,
+ *              MarqueeBanner, and Recommendations grid.
+ */
+import Navbar from "../../components/Navbar.astro";
+import ProductView from "../../islands/ProductView.island.astro";
+import ProductDetails from "../../components/ProductDetails.astro";
+import MarqueeBanner from "../../components/MarqueeBanner.astro";
+import Recommendations from "../../components/Recommendations.astro";
+import Footer from "../../components/Footer.astro";
+import SocialConnect from "../../components/SocialConnect.astro";
+---
+
+<html lang="it">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>T-Shirt Jefer | OcchiPieniDi Official Store</title>
+    <meta name="description" content="Acquista la T-Shirt Jefer. Taglio boxy, cotone biologico heavyweight da 240g/m², dettagli ricamati e grafiche serigrafate esclusive ad ispirazione underground." />
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        font-family: sans-serif;
+        background: #111111;
+        margin: 0;
+        padding: 0;
+        color: #ffffff;
+        overflow-x: hidden;
+      }
+      main {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+      }
+      .divider-line {
+        height: 1px;
+        background-color: #222;
+        max-width: 1200px;
+        width: calc(100% - 40px);
+        margin: 0 auto;
+      }
+      @media (min-width: 1024px) {
+        .divider-line {
+          width: calc(100% - 80px);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navbar globale -->
+    <Navbar />
+
+    <main>
+      <!-- Sezione Principale Prodotto (Galleria e Pannello Acquisto) -->
+      <ProductView client:load />
+
+      <div class="divider-line"></div>
+
+      <!-- Accordion di Dettaglio (Descrizione e Spedizione) -->
+      <ProductDetails />
+
+      <!-- Marquee Banner Scorrevole -->
+      <MarqueeBanner />
+
+      <!-- Raccomandazioni correlate -->
+      <Recommendations />
+    </main>
+
+    <!-- Footer globale e Social -->
+    <Footer />
+    <SocialConnect />
+  </body>
+</html>

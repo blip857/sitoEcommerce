@@ -1,0 +1,251 @@
+---
+/**
+ * @file ProductDetails.astro
+ * @description Accordion presenter component showing product description and shipping details.
+ */
+---
+
+<div class="product-details-accordion">
+  <!-- Section 1: Descrizione (Aperta di default) -->
+  <div class="accordion-item active" id="descAccordion">
+    <button type="button" class="accordion-header" aria-expanded="true" aria-controls="descContent">
+      <span>DESCRIZIONE</span>
+      <span class="icon-toggle">
+        <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none">
+          <line x1="12" y1="5" x2="12" y2="19" class="line-vert"></line>
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+        </svg>
+      </span>
+    </button>
+    <div class="accordion-content" id="descContent">
+      <div class="inner-content">
+        <p>
+          La T-Shirt Jefer rappresenta l'essenza del minimalismo contemporaneo e del taglio streetwear ricercato. Realizzata a mano in cotone biologico heavyweight ad alta grammatura (240g/m²), garantisce un fit boxy rilassato ed una silhouette definita che mantiene la struttura lavaggio dopo lavaggio.
+        </p>
+        <p>
+          Caratterizzata da doppie cuciture rinforzate su orlo e maniche, colletto spesso a coste piatte e una finitura premium morbida sulla pelle. Impreziosita da una serigrafia posteriore a contrasto dall'animo underground ed un logo monogramma finemente ricamato sul petto. Un capo senza tempo progettato per elevare il tuo stile quotidiano.
+        </p>
+        <ul>
+          <li>100% Cotone Biologico Heavyweight (240g/m²)</li>
+          <li>Fit Boxy / Taglio Oversized</li>
+          <li>Grafica serigrafata sul retro e ricamo sul petto</li>
+          <li>Colletto a coste spesse (3cm)</li>
+          <li>Fatto a mano con processi ecosostenibili</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 2: Spedizione (Chiusa di default) -->
+  <div class="accordion-item" id="shipAccordion">
+    <button type="button" class="accordion-header" aria-expanded="false" aria-controls="shipContent">
+      <span>SPEDIZIONE & RESI</span>
+      <span class="icon-toggle">
+        <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none">
+          <line x1="12" y1="5" x2="12" y2="19" class="line-vert"></line>
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+        </svg>
+      </span>
+    </button>
+    <div class="accordion-content" id="shipContent">
+      <div class="inner-content">
+        <p>
+          Ogni ordine viene elaborato e preparato con cura nei nostri laboratori entro 24-48 ore lavorative.
+        </p>
+        <table class="shipping-info-table">
+          <tbody>
+            <tr>
+              <td><strong>Tempi di consegna</strong></td>
+              <td>5-7 giorni lavorativi (Spedizione Express tracciata)</td>
+            </tr>
+            <tr>
+              <td><strong>Vettori partner</strong></td>
+              <td>DHL Express / Hermes Group</td>
+            </tr>
+            <tr>
+              <td><strong>Destinazioni</strong></td>
+              <td>Spedizione disponibile in tutta Italia e Unione Europea (UE)</td>
+            </tr>
+            <tr>
+              <td><strong>Resi</strong></td>
+              <td>Politica di reso facile entro 14 giorni dalla consegna</td>
+            </tr>
+          </tbody>
+        </table>
+        <p class="shipping-note">
+          Riceverai un codice di tracciamento (Tracking ID) tramite e-mail non appena il tuo pacco lascerà il magazzino logistico per monitorare la consegna in tempo reale.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function initAccordion() {
+    const items = document.querySelectorAll(".accordion-item");
+
+    items.forEach((item) => {
+      const header = item.querySelector(".accordion-header");
+      
+      if (!header) return;
+
+      // Click to toggle accordion
+      header.addEventListener("click", () => {
+        const isActive = item.classList.contains("active");
+        
+        // Toggle the clicked one
+        if (isActive) {
+          item.classList.remove("active");
+          header.setAttribute("aria-expanded", "false");
+        } else {
+          item.classList.add("active");
+          header.setAttribute("aria-expanded", "true");
+        }
+      });
+    });
+  }
+
+  // Run on load and Page transitions
+  initAccordion();
+  document.addEventListener("astro:page-load", initAccordion);
+</script>
+
+<style>
+  .product-details-accordion {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 0 20px;
+    background: transparent;
+  }
+
+  .accordion-item {
+    border-top: 1px solid #222;
+  }
+
+  .accordion-item:last-child {
+    border-bottom: 1px solid #222;
+  }
+
+  .accordion-header {
+    width: 100%;
+    background: transparent;
+    border: none;
+    padding: 22px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #ffffff;
+    font-family: sans-serif;
+    font-size: 0.9rem;
+    font-weight: bold;
+    letter-spacing: 1.5px;
+    cursor: pointer;
+    text-align: left;
+  }
+
+  .accordion-header:hover {
+    color: #ff9f00;
+  }
+
+  .icon-toggle {
+    color: #666;
+    transition: color 0.2s ease;
+  }
+
+  .accordion-header:hover .icon-toggle {
+    color: #ff9f00;
+  }
+
+  /* Transition on SVG icon (rotate cross to minus) */
+  .line-vert {
+    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    transform-origin: center;
+  }
+
+  .accordion-item.active .line-vert {
+    transform: rotate(90deg) scaleY(0); /* Hides vertical line */
+  }
+
+  /* Content Panel */
+  .accordion-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .accordion-item.active .accordion-content {
+    max-height: 800px; /* Large enough value to fit content */
+  }
+
+  .inner-content {
+    padding: 10px 0 30px 0;
+    color: #aaaaaa;
+    font-family: sans-serif;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    letter-spacing: 0.2px;
+  }
+
+  .inner-content p {
+    margin: 0 0 15px 0;
+  }
+
+  .inner-content p:last-child {
+    margin: 0;
+  }
+
+  .inner-content ul {
+    margin: 15px 0 0 0;
+    padding-left: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .inner-content li {
+    list-style-type: square;
+    color: #888;
+  }
+
+  /* Shipping Details Table */
+  .shipping-info-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 0.85rem;
+    color: #ccc;
+    background: #161616;
+    border: 1px solid #222;
+  }
+
+  .shipping-info-table td {
+    padding: 12px 16px;
+    border-bottom: 1px solid #222;
+    text-align: left;
+  }
+
+  .shipping-info-table tr:last-child td {
+    border-bottom: none;
+  }
+
+  .shipping-info-table td strong {
+    color: #ffffff;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    letter-spacing: 0.5px;
+  }
+
+  .shipping-note {
+    font-size: 0.8rem;
+    color: #666;
+    font-style: italic;
+    margin-top: 10px;
+  }
+
+  @media (min-width: 1024px) {
+    .product-details-accordion {
+      padding: 0 40px;
+      margin: 40px auto;
+    }
+  }
+</style>

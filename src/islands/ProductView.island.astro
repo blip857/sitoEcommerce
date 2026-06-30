@@ -1,0 +1,547 @@
+---
+/**
+ * @file ProductView.island.astro
+ * @description Client-side island component for the main product view of T-Shirt Jefer.
+ *              Manages gallery image changes, color/size selection, quantity, and currency listener.
+ */
+
+interface ImageVariant {
+  src: string;
+  alt: string;
+}
+
+interface ColorOption {
+  name: string;
+  hex: string;
+  images: ImageVariant[];
+}
+
+const colors: ColorOption[] = [
+  {
+    name: "Black",
+    hex: "#111111",
+    images: [
+      { src: "/assets/image_653758.jpg", alt: "Jefer T-Shirt Black Front" },
+      { src: "/assets/image_653aba.jpg", alt: "Jefer T-Shirt Black Detail" }
+    ]
+  },
+  {
+    name: "Olive",
+    hex: "#4A5D4E",
+    images: [
+      { src: "/assets/image_65423f.jpg", alt: "Jefer T-Shirt Olive Front" }
+    ]
+  }
+];
+
+const sizes = ["S", "M", "L", "XL"];
+const basePrice = 39.00;
+---
+
+<div class="product-view-container">
+  <!-- Left Side: Product Gallery -->
+  <div class="product-gallery">
+    <div class="thumbnails-container" id="thumbnailsContainer">
+      {colors[0].images.map((img, idx) => (
+        <button
+          type="button"
+          class={`thumb-btn ${idx === 0 ? "active" : ""}`}
+          data-index={idx}
+          aria-label={`Visualizza immagine ${idx + 1}`}
+        >
+          <img src={img.src} alt={img.alt} loading="lazy" />
+        </button>
+      ))}
+    </div>
+    <div class="main-image-container">
+      <img
+        id="mainProductImage"
+        src={colors[0].images[0].src}
+        alt={colors[0].images[0].alt}
+        class="main-img"
+      />
+    </div>
+  </div>
+
+  <!-- Right Side: Purchase Panel -->
+  <div class="product-info-panel">
+    <div class="brand-name">OCCHIPIENIDI</div>
+    <h1 class="product-title">JEFER T-SHIRT</h1>
+    
+    <div class="price-container">
+      <span class="price-value" id="productPrice" data-base-price={basePrice.toFixed(2)}>
+        € {basePrice.toFixed(2)}
+      </span>
+    </div>
+
+    <!-- Color Selector -->
+    <div class="option-section">
+      <span class="option-label">COLORE: <span id="selectedColorName" class="highlight">{colors[0].name}</span></span>
+      <div class="color-swatches">
+        {colors.map((color, idx) => (
+          <button
+            type="button"
+            class={`color-btn ${idx === 0 ? "active" : ""}`}
+            style={`background-color: ${color.hex}; border: ${color.hex.toLowerCase() === '#111111' ? '1px solid #333' : '1px solid transparent'}`}
+            data-color-index={idx}
+            data-color-name={color.name}
+            data-images={JSON.stringify(color.images)}
+            aria-label={`Seleziona colore ${color.name}`}
+          />
+        ))}
+      </div>
+    </div>
+
+    <!-- Size Selector -->
+    <div class="option-section">
+      <label for="sizeSelector" class="option-label">TAGLIA</label>
+      <div class="select-wrapper">
+        <select id="sizeSelector" class="size-dropdown">
+          {sizes.map((size) => (
+            <option value={size}>{size}</option>
+          ))}
+        </select>
+        <span class="select-arrow">▼</span>
+      </div>
+    </div>
+
+    <!-- Quantity & Action -->
+    <div class="purchase-actions">
+      <div class="quantity-selector">
+        <button type="button" class="qty-btn" id="qtyMinus" aria-label="Riduci quantità">-</button>
+        <input type="number" id="qtyInput" class="qty-input" value="1" min="1" max="99" readonly />
+        <button type="button" class="qty-btn" id="qtyPlus" aria-label="Aumenta quantità">+</button>
+      </div>
+
+      <button type="button" class="add-to-cart-btn btn-cart" id="addToCartBtn">
+        AGGIUNGI AL CARRELLO
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+  function initProductView() {
+    const mainImg = document.getElementById("mainProductImage") as HTMLImageElement | null;
+    const thumbContainer = document.getElementById("thumbnailsContainer");
+    const colorBtns = document.querySelectorAll(".color-btn");
+    const selectedColorText = document.getElementById("selectedColorName");
+    const qtyMinus = document.getElementById("qtyMinus");
+    const qtyPlus = document.getElementById("qtyPlus");
+    const qtyInput = document.getElementById("qtyInput") as HTMLInputElement | null;
+    const addToCartBtn = document.getElementById("addToCartBtn");
+
+    if (!mainImg || !thumbContainer || !selectedColorText || !qtyMinus || !qtyPlus || !qtyInput || !addToCartBtn) return;
+
+    // Handle thumbnail selection
+    function setupThumbnails() {
+      const thumbBtns = thumbContainer.querySelectorAll(".thumb-btn");
+      thumbBtns.forEach((btn) => {
+        const updateMainImage = () => {
+          const thumbImg = btn.querySelector("img");
+          if (thumbImg && mainImg) {
+            mainImg.src = thumbImg.src;
+            mainImg.alt = thumbImg.alt;
+          }
+          thumbBtns.forEach((b) => b.classList.remove("active"));
+          btn.classList.add("active");
+        };
+
+        btn.addEventListener("click", updateMainImage);
+        btn.addEventListener("mouseenter", updateMainImage);
+      });
+    }
+
+    setupThumbnails();
+
+    // Handle color change
+    colorBtns.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const idx = btn.getAttribute("data-color-index");
+        const colorName = btn.getAttribute("data-color-name");
+        const imagesStr = btn.getAttribute("data-images");
+
+        if (idx !== null && colorName && imagesStr) {
+          // Update selected color label
+          selectedColorText.textContent = colorName;
+
+          // Update active swatch class
+          colorBtns.forEach((b) => b.classList.remove("active"));
+          btn.classList.add("active");
+
+          // Parse new color images
+          const images = JSON.parse(imagesStr);
+
+          // Rebuild thumbnails
+          thumbContainer.innerHTML = images.map((img: any, i: number) => `
+            <button
+              type="button"
+              class="thumb-btn ${i === 0 ? "active" : ""}"
+              data-index="${i}"
+              aria-label="Visualizza immagine ${i + 1}"
+            >
+              <img src="${img.src}" alt="${img.alt}" loading="lazy" />
+            </button>
+          `).join("");
+
+          // Update main image to first image of new variant
+          if (images.length > 0) {
+            mainImg.src = images[0].src;
+            mainImg.alt = images[0].alt;
+          }
+
+          // Re-attach listeners to new thumbnails
+          setupThumbnails();
+        }
+      });
+    });
+
+    // Quantity selectors
+    qtyMinus.addEventListener("click", () => {
+      let val = parseInt(qtyInput.value, 10);
+      if (val > 1) {
+        qtyInput.value = (val - 1).toString();
+      }
+    });
+
+    qtyPlus.addEventListener("click", () => {
+      let val = parseInt(qtyInput.value, 10);
+      if (val < 99) {
+        qtyInput.value = (val + 1).toString();
+      }
+    });
+
+    // Add to Cart: Simulates click on Navbar cart icon to open the drawer
+    addToCartBtn.addEventListener("click", () => {
+      const globalCartBtn = document.querySelector(".btn-wagen, .btn-cart:not(#addToCartBtn)") as HTMLElement | null;
+      if (globalCartBtn) {
+        globalCartBtn.click();
+      } else {
+        // Direct DOM manipulation fallback
+        const cartDrawer = document.getElementById("cartDrawer");
+        const cartOverlay = document.getElementById("cartOverlay");
+        if (cartDrawer && cartOverlay) {
+          cartDrawer.classList.add("open");
+          cartOverlay.classList.add("active");
+          document.body.style.overflow = "hidden";
+        }
+      }
+    });
+
+    // Currency selector logic
+    const priceEl = document.getElementById("productPrice");
+    if (priceEl) {
+      const updatePrice = (currencyStr: string) => {
+        const parts = currencyStr.trim().split(" ");
+        const symbol = parts[1] || parts[0];
+        const base = priceEl.getAttribute("data-base-price");
+        if (base) {
+          priceEl.textContent = `${symbol} ${base}`;
+        }
+      };
+
+      window.addEventListener("app:currency-change", (e: any) => {
+        updatePrice(e.detail.currency);
+      });
+
+      const savedCurrency = localStorage.getItem("user-currency");
+      if (savedCurrency) {
+        updatePrice(savedCurrency);
+      }
+    }
+  }
+
+  // Initialize
+  initProductView();
+  document.addEventListener("astro:page-load", initProductView);
+</script>
+
+<style>
+  .product-view-container {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 20px;
+    background: transparent;
+  }
+
+  /* Gallery Styling */
+  .product-gallery {
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 15px;
+  }
+
+  .thumbnails-container {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    overflow-x: auto;
+  }
+
+  .thumb-btn {
+    width: 70px;
+    height: 70px;
+    border: 1px solid #222;
+    background: #161616;
+    padding: 0;
+    cursor: pointer;
+    transition: border-color 0.2s ease, transform 0.2s ease;
+    flex-shrink: 0;
+  }
+
+  .thumb-btn.active,
+  .thumb-btn:hover {
+    border-color: #ff9f00;
+    transform: scale(1.02);
+  }
+
+  .thumb-btn img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .main-image-container {
+    flex-grow: 1;
+    background: #161616;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    border: 1px solid #1a1a1a;
+  }
+
+  .main-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+  }
+
+  .main-image-container:hover .main-img {
+    transform: scale(1.03);
+  }
+
+  /* Purchase Panel Styling */
+  .product-info-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .brand-name {
+    font-family: sans-serif;
+    font-size: 0.8rem;
+    letter-spacing: 2px;
+    color: #ff9f00;
+    font-weight: 600;
+  }
+
+  .product-title {
+    font-family: sans-serif;
+    font-size: 1.8rem;
+    font-weight: bold;
+    letter-spacing: 1px;
+    margin: 0;
+    color: #ffffff;
+  }
+
+  .price-container {
+    border-bottom: 1px solid #222;
+    padding-bottom: 20px;
+  }
+
+  .price-value {
+    font-family: sans-serif;
+    font-size: 1.4rem;
+    font-weight: 500;
+    color: #ffffff;
+  }
+
+  .option-section {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .option-label {
+    font-family: sans-serif;
+    font-size: 0.85rem;
+    letter-spacing: 1px;
+    color: #888;
+    text-transform: uppercase;
+  }
+
+  .option-label .highlight {
+    color: #ffffff;
+    font-weight: 600;
+  }
+
+  /* Color Swatches */
+  .color-swatches {
+    display: flex;
+    gap: 12px;
+  }
+
+  .color-btn {
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    cursor: pointer;
+    position: relative;
+    transition: transform 0.2s ease, outline-color 0.2s ease;
+  }
+
+  .color-btn.active,
+  .color-btn:hover {
+    transform: scale(1.15);
+    outline: 2px solid #ff9f00;
+    outline-offset: 2px;
+  }
+
+  /* Size Dropdown */
+  .select-wrapper {
+    position: relative;
+    max-width: 200px;
+  }
+
+  .size-dropdown {
+    width: 100%;
+    background: #161616;
+    color: #ffffff;
+    border: 1px solid #222;
+    padding: 12px 16px;
+    font-family: sans-serif;
+    font-size: 0.9rem;
+    cursor: pointer;
+    appearance: none;
+    outline: none;
+    transition: border-color 0.2s ease;
+  }
+
+  .size-dropdown:hover,
+  .size-dropdown:focus {
+    border-color: #ff9f00;
+  }
+
+  .select-arrow {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #666;
+    font-size: 0.7rem;
+    pointer-events: none;
+  }
+
+  /* Actions & Quantity */
+  .purchase-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 10px;
+  }
+
+  .quantity-selector {
+    display: flex;
+    align-items: center;
+    border: 1px solid #222;
+    width: fit-content;
+    background: #161616;
+  }
+
+  .qty-btn {
+    background: transparent;
+    border: none;
+    color: #ffffff;
+    width: 40px;
+    height: 40px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: color 0.2s ease;
+  }
+
+  .qty-btn:hover {
+    color: #ff9f00;
+  }
+
+  .qty-input {
+    width: 45px;
+    height: 40px;
+    background: transparent;
+    border: none;
+    border-left: 1px solid #222;
+    border-right: 1px solid #222;
+    color: #ffffff;
+    text-align: center;
+    font-family: sans-serif;
+    font-size: 0.95rem;
+    appearance: textfield; /* Remove spinner on Firefox */
+  }
+
+  /* Remove spinner on Chrome/Safari */
+  .qty-input::-webkit-outer-spin-button,
+  .qty-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  .add-to-cart-btn {
+    background: #ff9f00;
+    color: #111111;
+    border: none;
+    padding: 16px 32px;
+    font-family: sans-serif;
+    font-size: 0.95rem;
+    font-weight: bold;
+    letter-spacing: 1.5px;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: background-color 0.2s ease, transform 0.15s ease;
+  }
+
+  .add-to-cart-btn:hover {
+    background: #e08b00;
+  }
+
+  .add-to-cart-btn:active {
+    transform: scale(0.98);
+  }
+
+  /* Responsive Layout (Desktop) */
+  @media (min-width: 1024px) {
+    .product-view-container {
+      flex-direction: row;
+      gap: 50px;
+      padding: 60px 40px;
+    }
+
+    .product-gallery {
+      flex-direction: row;
+      flex: 1.2;
+      gap: 20px;
+    }
+
+    .thumbnails-container {
+      flex-direction: column;
+      overflow-y: auto;
+      overflow-x: hidden;
+      max-height: 500px;
+    }
+
+    .thumb-btn {
+      width: 80px;
+      height: 80px;
+    }
+
+    .product-info-panel {
+      flex: 0.8;
+      padding-top: 10px;
+    }
+
+    .product-title {
+      font-size: 2.2rem;
+    }
+  }
+</style>

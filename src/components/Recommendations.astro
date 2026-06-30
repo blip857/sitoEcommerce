@@ -1,0 +1,132 @@
+---
+/**
+ * @file Recommendations.astro
+ * @description Renders a responsive grid of 4 recommended products at the bottom of the page,
+ *              using the client-side ProductCard island for interactive swatches and currency handling.
+ */
+import ProductCard from '../islands/ProductCard.island.astro';
+import type { FormattedProduct } from '../services/products.service';
+
+const recommendedProducts: FormattedProduct[] = [
+  {
+    id: "rec-acab-fl",
+    title: "Felpa ACAB Hoodie",
+    category: "felpa",
+    price: 75.00,
+    currency: "€",
+    defaultImage: "/assets/25fwprts503_01.jpg",
+    formattedPrice: "€ 75.00",
+    variantCount: 1,
+    variants: [
+      { id: "v-rec-acab-fl-bk", name: "Black", hex: "#111111", image: "/assets/25fwprts503_01.jpg" }
+    ]
+  },
+  {
+    id: "rec-acab-ts",
+    title: "ACAB T-Shirt Classic",
+    category: "t-shirt",
+    price: 35.00,
+    currency: "€",
+    defaultImage: "/assets/25fwprts503_01.jpg",
+    formattedPrice: "€ 35.00",
+    variantCount: 2,
+    variants: [
+      { id: "v-rec-acab-ts-bk", name: "Black", hex: "#111111", image: "/assets/25fwprts503_01.jpg" },
+      { id: "v-rec-acab-ts-wt", name: "White", hex: "#F5F5F5", image: "/assets/25fwprts503_01.jpg" }
+    ]
+  },
+  {
+    id: "rec-1312-ts",
+    title: "1312 T-Shirt Graphic",
+    category: "t-shirt",
+    price: 39.00,
+    currency: "€",
+    defaultImage: "/assets/25fwprts503_01.jpg",
+    formattedPrice: "€ 39.00",
+    variantCount: 2,
+    variants: [
+      { id: "v-rec-1312-ts-bk", name: "Black", hex: "#111111", image: "/assets/25fwprts503_01.jpg" },
+      { id: "v-rec-1312-ts-gy", name: "Charcoal", hex: "#333333", image: "/assets/25fwprts503_01.jpg" }
+    ]
+  },
+  {
+    id: "rec-helfri-ts",
+    title: "Helfri T-Shirt Earth",
+    category: "t-shirt",
+    price: 42.00,
+    currency: "€",
+    defaultImage: "/assets/25fwprts503_01.jpg",
+    formattedPrice: "€ 42.00",
+    variantCount: 2,
+    variants: [
+      { id: "v-rec-helfri-ts-ol", name: "Olive Green", hex: "#4A5D4E", image: "/assets/25fwprts503_01.jpg" },
+      { id: "v-rec-helfri-ts-bk", name: "Black", hex: "#111111", image: "/assets/25fwprts503_01.jpg" }
+    ]
+  }
+];
+---
+
+<section class="recommendations-section">
+  <div class="recommendations-container">
+    <h2 class="recommendations-title">POTREBBE PIACERTI ANCHE QUESTO</h2>
+    
+    <div class="recommendations-grid">
+      {recommendedProducts.map((product) => (
+        <div class="grid-item">
+          <ProductCard product={product} client:load />
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .recommendations-section {
+    width: 100%;
+    padding: 60px 20px;
+    background: transparent;
+    border-top: 1px solid #1a1a1a;
+    box-sizing: border-box;
+  }
+
+  .recommendations-container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .recommendations-title {
+    font-family: sans-serif;
+    font-size: 1.1rem;
+    font-weight: bold;
+    letter-spacing: 2px;
+    color: #ffffff;
+    text-align: center;
+    margin: 0 0 40px 0;
+    text-transform: uppercase;
+  }
+
+  .recommendations-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 30px 20px;
+  }
+
+  /* Target nested styles of ProductCard for alignment if needed */
+  .grid-item {
+    display: flex;
+    flex-direction: column;
+  }
+
+  @media (min-width: 768px) {
+    .recommendations-grid {
+      grid-template-columns: repeat(4, 1fr);
+      gap: 30px;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .recommendations-section {
+      padding: 80px 40px;
+    }
+  }
+</style>
