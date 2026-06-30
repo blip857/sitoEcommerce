@@ -30,15 +30,14 @@ export const VESTIARIO_PRODUCTS_REGISTRY: ReadonlyArray<Product> = Object.freeze
   // --- T-SHIRTS (3 products) ---
   {
     id: "ts-01",
-    title: "T-Shirt Classic Logo Black",
+    title: "T-Shirt Jefer",
     category: "t-shirt",
-    price: 35.00,
+    price: 39.00,
     currency: "€",
-    defaultImage: "/assets/25fwprts503_01.jpg",
+    defaultImage: "/assets/image_653758.jpg",
     variants: [
-      { id: "v-ts-01-bk", name: "Black", hex: "#111111", image: "/assets/25fwprts503_01.jpg" },
-      { id: "v-ts-01-wt", name: "White", hex: "#F5F5F5", image: "/assets/25fwprts503_01.jpg" },
-      { id: "v-ts-01-gy", name: "Heather Grey", hex: "#888888", image: "/assets/25fwprts503_01.jpg" }
+      { id: "v-ts-01-bk", name: "Black", hex: "#111111", image: "/assets/image_653758.jpg" },
+      { id: "v-ts-01-ol", name: "Olive", hex: "#4A5D4E", image: "/assets/image_65423f.jpg" }
     ]
   },
   {

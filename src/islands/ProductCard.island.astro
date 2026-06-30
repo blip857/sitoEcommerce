@@ -2,7 +2,8 @@
 /**
  * @file ProductCard.island.astro
  * @description Client island component for rendering individual product cards.
- *              Includes interactive client-side logic for color variant image swapping on hover.
+ *              Includes interactive client-side logic for color variant image swapping on hover/click,
+ *              and prevents event bubbling to allow navigation to detail pages.
  */
 import type { FormattedProduct } from '../services/products.service';
 
@@ -11,39 +12,47 @@ interface Props {
 }
 
 const { product } = Astro.props;
+
+// Determine detail page URL dynamically based on product id
+let productUrl = "#";
+if (product.id === "ts-01") {
+    productUrl = "/products/tshirt-jefer";
+}
 ---
 
-<article class="product-card" data-product-id={product.id}>
-    <div class="image-container">
-        <img
-            id={`product-img-${product.id}`}
-            src={product.defaultImage}
-            alt={product.title}
-            loading="lazy"
-            class="main-product-image"
-        />
-    </div>
+<a href={productUrl} class="product-card-link" aria-label={`Visualizza dettagli di ${product.title}`}>
+    <article class="product-card" data-product-id={product.id}>
+        <div class="image-container">
+            <img
+                id={`product-img-${product.id}`}
+                src={product.defaultImage}
+                alt={product.title}
+                loading="lazy"
+                class="main-product-image"
+            />
+        </div>
 
-    <div class="product-info">
-        {product.variants && product.variants.length > 0 && (
-            <div class="color-swatches">
-                {product.variants.map((variant, index) => (
-                    <button
-                        type="button"
-                        class={`swatch-btn ${index === 0 ? 'active' : ''}`}
-                        style={`background-color: ${variant.hex}; border: ${variant.hex.toLowerCase() === '#ffffff' || variant.hex.toLowerCase() === '#f5f5f5' ? '1px solid #666' : '1px solid #333'}`}
-                        data-image={variant.image}
-                        data-color-name={variant.name}
-                        aria-label={`Select color ${variant.name}`}
-                    />
-                ))}
-            </div>
-        )}
+        <div class="product-info">
+            {product.variants && product.variants.length > 0 && (
+                <div class="color-swatches">
+                    {product.variants.map((variant, index) => (
+                        <button
+                            type="button"
+                            class={`swatch-btn ${index === 0 ? 'active' : ''}`}
+                            style={`background-color: ${variant.hex}; border: ${variant.hex.toLowerCase() === '#ffffff' || variant.hex.toLowerCase() === '#f5f5f5' ? '1px solid #666' : '1px solid #333'}`}
+                            data-image={variant.image}
+                            data-color-name={variant.name}
+                            aria-label={`Select color ${variant.name}`}
+                        />
+                    ))}
+                </div>
+            )}
 
-        <h3 class="product-title">{product.title}</h3>
-        <p class="product-price" data-base-price={product.price.toFixed(2)}>{product.formattedPrice}</p>
-    </div>
-</article>
+            <h3 class="product-title">{product.title}</h3>
+            <p class="product-price" data-base-price={product.price.toFixed(2)}>{product.formattedPrice}</p>
+        </div>
+    </article>
+</a>
 
 <script>
     function setupProductCardHover() {
@@ -66,8 +75,16 @@ const { product } = Astro.props;
                     btn.classList.add('active');
                 };
 
+                // Change variant on hover or keyboard focus
                 btn.addEventListener('mouseenter', handleVariantChange);
                 btn.addEventListener('focus', handleVariantChange);
+
+                // Prevent click on color swatch from triggering the card's <a> link navigation
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    handleVariantChange();
+                });
             });
         });
     }
@@ -106,6 +123,12 @@ const { product } = Astro.props;
 </script>
 
 <style>
+    .product-card-link {
+        text-decoration: none;
+        color: inherit;
+        display: block;
+    }
+
     .product-card {
         display: flex;
         flex-direction: column;
