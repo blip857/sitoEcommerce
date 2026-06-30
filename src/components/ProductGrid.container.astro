@@ -29,24 +29,19 @@ const products = ProductsFacadeService.getAllVestiarioProducts();
     .grid-container {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
-        gap: 32px;
+        column-gap: 16px; /* gap-x-4 */
+        row-gap: 32px;    /* gap-y-8 */
     }
 
-    @media (max-width: 900px) {
-        .grid-container {
-            grid-template-columns: repeat(2, 1fr);
-            gap: 20px;
-        }
-    }
-
-    @media (max-width: 550px) {
+    @media (max-width: 768px) {
         .product-grid-section {
             padding: 40px 16px;
         }
 
         .grid-container {
-            grid-template-columns: repeat(1, 1fr);
-            gap: 24px;
+            grid-template-columns: 1fr;
+            row-gap: 32px;
+            column-gap: 0;
         }
     }
 </style>

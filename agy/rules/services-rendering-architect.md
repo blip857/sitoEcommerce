@@ -131,3 +131,32 @@ const activeStep = STATUS_MAP[currentStatus] || STATUS_MAP.processed;
   <div class={`h-4 w-4 rounded-full ${activeStep.color}`}></div>
   <p class="text-sm font-medium">{activeStep.label}</p>
 </div>
+
+
+[NEGATIVE CONSTRAINTS — AI ANTI-PATTERNS]
+❌ AP-01 — Fetch inline nei componenti o nelle pagine
+---
+// VIETATO nei file .astro
+const res = await fetch('[https://api.esterno.com/data](https://api.esterno.com/data)');
+const data = await res.json();
+---
+Correzione: Sposta la chiamata in src/services/ e importala nel Container.  
+
+❌ AP-02 — Idratazione Globale o client:load pigro
+<!-- VIETATO se il componente non è immediatamente interattivo in cima alla pagina -->
+<MyComponent client:load/>
+
+Correzione: Usa client:visible (carica solo al completamento dello scroll) o client:only se dipende da API del browser del client.
+
+[WORKFLOW OPERATIVO PER L'AGENTE]
+Quando l'utente richiede l'integrazione di dati remoti o interattivi, esegui:
+
+Definisci i tipi di risposta in src/types/.
+
+Crea/Estendi la Facade in src/services/ per gestire fetch e normalizzazione dei dati.
+
+Crea il componente .container.astro per recuperare i dati dal servizio a server-time[cite: 2].
+
+Prepara i dati nel frontmatter del .presenter.astro usando strutture piatte (DDR)[cite: 2].
+
+Se serve interattività sul client, sposta l'elemento interattivo in un'isola isolata (.island.astro) con idratazione minima e commento di giustificazione.

@@ -41,7 +41,7 @@ const { product } = Astro.props;
         )}
 
         <h3 class="product-title">{product.title}</h3>
-        <p class="product-price">{product.formattedPrice}</p>
+        <p class="product-price" data-base-price={product.price.toFixed(2)}>{product.formattedPrice}</p>
     </div>
 </article>
 
@@ -72,8 +72,37 @@ const { product } = Astro.props;
         });
     }
 
+    function setupCurrencySelector() {
+        const priceElements = document.querySelectorAll('.product-card .product-price');
+
+        const updatePrices = (currencyStr: string) => {
+            const parts = currencyStr.trim().split(" ");
+            const symbol = parts[1] || parts[0];
+
+            priceElements.forEach((el) => {
+                const basePrice = el.getAttribute("data-base-price");
+                if (basePrice) {
+                    el.textContent = `${symbol} ${basePrice}`;
+                }
+            });
+        };
+
+        window.addEventListener("app:currency-change", (e: any) => {
+            updatePrices(e.detail.currency);
+        });
+
+        const savedCurrency = localStorage.getItem("user-currency");
+        if (savedCurrency) {
+            updatePrices(savedCurrency);
+        }
+    }
+
     setupProductCardHover();
-    document.addEventListener('astro:page-load', setupProductCardHover);
+    setupCurrencySelector();
+    document.addEventListener('astro:page-load', () => {
+        setupProductCardHover();
+        setupCurrencySelector();
+    });
 </script>
 
 <style>

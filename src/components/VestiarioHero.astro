@@ -20,9 +20,9 @@
         min-height: 320px;
         width: 100%;
         display: flex;
-        justify-content: center;
-        align-items: center;
-        text-align: center;
+        justify-content: flex-start;
+        align-items: flex-end;
+        text-align: left;
         background-color: #111111;
         background-image: radial-gradient(circle at center, #222222 0%, #111111 100%);
         overflow: hidden;
@@ -41,7 +41,9 @@
     .hero-content {
         position: relative;
         z-index: 2;
-        padding: 0 20px;
+        width: 100%;
+        padding: 0 48px 48px;
+        box-sizing: border-box;
     }
 
     .hero-title {
@@ -58,6 +60,10 @@
         .vestiario-hero {
             height: 35vh;
             min-height: 250px;
+        }
+
+        .hero-content {
+            padding: 0 24px 24px;
         }
 
         .hero-title {
