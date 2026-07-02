@@ -38,10 +38,17 @@ const sizes = ["S", "M", "L", "XL"];
 const basePrice = 39.00;
 ---
 
-<div class="product-view-container">
-  <!-- Left Side: Product Gallery -->
-  <div class="product-gallery">
-    <div class="thumbnails-container no-scrollbar flex flex-col gap-2 overflow-y-auto max-h-[550px]" id="thumbnailsContainer">
+<!-- Layout principale: griglia a 2 colonne su desktop -->
+<div class="max-w-7xl mx-auto px-4 py-8 grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+
+  <!-- Colonna Sinistra: Miniature verticali + Immagine principale -->
+  <div class="flex flex-row gap-4 items-start">
+
+    <!-- Striscia miniature verticale -->
+    <div
+      class="no-scrollbar flex flex-col gap-3 w-20 shrink-0 overflow-y-auto max-h-[500px]"
+      id="thumbnailsContainer"
+    >
       {colors[0].images.map((img, idx) => (
         <button
           type="button"
@@ -53,7 +60,9 @@ const basePrice = 39.00;
         </button>
       ))}
     </div>
-    <div class="main-image-container w-full max-w-[450px] h-[550px] overflow-hidden flex items-center justify-center bg-[#161616] border border-[#1a1a1a] mx-auto">
+
+    <!-- Immagine principale: box rigido 3/4, non si espande mai -->
+    <div class="main-image-container flex-1 aspect-[3/4] bg-zinc-950 overflow-hidden border border-zinc-900">
       <img
         id="mainProductImage"
         src={colors[0].images[0].src}
@@ -61,13 +70,14 @@ const basePrice = 39.00;
         class="main-img w-full h-full object-cover block"
       />
     </div>
+
   </div>
 
-  <!-- Right Side: Purchase Panel -->
+  <!-- Colonna Destra: Pannello acquisto -->
   <div class="product-info-panel">
     <div class="brand-name">OCCHIPIENIDI</div>
     <h1 class="product-title">JEFER T-SHIRT</h1>
-    
+
     <div class="price-container">
       <span class="price-value" id="productPrice" data-base-price={basePrice.toFixed(2)}>
         € {basePrice.toFixed(2)}
@@ -118,6 +128,7 @@ const basePrice = 39.00;
       </button>
     </div>
   </div>
+
 </div>
 
 <script>
@@ -257,22 +268,7 @@ const basePrice = 39.00;
 </script>
 
 <style>
-  .product-view-container {
-    display: flex;
-    flex-direction: column;
-    gap: 30px;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 40px 20px;
-    background: transparent;
-  }
-
-  /* Gallery Styling */
-  .product-gallery {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-  }
+  /* Layout strutturale gestito da Tailwind grid/flex sul tag HTML */
 
   .thumbnails-container {
     /* Layout e overflow gestiti da Tailwind sul tag HTML */
@@ -506,43 +502,5 @@ const basePrice = 39.00;
     transform: scale(0.98);
   }
 
-  /* Responsive Layout (Desktop) */
-  @media (min-width: 1024px) {
-    .product-view-container {
-      flex-direction: row;
-      gap: 50px;
-      padding: 60px 40px;
-    }
-
-    /* Desktop: gallery is row — thumbnails column on LEFT, main image on RIGHT */
-    .product-gallery {
-      flex-direction: row;
-      flex: 1.2;
-      gap: 16px;
-      align-items: flex-start;
-    }
-
-    .thumbnails-container {
-      flex-shrink: 0;
-    }
-
-    .thumb-btn {
-      width: 80px;
-      aspect-ratio: 3 / 4;
-      height: auto;
-    }
-
-    .main-image-container {
-      /* Dimensioni fisse gestite da Tailwind — nessun override desktop */
-    }
-
-    .product-info-panel {
-      flex: 0.8;
-      padding-top: 10px;
-    }
-
-    .product-title {
-      font-size: 2.2rem;
-    }
-  }
+  /* Responsive: gestito da Tailwind (grid-cols-1 md:grid-cols-2) */
 </style>
