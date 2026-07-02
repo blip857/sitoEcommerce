@@ -38,17 +38,17 @@ const sizes = ["S", "M", "L", "XL"];
 const basePrice = 39.00;
 ---
 
-<!-- Griglia prodotto: sfondo bianco, 2 colonne equilibrate su desktop -->
-<div class="bg-white text-zinc-900 min-h-screen">
-  <div class="max-w-6xl mx-auto px-6 pt-12 pb-16 grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
+<!-- Wrapper principale: sfondo bianco, layout verticale -->
+<div class="bg-white text-zinc-900 min-h-screen antialiased pt-16">
+  <div class="max-w-6xl mx-auto px-6 py-12 grid grid-cols-1 md:grid-cols-2 gap-16 items-start">
 
-    <!-- Colonna Sinistra: Miniature + Immagine principale -->
-    <div class="flex flex-row gap-4 items-start">
+    <!-- ── COLONNA SINISTRA: Miniature verticali + Immagine principale ── -->
+    <div class="flex flex-row gap-6 items-start w-full md:max-w-[500px]">
 
-      <!-- Striscia miniature verticale -->
+      <!-- Striscia miniature verticale fissa -->
       <div
-        class="no-scrollbar flex flex-col gap-2 w-16 shrink-0 overflow-y-auto max-h-[480px]"
         id="thumbnailsContainer"
+        class="no-scrollbar flex flex-col gap-3 w-20 shrink-0 overflow-y-auto max-h-[500px] [scrollbar-width:none] [-ms-overflow-style:none]"
       >
         {colors[0].images.map((img, idx) => (
           <button
@@ -62,8 +62,8 @@ const basePrice = 39.00;
         ))}
       </div>
 
-      <!-- Immagine principale: aspect-ratio rigido, non si espande mai -->
-      <div class="main-image-container flex-1 max-w-[400px] aspect-[3/4] overflow-hidden bg-zinc-100">
+      <!-- Contenitore immagine principale: bloccato in aspect-ratio 3:4 -->
+      <div class="main-image-container flex-1 w-full aspect-[3/4] overflow-hidden bg-zinc-100 border border-zinc-200">
         <img
           id="mainProductImage"
           src={colors[0].images[0].src}
@@ -74,8 +74,8 @@ const basePrice = 39.00;
 
     </div>
 
-    <!-- Colonna Destra: Dettagli prodotto -->
-    <div class="flex flex-col gap-6">
+    <!-- ── COLONNA DESTRA: Dettagli prodotto ── -->
+    <div class="flex flex-col gap-6 w-full">
 
       <!-- Brand + Titolo + Prezzo -->
       <div class="flex flex-col gap-2">
@@ -92,7 +92,7 @@ const basePrice = 39.00;
 
       <div class="border-t border-zinc-200"></div>
 
-      <!-- Colore -->
+      <!-- Selettore Colore -->
       <div class="flex flex-col gap-3">
         <span class="text-xs tracking-widest text-zinc-500 uppercase">
           COLORE: <span id="selectedColorName" class="font-semibold text-zinc-900">{colors[0].name}</span>
@@ -112,7 +112,7 @@ const basePrice = 39.00;
         </div>
       </div>
 
-      <!-- Taglia -->
+      <!-- Selettore Taglia -->
       <div class="flex flex-col gap-3">
         <label for="sizeSelector" class="text-xs tracking-widest text-zinc-500 uppercase">TAGLIA</label>
         <div class="select-wrapper">
@@ -121,7 +121,7 @@ const basePrice = 39.00;
               <option value={size}>{size}</option>
             ))}
           </select>
-          <span class="select-arrow">▼</span>
+          <span class="select-arrow">&#9660;</span>
         </div>
       </div>
 
@@ -157,13 +157,15 @@ const basePrice = 39.00;
 
     // Handle thumbnail selection
     function setupThumbnails() {
-      const thumbBtns = thumbContainer.querySelectorAll(".thumb-btn");
+      const thumbBtns = thumbContainer!.querySelectorAll(".thumb-btn");
       thumbBtns.forEach((btn) => {
         const updateMainImage = () => {
           const thumbImg = btn.querySelector("img");
           if (thumbImg && mainImg) {
             mainImg.src = thumbImg.src;
             mainImg.alt = thumbImg.alt;
+            // Force layout classes — prevents Tailwind purge issues on dynamic elements
+            mainImg.className = "main-img w-full h-full object-cover block";
           }
           thumbBtns.forEach((b) => b.classList.remove("active"));
           btn.classList.add("active");
@@ -179,40 +181,46 @@ const basePrice = 39.00;
     // Handle color change
     colorBtns.forEach((btn) => {
       btn.addEventListener("click", () => {
-        const idx = btn.getAttribute("data-color-index");
         const colorName = btn.getAttribute("data-color-name");
         const imagesStr = btn.getAttribute("data-images");
 
-        if (idx !== null && colorName && imagesStr) {
+        if (colorName && imagesStr) {
           // Update selected color label
-          selectedColorText.textContent = colorName;
+          selectedColorText!.textContent = colorName;
 
           // Update active swatch class
           colorBtns.forEach((b) => b.classList.remove("active"));
           btn.classList.add("active");
 
           // Parse new color images
-          const images = JSON.parse(imagesStr);
+          const images: { src: string; alt: string }[] = JSON.parse(imagesStr);
 
-          // Rebuild thumbnails
-          thumbContainer.innerHTML = images.map((img: any, i: number) => `
-            <button
-              type="button"
-              class="thumb-btn ${i === 0 ? "active" : ""}"
-              data-index="${i}"
-              aria-label="Visualizza immagine ${i + 1}"
-            >
-              <img src="${img.src}" alt="${img.alt}" loading="lazy" />
-            </button>
-          `).join("");
+          // Rebuild thumbnails using DOM API — avoids Tailwind purge issues with innerHTML strings
+          thumbContainer!.innerHTML = "";
+          images.forEach((img, i) => {
+            const thumbBtn = document.createElement("button");
+            thumbBtn.type = "button";
+            thumbBtn.className = `thumb-btn${i === 0 ? " active" : ""}`;
+            thumbBtn.setAttribute("data-index", String(i));
+            thumbBtn.setAttribute("aria-label", `Visualizza immagine ${i + 1}`);
 
-          // Update main image to first image of new variant
+            const thumbImg = document.createElement("img");
+            thumbImg.src = img.src;
+            thumbImg.alt = img.alt;
+            thumbImg.loading = "lazy";
+
+            thumbBtn.appendChild(thumbImg);
+            thumbContainer!.appendChild(thumbBtn);
+          });
+
+          // Update main image — force classes so layout never breaks
           if (images.length > 0) {
-            mainImg.src = images[0].src;
-            mainImg.alt = images[0].alt;
+            mainImg!.src = images[0].src;
+            mainImg!.alt = images[0].alt;
+            mainImg!.className = "main-img w-full h-full object-cover block";
           }
 
-          // Re-attach listeners to new thumbnails
+          // Re-attach listeners to rebuilt thumbnails
           setupThumbnails();
         }
       });
@@ -220,26 +228,21 @@ const basePrice = 39.00;
 
     // Quantity selectors
     qtyMinus.addEventListener("click", () => {
-      let val = parseInt(qtyInput.value, 10);
-      if (val > 1) {
-        qtyInput.value = (val - 1).toString();
-      }
+      const val = parseInt(qtyInput!.value, 10);
+      if (val > 1) qtyInput!.value = (val - 1).toString();
     });
 
     qtyPlus.addEventListener("click", () => {
-      let val = parseInt(qtyInput.value, 10);
-      if (val < 99) {
-        qtyInput.value = (val + 1).toString();
-      }
+      const val = parseInt(qtyInput!.value, 10);
+      if (val < 99) qtyInput!.value = (val + 1).toString();
     });
 
-    // Add to Cart: Simulates click on Navbar cart icon to open the drawer
+    // Add to Cart: opens cart drawer
     addToCartBtn.addEventListener("click", () => {
       const globalCartBtn = document.querySelector(".btn-wagen, .btn-cart:not(#addToCartBtn)") as HTMLElement | null;
       if (globalCartBtn) {
         globalCartBtn.click();
       } else {
-        // Direct DOM manipulation fallback
         const cartDrawer = document.getElementById("cartDrawer");
         const cartOverlay = document.getElementById("cartOverlay");
         if (cartDrawer && cartOverlay) {
@@ -257,9 +260,7 @@ const basePrice = 39.00;
         const parts = currencyStr.trim().split(" ");
         const symbol = parts[1] || parts[0];
         const base = priceEl.getAttribute("data-base-price");
-        if (base) {
-          priceEl.textContent = `${symbol} ${base}`;
-        }
+        if (base) priceEl.textContent = `${symbol} ${base}`;
       };
 
       window.addEventListener("app:currency-change", (e: any) => {
@@ -267,13 +268,11 @@ const basePrice = 39.00;
       });
 
       const savedCurrency = localStorage.getItem("user-currency");
-      if (savedCurrency) {
-        updatePrice(savedCurrency);
-      }
+      if (savedCurrency) updatePrice(savedCurrency);
     }
   }
 
-  // Initialize
+  // Initialize on load and on Astro page transitions
   initProductView();
   document.addEventListener("astro:page-load", initProductView);
 </script>
@@ -290,6 +289,7 @@ const basePrice = 39.00;
     transition: border-color 0.2s ease, transform 0.2s ease;
     flex-shrink: 0;
     overflow: hidden;
+    display: block;
   }
 
   .thumb-btn.active,
@@ -305,7 +305,7 @@ const basePrice = 39.00;
     display: block;
   }
 
-  /* ─── Immagine principale: hover zoom ─── */
+  /* ─── Hover zoom immagine principale ─── */
   .main-img {
     transition: transform 0.3s ease;
   }
@@ -314,7 +314,12 @@ const basePrice = 39.00;
     transform: scale(1.03);
   }
 
-  /* ─── Colore swatches ─── */
+  /* ─── Scrollbar nascosta Chrome/Safari ─── */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none !important;
+  }
+
+  /* ─── Selettore colore ─── */
   .color-btn {
     width: 24px;
     height: 24px;
@@ -322,6 +327,7 @@ const basePrice = 39.00;
     cursor: pointer;
     position: relative;
     transition: transform 0.2s ease, outline-color 0.2s ease;
+    flex-shrink: 0;
   }
 
   .color-btn.active,
@@ -365,7 +371,7 @@ const basePrice = 39.00;
     pointer-events: none;
   }
 
-  /* ─── Quantity ─── */
+  /* ─── Quantità ─── */
   .quantity-selector {
     display: flex;
     align-items: center;
@@ -402,16 +408,16 @@ const basePrice = 39.00;
     appearance: textfield;
   }
 
-  /* Remove spinner Chrome/Safari */
+  /* Rimozione spinner Firefox */
+  .qty-input[type="number"] {
+    -moz-appearance: textfield;
+  }
+
+  /* Rimozione spinner Chrome/Safari */
   .qty-input::-webkit-outer-spin-button,
   .qty-input::-webkit-inner-spin-button {
     -webkit-appearance: none;
     margin: 0;
-  }
-
-  /* ─── Scrollbar hidden Chrome/Safari ─── */
-  .no-scrollbar::-webkit-scrollbar {
-    display: none !important;
   }
 
   /* ─── CTA Button ─── */
