@@ -38,97 +38,108 @@ const sizes = ["S", "M", "L", "XL"];
 const basePrice = 39.00;
 ---
 
-<!-- Layout principale: griglia a 2 colonne su desktop -->
-<div class="max-w-7xl mx-auto px-4 py-8 grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+<!-- Griglia prodotto: sfondo bianco, 2 colonne equilibrate su desktop -->
+<div class="bg-white text-zinc-900 min-h-screen">
+  <div class="max-w-6xl mx-auto px-6 pt-12 pb-16 grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
 
-  <!-- Colonna Sinistra: Miniature verticali + Immagine principale -->
-  <div class="flex flex-row gap-4 items-start">
+    <!-- Colonna Sinistra: Miniature + Immagine principale -->
+    <div class="flex flex-row gap-4 items-start">
 
-    <!-- Striscia miniature verticale -->
-    <div
-      class="no-scrollbar flex flex-col gap-3 w-20 shrink-0 overflow-y-auto max-h-[500px]"
-      id="thumbnailsContainer"
-    >
-      {colors[0].images.map((img, idx) => (
-        <button
-          type="button"
-          class={`thumb-btn ${idx === 0 ? "active" : ""}`}
-          data-index={idx}
-          aria-label={`Visualizza immagine ${idx + 1}`}
-        >
-          <img src={img.src} alt={img.alt} loading="lazy" />
-        </button>
-      ))}
-    </div>
-
-    <!-- Immagine principale: box rigido 3/4, non si espande mai -->
-    <div class="main-image-container flex-1 aspect-[3/4] bg-zinc-950 overflow-hidden border border-zinc-900">
-      <img
-        id="mainProductImage"
-        src={colors[0].images[0].src}
-        alt={colors[0].images[0].alt}
-        class="main-img w-full h-full object-cover block"
-      />
-    </div>
-
-  </div>
-
-  <!-- Colonna Destra: Pannello acquisto -->
-  <div class="product-info-panel">
-    <div class="brand-name">OCCHIPIENIDI</div>
-    <h1 class="product-title">JEFER T-SHIRT</h1>
-
-    <div class="price-container">
-      <span class="price-value" id="productPrice" data-base-price={basePrice.toFixed(2)}>
-        € {basePrice.toFixed(2)}
-      </span>
-    </div>
-
-    <!-- Color Selector -->
-    <div class="option-section">
-      <span class="option-label">COLORE: <span id="selectedColorName" class="highlight">{colors[0].name}</span></span>
-      <div class="color-swatches">
-        {colors.map((color, idx) => (
+      <!-- Striscia miniature verticale -->
+      <div
+        class="no-scrollbar flex flex-col gap-2 w-16 shrink-0 overflow-y-auto max-h-[480px]"
+        id="thumbnailsContainer"
+      >
+        {colors[0].images.map((img, idx) => (
           <button
             type="button"
-            class={`color-btn ${idx === 0 ? "active" : ""}`}
-            style={`background-color: ${color.hex}; border: ${color.hex.toLowerCase() === '#111111' ? '1px solid #333' : '1px solid transparent'}`}
-            data-color-index={idx}
-            data-color-name={color.name}
-            data-images={JSON.stringify(color.images)}
-            aria-label={`Seleziona colore ${color.name}`}
-          />
+            class={`thumb-btn ${idx === 0 ? "active" : ""}`}
+            data-index={idx}
+            aria-label={`Visualizza immagine ${idx + 1}`}
+          >
+            <img src={img.src} alt={img.alt} loading="lazy" />
+          </button>
         ))}
       </div>
+
+      <!-- Immagine principale: aspect-ratio rigido, non si espande mai -->
+      <div class="main-image-container flex-1 max-w-[400px] aspect-[3/4] overflow-hidden bg-zinc-100">
+        <img
+          id="mainProductImage"
+          src={colors[0].images[0].src}
+          alt={colors[0].images[0].alt}
+          class="main-img w-full h-full object-cover block"
+        />
+      </div>
+
     </div>
 
-    <!-- Size Selector -->
-    <div class="option-section">
-      <label for="sizeSelector" class="option-label">TAGLIA</label>
-      <div class="select-wrapper">
-        <select id="sizeSelector" class="size-dropdown">
-          {sizes.map((size) => (
-            <option value={size}>{size}</option>
+    <!-- Colonna Destra: Dettagli prodotto -->
+    <div class="flex flex-col gap-6">
+
+      <!-- Brand + Titolo + Prezzo -->
+      <div class="flex flex-col gap-2">
+        <p class="text-xs tracking-widest text-zinc-500 uppercase">OCCHIPIENIDI</p>
+        <h1 class="text-3xl font-bold text-zinc-900 tracking-wide">JEFER T-SHIRT</h1>
+        <p
+          class="text-xl font-medium text-zinc-800"
+          id="productPrice"
+          data-base-price={basePrice.toFixed(2)}
+        >
+          &euro; {basePrice.toFixed(2)}
+        </p>
+      </div>
+
+      <div class="border-t border-zinc-200"></div>
+
+      <!-- Colore -->
+      <div class="flex flex-col gap-3">
+        <span class="text-xs tracking-widest text-zinc-500 uppercase">
+          COLORE: <span id="selectedColorName" class="font-semibold text-zinc-900">{colors[0].name}</span>
+        </span>
+        <div class="flex gap-3">
+          {colors.map((color, idx) => (
+            <button
+              type="button"
+              class={`color-btn ${idx === 0 ? "active" : ""}`}
+              style={`background-color: ${color.hex}; border: ${color.hex.toLowerCase() === '#111111' ? '1px solid #555' : '1px solid #ccc'}`}
+              data-color-index={idx}
+              data-color-name={color.name}
+              data-images={JSON.stringify(color.images)}
+              aria-label={`Seleziona colore ${color.name}`}
+            />
           ))}
-        </select>
-        <span class="select-arrow">▼</span>
-      </div>
-    </div>
-
-    <!-- Quantity & Action -->
-    <div class="purchase-actions">
-      <div class="quantity-selector">
-        <button type="button" class="qty-btn" id="qtyMinus" aria-label="Riduci quantità">-</button>
-        <input type="number" id="qtyInput" class="qty-input" value="1" min="1" max="99" readonly />
-        <button type="button" class="qty-btn" id="qtyPlus" aria-label="Aumenta quantità">+</button>
+        </div>
       </div>
 
-      <button type="button" class="add-to-cart-btn btn-cart" id="addToCartBtn">
-        AGGIUNGI AL CARRELLO
-      </button>
+      <!-- Taglia -->
+      <div class="flex flex-col gap-3">
+        <label for="sizeSelector" class="text-xs tracking-widest text-zinc-500 uppercase">TAGLIA</label>
+        <div class="select-wrapper">
+          <select id="sizeSelector" class="size-dropdown">
+            {sizes.map((size) => (
+              <option value={size}>{size}</option>
+            ))}
+          </select>
+          <span class="select-arrow">▼</span>
+        </div>
+      </div>
+
+      <!-- Quantità + Aggiungi al carrello -->
+      <div class="flex flex-col gap-4">
+        <div class="quantity-selector">
+          <button type="button" class="qty-btn" id="qtyMinus" aria-label="Riduci quantità">-</button>
+          <input type="number" id="qtyInput" class="qty-input" value="1" min="1" max="99" readonly />
+          <button type="button" class="qty-btn" id="qtyPlus" aria-label="Aumenta quantità">+</button>
+        </div>
+
+        <button type="button" class="add-to-cart-btn btn-cart w-full" id="addToCartBtn">
+          AGGIUNGI AL CARRELLO
+        </button>
+      </div>
+
     </div>
   </div>
-
 </div>
 
 <script>
@@ -268,17 +279,12 @@ const basePrice = 39.00;
 </script>
 
 <style>
-  /* Layout strutturale gestito da Tailwind grid/flex sul tag HTML */
-
-  .thumbnails-container {
-    /* Layout e overflow gestiti da Tailwind sul tag HTML */
-  }
-
+  /* ─── Miniature ─── */
   .thumb-btn {
-    width: 72px;
+    width: 100%;
     aspect-ratio: 3 / 4;
-    border: 1px solid #222;
-    background: #161616;
+    border: 1px solid #d4d4d4;
+    background: #f4f4f5;
     padding: 0;
     cursor: pointer;
     transition: border-color 0.2s ease, transform 0.2s ease;
@@ -299,10 +305,7 @@ const basePrice = 39.00;
     display: block;
   }
 
-  .main-image-container {
-    /* Dimensioni e overflow gestiti da Tailwind sul tag HTML */
-  }
-
+  /* ─── Immagine principale: hover zoom ─── */
   .main-img {
     transition: transform 0.3s ease;
   }
@@ -311,67 +314,7 @@ const basePrice = 39.00;
     transform: scale(1.03);
   }
 
-  /* Purchase Panel Styling */
-  .product-info-panel {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-  }
-
-  .brand-name {
-    font-family: sans-serif;
-    font-size: 0.8rem;
-    letter-spacing: 2px;
-    color: #ff9f00;
-    font-weight: 600;
-  }
-
-  .product-title {
-    font-family: sans-serif;
-    font-size: 1.8rem;
-    font-weight: bold;
-    letter-spacing: 1px;
-    margin: 0;
-    color: #ffffff;
-  }
-
-  .price-container {
-    border-bottom: 1px solid #222;
-    padding-bottom: 20px;
-  }
-
-  .price-value {
-    font-family: sans-serif;
-    font-size: 1.4rem;
-    font-weight: 500;
-    color: #ffffff;
-  }
-
-  .option-section {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-
-  .option-label {
-    font-family: sans-serif;
-    font-size: 0.85rem;
-    letter-spacing: 1px;
-    color: #888;
-    text-transform: uppercase;
-  }
-
-  .option-label .highlight {
-    color: #ffffff;
-    font-weight: 600;
-  }
-
-  /* Color Swatches */
-  .color-swatches {
-    display: flex;
-    gap: 12px;
-  }
-
+  /* ─── Colore swatches ─── */
   .color-btn {
     width: 24px;
     height: 24px;
@@ -388,19 +331,18 @@ const basePrice = 39.00;
     outline-offset: 2px;
   }
 
-  /* Size Dropdown */
+  /* ─── Size Dropdown ─── */
   .select-wrapper {
     position: relative;
-    max-width: 200px;
+    max-width: 220px;
   }
 
   .size-dropdown {
     width: 100%;
-    background: #161616;
-    color: #ffffff;
-    border: 1px solid #222;
+    background: #f4f4f5;
+    color: #111;
+    border: 1px solid #d4d4d4;
     padding: 12px 16px;
-    font-family: sans-serif;
     font-size: 0.9rem;
     cursor: pointer;
     appearance: none;
@@ -415,34 +357,27 @@ const basePrice = 39.00;
 
   .select-arrow {
     position: absolute;
-    right: 15px;
+    right: 14px;
     top: 50%;
     transform: translateY(-50%);
-    color: #666;
-    font-size: 0.7rem;
+    color: #888;
+    font-size: 0.65rem;
     pointer-events: none;
   }
 
-  /* Actions & Quantity */
-  .purchase-actions {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    margin-top: 10px;
-  }
-
+  /* ─── Quantity ─── */
   .quantity-selector {
     display: flex;
     align-items: center;
-    border: 1px solid #222;
+    border: 1px solid #d4d4d4;
     width: fit-content;
-    background: #161616;
+    background: #f4f4f5;
   }
 
   .qty-btn {
     background: transparent;
     border: none;
-    color: #ffffff;
+    color: #111;
     width: 40px;
     height: 40px;
     font-size: 1.2rem;
@@ -459,35 +394,34 @@ const basePrice = 39.00;
     height: 40px;
     background: transparent;
     border: none;
-    border-left: 1px solid #222;
-    border-right: 1px solid #222;
-    color: #ffffff;
+    border-left: 1px solid #d4d4d4;
+    border-right: 1px solid #d4d4d4;
+    color: #111;
     text-align: center;
-    font-family: sans-serif;
     font-size: 0.95rem;
-    appearance: textfield; /* Remove spinner on Firefox */
+    appearance: textfield;
   }
 
-  /* Remove spinner on Chrome/Safari */
+  /* Remove spinner Chrome/Safari */
   .qty-input::-webkit-outer-spin-button,
   .qty-input::-webkit-inner-spin-button {
     -webkit-appearance: none;
     margin: 0;
   }
 
-  /* Hide scrollbar on Chrome/Safari for thumbnail strip */
+  /* ─── Scrollbar hidden Chrome/Safari ─── */
   .no-scrollbar::-webkit-scrollbar {
     display: none !important;
   }
 
+  /* ─── CTA Button ─── */
   .add-to-cart-btn {
     background: #ff9f00;
     color: #111111;
     border: none;
     padding: 16px 32px;
-    font-family: sans-serif;
-    font-size: 0.95rem;
-    font-weight: bold;
+    font-size: 0.9rem;
+    font-weight: 700;
     letter-spacing: 1.5px;
     cursor: pointer;
     text-transform: uppercase;
@@ -501,6 +435,4 @@ const basePrice = 39.00;
   .add-to-cart-btn:active {
     transform: scale(0.98);
   }
-
-  /* Responsive: gestito da Tailwind (grid-cols-1 md:grid-cols-2) */
 </style>
