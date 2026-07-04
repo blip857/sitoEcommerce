@@ -50,28 +50,40 @@ const basePrice = 39.00;
         id="thumbnailsContainer"
         class="no-scrollbar flex flex-col gap-2 w-16 shrink-0 overflow-y-auto max-h-[450px]"
       >
-        {colors[0].images.map((img, idx) => (
-          <button
-            type="button"
-            class={`thumb-btn ${idx === 0 ? "active" : ""}`}
-            data-index={idx}
-            aria-label={`Visualizza immagine ${idx + 1}`}
-          >
-            <img src={img.src} alt={img.alt} class="w-full h-full object-cover block" loading="lazy" />
-          </button>
-        ))}
+        {(() => {
+          let globalIdx = 0;
+          return colors.flatMap((color) =>
+            color.images.map((img) => {
+              const currentIdx = globalIdx++;
+              return (
+                <button
+                  type="button"
+                  class={`thumb-btn transition-all duration-300 ease-in-out ${currentIdx === 0 ? "active" : ""}`}
+                  data-index={currentIdx}
+                  data-color={color.name}
+                  aria-label={`Visualizza immagine ${color.name} ${currentIdx + 1}`}
+                >
+                  <img src={img.src} alt={img.alt} class="w-full h-full object-cover block" loading="lazy" />
+                </button>
+              );
+            })
+          );
+        })()}
       </div>
 
       <!-- Contenitore immagine principale: bloccato in aspect-ratio 3:4 con slider -->
       <div class="main-image-container flex-1 w-full max-w-[400px] aspect-[3/4] overflow-hidden bg-zinc-100 border border-zinc-200 relative">
         <div id="imageSliderTrack" class="flex w-full h-full transition-transform duration-300 ease-in-out">
-          {colors[0].images.map((img) => (
-            <img
-              src={img.src}
-              alt={img.alt}
-              class="w-full h-full object-cover shrink-0 block"
-            />
-          ))}
+          {colors.flatMap((color) =>
+            color.images.map((img) => (
+              <img
+                src={img.src}
+                alt={img.alt}
+                data-color={color.name}
+                class="w-full h-full object-cover shrink-0 block"
+              />
+            ))
+          )}
         </div>
       </div>
 
@@ -160,85 +172,97 @@ const basePrice = 39.00;
 
     let currentIndex = 0;
 
-    // Handle thumbnail selection
-    function setupThumbnails() {
+    // Helper per andare a uno slide specifico e aggiornare lo stato attivo delle miniature
+    function goToSlide(index: number) {
+      sliderTrack!.style.transform = `translateX(-${index * 100}%)`;
+      currentIndex = index;
+
       const thumbBtns = thumbContainer!.querySelectorAll(".thumb-btn");
-      thumbBtns.forEach((btn) => {
-        const updateMainImage = () => {
-          const newIndex = parseInt(btn.getAttribute("data-index") || "0", 10);
-          
-          // Sposta il tracciato dello slider
-          sliderTrack.style.transform = `translateX(-${newIndex * 100}%)`;
-
-          // Aggiorna le classi active
-          thumbBtns.forEach((b) => b.classList.remove("active"));
+      thumbBtns.forEach((btn, idx) => {
+        if (idx === index) {
           btn.classList.add("active");
-
-          currentIndex = newIndex;
-        };
-
-        btn.addEventListener("click", updateMainImage);
-        btn.addEventListener("mouseenter", updateMainImage);
+        } else {
+          btn.classList.remove("active");
+        }
       });
     }
 
-    setupThumbnails();
+    // Helper per sincronizzare la palette di destra
+    function syncColorPalette(colorName: string) {
+      if (selectedColorText) {
+        selectedColorText.textContent = colorName;
+      }
+      colorBtns.forEach((btn) => {
+        if (btn.getAttribute("data-color-name") === colorName) {
+          btn.classList.add("active");
+        } else {
+          btn.classList.remove("active");
+        }
+      });
+    }
 
-    // Handle color change
+    // Delega degli eventi su click e mouseenter per le miniature
+    thumbContainer.addEventListener("click", (e) => {
+      const btn = (e.target as HTMLElement).closest(".thumb-btn");
+      if (btn && thumbContainer.contains(btn)) {
+        const index = parseInt(btn.getAttribute("data-index") || "0", 10);
+        goToSlide(index);
+
+        const colorName = btn.getAttribute("data-color");
+        if (colorName) {
+          syncColorPalette(colorName);
+        }
+      }
+    });
+
+    thumbContainer.addEventListener("mouseover", (e) => {
+      const btn = (e.target as HTMLElement).closest(".thumb-btn");
+      if (btn && thumbContainer.contains(btn)) {
+        const index = parseInt(btn.getAttribute("data-index") || "0", 10);
+        goToSlide(index);
+
+        const colorName = btn.getAttribute("data-color");
+        if (colorName) {
+          syncColorPalette(colorName);
+        }
+      }
+    });
+
+    // Gestione click sulla palette dei colori (destra)
     colorBtns.forEach((btn) => {
       btn.addEventListener("click", () => {
         const colorName = btn.getAttribute("data-color-name");
-        const imagesStr = btn.getAttribute("data-images");
+        if (!colorName) return;
 
-        if (colorName && imagesStr) {
-          // Update selected color label
-          selectedColorText!.textContent = colorName;
+        // 1. Sincronizza lo stato attivo della palette
+        syncColorPalette(colorName);
 
-          // Update active swatch class
-          colorBtns.forEach((b) => b.classList.remove("active"));
-          btn.classList.add("active");
+        // 2. Trova tutte le miniature e le immagini dello slider associate a questo colore
+        const matchingThumbs = Array.from(
+          thumbContainer.querySelectorAll(`.thumb-btn[data-color="${colorName}"]`)
+        );
+        const matchingSliderImgs = Array.from(
+          sliderTrack.querySelectorAll(`img[data-color="${colorName}"]`)
+        );
 
-          // Parse new color images
-          const images: { src: string; alt: string }[] = JSON.parse(imagesStr);
-
-          // Reset slider state
-          currentIndex = 0;
-          sliderTrack.style.transform = "translateX(0%)";
-
-          // Rebuild thumbnails using DOM API — avoids Tailwind purge issues with innerHTML strings
-          thumbContainer!.innerHTML = "";
-          images.forEach((img, i) => {
-            const thumbBtn = document.createElement("button");
-            thumbBtn.type = "button";
-            // Use stable CSS class — NOT Tailwind utilities (not compiled at runtime)
-            thumbBtn.className = `thumb-btn${i === 0 ? " active" : ""}`;
-            thumbBtn.setAttribute("data-index", String(i));
-            thumbBtn.setAttribute("aria-label", `Visualizza immagine ${i + 1}`);
-
-            const thumbImg = document.createElement("img");
-            thumbImg.src = img.src;
-            thumbImg.alt = img.alt;
-            thumbImg.loading = "lazy";
-            // Stable inline style — guaranteed regardless of Tailwind compilation
-            thumbImg.style.cssText = "width:100%;height:100%;object-fit:cover;display:block";
-
-            thumbBtn.appendChild(thumbImg);
-            thumbContainer!.appendChild(thumbBtn);
-          });
-
-          // Rebuild slider track images
-          sliderTrack.innerHTML = "";
-          images.forEach((img) => {
-            const mainImg = document.createElement("img");
-            mainImg.src = img.src;
-            mainImg.alt = img.alt;
-            mainImg.className = "w-full h-full object-cover shrink-0 block";
-            sliderTrack.appendChild(mainImg);
-          });
-
-          // Re-attach listeners to rebuilt thumbnails
-          setupThumbnails();
+        // 3. Sposta le miniature in cima (prepend) preservando l'ordine
+        for (let i = matchingThumbs.length - 1; i >= 0; i--) {
+          thumbContainer.prepend(matchingThumbs[i]);
         }
+
+        // 4. Sposta le immagini dello slider centrale in cima (prepend) preservando l'ordine
+        for (let i = matchingSliderImgs.length - 1; i >= 0; i--) {
+          sliderTrack.prepend(matchingSliderImgs[i]);
+        }
+
+        // 5. Riassegna gli indici "data-index" a tutte le miniature in base alla loro nuova posizione
+        const allThumbs = thumbContainer.querySelectorAll(".thumb-btn");
+        allThumbs.forEach((thumb, idx) => {
+          thumb.setAttribute("data-index", String(idx));
+        });
+
+        // 6. Resetta lo slider a 0% e attiva la prima miniatura
+        goToSlide(0);
       });
     });
 
@@ -304,7 +328,7 @@ const basePrice = 39.00;
     background: #f4f4f5;
     padding: 0;
     cursor: pointer;
-    transition: border-color 0.2s ease, transform 0.2s ease;
+    transition: all 0.3s ease-in-out;
     overflow: hidden;
   }
 
