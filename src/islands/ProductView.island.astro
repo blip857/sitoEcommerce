@@ -42,13 +42,13 @@ const basePrice = 39.00;
 <div class="bg-white text-zinc-900 min-h-screen antialiased pt-16">
   <div class="max-w-6xl mx-auto px-6 py-12 grid grid-cols-1 md:grid-cols-2 gap-16 items-start">
 
-    <!-- ── COLONNA SINISTRA: Miniature verticali + Immagine principale ── -->
-    <div class="w-full md:max-w-[500px] flex gap-4 items-start select-none">
+    <!-- ── COLONNA SINISTRA: Miniature verticali/orizzontali + Immagine principale ── -->
+    <div class="w-full md:max-w-[500px] flex flex-col md:flex-row gap-4 items-start select-none">
 
-      <!-- Striscia miniature verticale fissa -->
+      <!-- Striscia miniature (orizzontale su mobile, verticale su desktop) -->
       <div
         id="thumbnailsContainer"
-        class="no-scrollbar flex flex-col gap-2 w-16 shrink-0 overflow-y-auto max-h-[450px]"
+        class="no-scrollbar flex flex-row md:flex-col gap-2 w-full md:w-16 shrink-0 overflow-x-auto md:overflow-y-auto max-h-[90px] md:max-h-[450px] order-2 md:order-1 snap-x snap-mandatory"
       >
         {(() => {
           let globalIdx = 0;
@@ -58,7 +58,7 @@ const basePrice = 39.00;
               return (
                 <button
                   type="button"
-                  class={`thumb-btn transition-all duration-300 ease-in-out ${currentIdx === 0 ? "active" : ""}`}
+                  class={`thumb-btn transition-all duration-300 ease-in-out snap-center ${currentIdx === 0 ? "active" : ""}`}
                   data-index={currentIdx}
                   data-color={color.name}
                   aria-label={`Visualizza immagine ${color.name} ${currentIdx + 1}`}
@@ -71,8 +71,8 @@ const basePrice = 39.00;
         })()}
       </div>
 
-      <!-- Contenitore immagine principale: bloccato in aspect-ratio 3:4 con slider -->
-      <div class="main-image-container flex-1 w-full max-w-[400px] aspect-[3/4] overflow-hidden bg-zinc-100 border border-zinc-200 relative">
+      <!-- Contenitore immagine principale: bloccato in aspect-ratio 3:4 con slider (prima in alto su mobile) -->
+      <div class="main-image-container flex-1 w-full max-w-[400px] aspect-[3/4] overflow-hidden bg-zinc-100 border border-zinc-200 relative order-1 md:order-2">
         <div id="imageSliderTrack" class="flex w-full h-full transition-transform duration-300 ease-in-out">
           {colors.flatMap((color) =>
             color.images.map((img) => (
@@ -318,10 +318,10 @@ const basePrice = 39.00;
 </script>
 
 <style>
-  /* ─── Miniature (blindate con !important) ─── */
+  /* ─── Miniature (blindate con !important, responsive) ─── */
   .thumb-btn {
     width: 64px !important;
-    height: 85px !important;
+    height: 64px !important; /* quadrato su mobile */
     flex-shrink: 0 !important;
     display: block !important;
     border: 1px solid #e4e4e7; /* border-zinc-200 */
@@ -332,9 +332,16 @@ const basePrice = 39.00;
     overflow: hidden;
   }
 
+  @media (min-width: 768px) {
+    .thumb-btn {
+      width: 64px !important;
+      height: 85px !important; /* rettangolare su desktop */
+    }
+  }
+
   .thumb-btn.active,
   .thumb-btn:hover {
-    border-color: #ff9f00; /* bordo arancione come richiesto (o #111111 per nero) */
+    border-color: #ff9f00; /* bordo arancione come richiesto */
     transform: scale(1.02);
   }
 
@@ -346,6 +353,13 @@ const basePrice = 39.00;
   }
 
   /* ─── Scrollbar nascosta cross-browser ─── */
+  #thumbnailsContainer::-webkit-scrollbar {
+    display: none !important;
+  }
+  #thumbnailsContainer {
+    -ms-overflow-style: none !important;
+    scrollbar-width: none !important;
+  }
   .no-scrollbar::-webkit-scrollbar {
     display: none !important;
   }
