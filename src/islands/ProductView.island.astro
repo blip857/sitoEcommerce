@@ -277,20 +277,62 @@ const basePrice = 39.00;
       if (val < 99) qtyInput!.value = (val + 1).toString();
     });
 
-    // Add to Cart: opens cart drawer
+    // Add to Cart: salva in localStorage e apre il carrello
     addToCartBtn.addEventListener("click", () => {
-      const globalCartBtn = document.querySelector(".btn-wagen, .btn-cart:not(#addToCartBtn)") as HTMLElement | null;
-      if (globalCartBtn) {
-        globalCartBtn.click();
-      } else {
-        const cartDrawer = document.getElementById("cartDrawer");
-        const cartOverlay = document.getElementById("cartOverlay");
-        if (cartDrawer && cartOverlay) {
-          cartDrawer.classList.add("open");
-          cartOverlay.classList.add("active");
-          document.body.style.overflow = "hidden";
+      const productName = document.querySelector("h1")?.textContent?.trim() || "JEFER T-SHIRT";
+      const priceEl = document.getElementById("productPrice");
+      const productPrice = parseFloat(priceEl?.getAttribute("data-base-price") || "39.00");
+      const selectedColor = selectedColorText.textContent?.trim() || "Black";
+      const selectedSize = (document.getElementById("sizeSelector") as HTMLSelectElement | null)?.value || "S";
+      const quantity = parseInt(qtyInput.value, 10) || 1;
+
+      // Trova l'immagine del colore selezionato
+      const activeColorBtn = document.querySelector(".color-btn.active");
+      let imgUrl = "/assets/25fwprts503_01.jpg"; // fallback
+      if (activeColorBtn) {
+        const imagesData = activeColorBtn.getAttribute("data-images");
+        if (imagesData) {
+          try {
+            const imgs = JSON.parse(imagesData);
+            if (imgs && imgs.length > 0) {
+              imgUrl = imgs[0].src;
+            }
+          } catch(e) {}
         }
       }
+
+      // Aggiorna il localStorage
+      let cart = [];
+      try {
+        cart = JSON.parse(localStorage.getItem("cart_items") || "[]");
+      } catch (e) {
+        cart = [];
+      }
+
+      const existingIndex = cart.findIndex((item: any) => 
+        item.name === productName && 
+        item.color === selectedColor && 
+        item.size === selectedSize
+      );
+
+      if (existingIndex > -1) {
+        cart[existingIndex].quantity += quantity;
+      } else {
+        cart.push({
+          name: productName,
+          price: productPrice,
+          color: selectedColor,
+          size: selectedSize,
+          quantity: quantity,
+          image: imgUrl
+        });
+      }
+
+      localStorage.setItem("cart_items", JSON.stringify(cart));
+
+      // Lancia gli eventi globali per il CartDrawer
+      window.dispatchEvent(new CustomEvent("cart-updated"));
+      window.dispatchEvent(new CustomEvent("cart-open-request"));
     });
 
     // Currency selector logic
