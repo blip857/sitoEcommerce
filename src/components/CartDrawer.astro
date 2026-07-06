@@ -98,6 +98,19 @@
     if (cartDrawer.getAttribute("data-initialized") === "true") return;
     cartDrawer.setAttribute("data-initialized", "true");
 
+    let currentCurrencySymbol = "€";
+
+    function updateCurrencySymbol(currencyStr: string) {
+      const parts = currencyStr.trim().split(" ");
+      currentCurrencySymbol = parts[1] || parts[0] || "€";
+    }
+
+    // Carica la valuta persistita al caricamento
+    const savedCurrency = localStorage.getItem("user-currency");
+    if (savedCurrency) {
+      updateCurrencySymbol(savedCurrency);
+    }
+
     // Funzione per recuperare il carrello
     function getCart(): CartItem[] {
       try {
@@ -135,7 +148,7 @@
 
       // Aggiorna totale sul pulsante di pagamento
       if (totalPriceEl) {
-        totalPriceEl.textContent = `€${totalPrice.toFixed(2)}`;
+        totalPriceEl.textContent = `${currentCurrencySymbol}${totalPrice.toFixed(2)}`;
       }
 
       if (checkoutBtn) {
@@ -152,7 +165,7 @@
           shippingProgress.style.width = "100%";
         } else {
           const remaining = FREE_SHIPPING_THRESHOLD - totalPrice;
-          shippingMessage.innerHTML = `Ti mancano solo <span class="font-bold text-amber-500">€${remaining.toFixed(2)}</span> per la spedizione gratuita`;
+          shippingMessage.innerHTML = `Ti mancano solo <span class="font-bold text-amber-500">${currentCurrencySymbol}${remaining.toFixed(2)}</span> per la spedizione gratuita`;
           const progressPercent = Math.min((totalPrice / FREE_SHIPPING_THRESHOLD) * 100, 100);
           shippingProgress.style.width = `${progressPercent}%`;
         }
@@ -199,7 +212,7 @@
                 
                 <div class="flex justify-between items-center mt-3">
                   <span class="text-[11px] tracking-wider text-zinc-500">QTÀ: <span class="text-zinc-300 font-semibold">${item.quantity}</span></span>
-                  <span class="text-xs font-bold text-zinc-200">€${(item.price * item.quantity).toFixed(2)}</span>
+                  <span class="text-xs font-bold text-zinc-200">${currentCurrencySymbol}${(item.price * item.quantity).toFixed(2)}</span>
                 </div>
               </div>
             </div>
@@ -263,6 +276,14 @@
     window.addEventListener("cart-open-request", () => {
       renderCart();
       openCart();
+    });
+
+    // Ascolta il cambio valuta globale
+    window.addEventListener("app:currency-change", (e: any) => {
+      if (e.detail && e.detail.currency) {
+        updateCurrencySymbol(e.detail.currency);
+        renderCart();
+      }
     });
 
     // Renderizza lo stato iniziale del carrello al caricamento
