@@ -317,6 +317,10 @@ const basePrice = 39.00;
 
       if (existingIndex > -1) {
         cart[existingIndex].quantity += quantity;
+        // Aggiorna l'url se mancava per retrocompatibilità
+        if (!cart[existingIndex].url) {
+          cart[existingIndex].url = window.location.pathname;
+        }
       } else {
         cart.push({
           name: productName,
@@ -324,7 +328,8 @@ const basePrice = 39.00;
           color: selectedColor,
           size: selectedSize,
           quantity: quantity,
-          image: imgUrl
+          image: imgUrl,
+          url: window.location.pathname
         });
       }
 
