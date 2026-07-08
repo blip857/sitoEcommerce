@@ -1,0 +1,59 @@
+---
+/**
+ * @file Layout.astro
+ * @description Global layout wrapper providing HTML boilerplate, meta tags, global styles,
+ *              Navbar, Footer, CartDrawer, and the intro Preloader.
+ */
+import Navbar from "../components/Navbar.astro";
+import Footer from "../components/Footer.astro";
+import CartDrawer from "../components/CartDrawer.astro";
+import Preloader from "../components/Preloader.astro";
+import "../styles/global.css";
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = "OcchiPieniDi | Official Store",
+  description = "OcchiPieniDi Official Store - Esplora le nostre collezioni esclusive."
+} = Astro.props;
+---
+
+<html lang="it">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <style is:global>
+      /* Base global styles */
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        font-family: sans-serif;
+        background: #111111;
+        margin: 0;
+        padding: 0;
+        color: #fff;
+        overflow-x: hidden;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Preloader rendered immediately on body start -->
+    <Preloader />
+
+    <!-- Global Navigation -->
+    <Navbar />
+
+    <!-- Page Content Injection -->
+    <slot />
+
+    <!-- Global Footer & Drawer -->
+    <Footer />
+    <CartDrawer />
+  </body>
+</html>

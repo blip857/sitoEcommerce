@@ -1,0 +1,147 @@
+---
+/**
+ * @file Preloader.astro
+ * @description Intro preloader featuring a dynamic SVG slash opening and glowing ASCII art.
+ *              Uses sessionStorage to run only once per user session.
+ */
+---
+
+<div
+  id="preloader-container"
+  class="fixed inset-0 z-[9999] bg-black flex items-center justify-center overflow-hidden select-none"
+>
+  <!-- Inline session check: hides the container immediately if already viewed to prevent visual flashing -->
+  <script is:inline>
+    if (sessionStorage.getItem('intro-visto')) {
+      const container = document.getElementById('preloader-container');
+      if (container) {
+        container.style.display = 'none';
+        container.remove();
+      }
+    }
+  </script>
+
+  <div class="relative flex flex-col items-center justify-center w-full h-full max-w-4xl px-4">
+    <!-- SVG Slash Image -->
+    <img
+      id="preloader-squarcio"
+      src="/assets/squarcio.svg"
+      alt="Slash"
+      class="w-full max-w-[85vw] md:max-w-[45vw] scale-x-0 scale-y-[0.01] transition-transform duration-700 ease-out object-contain select-none pointer-events-none"
+    />
+
+    <!-- Glitch ASCII Text overlayed inside/below the slash -->
+    <pre
+      id="preloader-ascii"
+      class="font-mono text-[2.5vw] md:text-[1.2vw] leading-none tracking-tighter opacity-0 font-bold text-zinc-100 select-none absolute pointer-events-none text-center"
+    >Ó̸̴̸͖̫̼͍͓͍͐͐͛̒̐̚̕̚͜C̴̸̴̢̡͚͍̻̫͓͚̺̒͆͌̾̚͘̕͘͠C̵̸̴̡͚͖͚͙̻͙͒͐͆̈́͋͐̈́̚͘͜H̵̸̴̡̼̝̻̘̟̠͉͑̐͌̿̓̕͜͠Ḯ̸̸̸̡̼̺͓̦̟͍̙͖͆̓͋͋͐͆̈́͘P̵̴̴̫͓͔̘͙̠̟̐̾͒̒͐͒̐̽̕I̵̸̸͖͕͓̫͉̙͖͕͊̽̀̓̽́̕͜͝E̴̵̵̢͍͖͓͇̠͎̪̦͐̀͛́͑͛̽̈́͝N̵̵̴͍͎͙̠̠̞͕̘̟͌̓̿̓̔̒̾̕D̵̴̸̟̝͖̘̫̘̼̝̒͋͑̐̽̓̈́̈́͜͝I̸̸̸̡̞̺͍̪̺͉̘̝͌̐̒̔̀̾̈́͐͠</pre>
+  </div>
+</div>
+
+<script>
+  // Setup the timeline animations on client-side if not already seen in this session
+  const container = document.getElementById('preloader-container');
+
+  if (sessionStorage.getItem('intro-visto')) {
+    if (container) {
+      container.remove();
+    }
+  } else {
+    // Set the session flag so it won't run again in this session
+    sessionStorage.setItem('intro-visto', 'true');
+
+    const squarcio = document.getElementById('preloader-squarcio');
+    const ascii = document.getElementById('preloader-ascii');
+
+    // Phase 1 (0.0s): Preloader is full black overlay (already active)
+
+    // Phase 2 (0.5s): Animate slash opening
+    setTimeout(() => {
+      if (squarcio) {
+        squarcio.classList.remove('scale-x-0', 'scale-y-[0.01]');
+        squarcio.classList.add('scale-x-100', 'scale-y-100');
+      }
+    }, 500);
+
+    // Phase 3 (1.2s): Make ASCII art visible with a glitch effect
+    setTimeout(() => {
+      if (ascii) {
+        ascii.classList.remove('opacity-0');
+        ascii.classList.add('opacity-100', 'animate-glitch-flicker');
+      }
+    }, 1200);
+
+    // Phase 4 (3.2s): Smooth fade-out of the entire preloader container
+    setTimeout(() => {
+      if (container) {
+        container.classList.add('opacity-0', 'pointer-events-none');
+        
+        // Remove from DOM once transition (500ms) finishes
+        setTimeout(() => {
+          container.remove();
+        }, 500);
+      }
+    }, 3200);
+  }
+</script>
+
+<style>
+  /* Glitch flicker animation for ASCII art */
+  @keyframes glitch-effect {
+    0%, 100% {
+      opacity: 1;
+      transform: translate(0) scale(1);
+      text-shadow: none;
+    }
+    10% {
+      opacity: 0.85;
+      transform: translate(-1px, 1px) scale(0.99);
+      text-shadow: 1px 0 theme('colors.zinc.400'), -1px 0 theme('colors.zinc.700');
+    }
+    20% {
+      opacity: 0.95;
+      transform: translate(1px, -1px);
+      text-shadow: none;
+    }
+    30% {
+      opacity: 0.75;
+      transform: translate(-2px, 0);
+    }
+    40% {
+      opacity: 1;
+      transform: translate(1px, 2px);
+      text-shadow: -1px 0 theme('colors.zinc.500'), 1px 0 theme('colors.zinc.800');
+    }
+    50% {
+      opacity: 0.8;
+      transform: translate(0);
+      text-shadow: none;
+    }
+    60% {
+      opacity: 1;
+      transform: translate(-1px, -1px);
+    }
+    70% {
+      opacity: 0.9;
+      text-shadow: 0.5px 0 theme('colors.zinc.300');
+    }
+    80% {
+      opacity: 1;
+      transform: translate(1px, 1px);
+      text-shadow: none;
+    }
+    90% {
+      opacity: 0.85;
+      transform: translate(-1px, 0);
+    }
+  }
+
+  .animate-glitch-flicker {
+    animation: glitch-effect 0.6s infinite steps(2, end);
+  }
+
+  /* Fade out transition setting */
+  #preloader-container {
+    transition: opacity 500ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+</style>

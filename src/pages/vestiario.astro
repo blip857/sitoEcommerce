@@ -2,48 +2,18 @@
 /**
  * @file vestiario.astro
  * @description Main route page for the Vestiario catalog (/vestiario).
- *              Composes Navbar, VestiarioHero banner, ProductGrid container, and Footer.
+ *              Composes VestiarioHero banner and ProductGrid container.
  */
-import Navbar from "../components/Navbar.astro";
+import Layout from "../layouts/Layout.astro";
 import VestiarioHero from "../components/VestiarioHero.astro";
 import ProductGrid from "../components/ProductGrid.container.astro";
-import Footer from "../components/Footer.astro";
-import CartDrawer from "../components/CartDrawer.astro";
-import "../styles/global.css";
 ---
 
-<html lang="it">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vestiario | OcchiPieniDi Official Store</title>
-    <meta name="description" content="Esplora la collezione completa di Vestiario: t-shirt e felpe esclusive." />
-    <style>
-      * {
-        box-sizing: border-box;
-      }
-      body {
-        font-family: sans-serif;
-        background: #111111;
-        margin: 0;
-        padding: 0;
-        color: #fff;
-        overflow-x: hidden;
-      }
-    </style>
-  </head>
-  <body>
-    <!-- Navbar globale -->
-    <Navbar />
+<Layout title="Vestiario | OcchiPieniDi Official Store" description="Esplora la collezione completa di Vestiario: t-shirt e felpe esclusive.">
+  <!-- Banner superiore Vestiario -->
+  <VestiarioHero />
 
-    <!-- Banner superiore Vestiario -->
-    <VestiarioHero />
+  <!-- Container griglia prodotti -->
+  <ProductGrid />
+</Layout>
 
-    <!-- Container griglia prodotti -->
-    <ProductGrid />
-
-    <!-- Footer globale e Social -->
-    <Footer />
-    <CartDrawer />
-  </body>
-</html>

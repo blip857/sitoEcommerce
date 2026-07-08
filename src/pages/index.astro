@@ -1,57 +1,30 @@
 ---
-import Navbar from "../components/Navbar.astro";
+import Layout from "../layouts/Layout.astro";
 import Hero from "../components/Hero.astro";
 import Categories from "../components/Categories.astro";
 import FeaturedProducts from "../components/FeaturedProducts.astro";
 import BrandQuote from "../components/BrandQuote.astro";
 import Faq from "../components/Faq.astro";
 import Newsletter from "../components/Newsletter.astro";
-import Footer from "../components/Footer.astro";
-import CartDrawer from "../components/CartDrawer.astro";
-import "../styles/global.css";
 ---
 
-<html lang="it">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>OcchiPieniDi | Official Store</title>
-    <style>
-      /* Stili Globali di Base */
-      * {
-        box-sizing: border-box;
-      }
-      body {
-        font-family: sans-serif;
-        background: #111111;
-        margin: 0;
-        padding: 0;F
-        color: #fff;
-        overflow-x: hidden;
-      }
-    </style>
-  </head>
-  <body>
-    <!-- 1. Barra di Navigazione Italiana -->
-    <Navbar />
+<Layout title="OcchiPieniDi | Official Store" description="Benvenuto nello store ufficiale di OcchiPieniDi. Scopri le collezioni esclusive.">
+  <!-- 2. Video Banner Emozionale -->
+  <Hero />
 
-    <!-- 2. Video Banner Emozionale -->
-    <Hero />
+  <!-- 3. Griglia Categorie (Magliette, Felpe, Accessori) -->
+  <Categories />
 
-    <!-- 3. Griglia Categorie (Magliette, Felpe, Accessori) -->
-    <Categories />
+  <!-- 4. Vetrina Prodotti Iconici (Classici OcchiPieniDi) -->
+  <FeaturedProducts />
 
-    <!-- 4. Vetrina Prodotti Iconici (Classici OcchiPieniDi) -->
-    <FeaturedProducts />
+  <!-- 5. Sezione Lookbook con Citazione e Immagine Split -->
+  <BrandQuote />
 
-    <!-- 5. Sezione Lookbook con Citazione e Immagine Split -->
-    <BrandQuote />
-    <!-- 6.  Blocco Domande e Risposte con effetto fisarmonica -->
-    <Faq />
-    <!-- 7.  Box Iscrizione Email minimale -->
-    <Newsletter />
-    <!--8. Chiusura Footer con note legali, anno 2026 e divisore -->
-    <Footer />
-    <CartDrawer />
-  </body>
-</html>
+  <!-- 6. Blocco Domande e Risposte con effetto fisarmonica -->
+  <Faq />
+
+  <!-- 7. Box Iscrizione Email minimale -->
+  <Newsletter />
+</Layout>
+
