@@ -1,78 +1,64 @@
 ---
 /**
  * @file Preloader.astro
- * @description Cinematic intro preloader.
- *              Phase 1: brand text fades in.
- *              Phase 2: text fades out, doberman image fades in.
- *              Phase 3: full overlay fades out and is removed from DOM.
- *              Runs once per user session via sessionStorage.
+ * @description Cinematic intro preloader — doberman hero-style image emerges from darkness.
+ *              Phase 1 (0.2s):  GIF appears at near-invisible opacity (opacity-20).
+ *              Phase 2 (1.2s):  GIF rises to full opacity-100 over 2000ms CSS transition.
+ *              Phase 3 (3.8s):  Full overlay fades out (duration-700), removed from DOM at 4.5s.
+ *              Runs once per user session via sessionStorage ('intro-visto').
  */
 ---
 
 <div
   id="preloader-container"
-  class="fixed inset-0 z-[9999] bg-black flex items-center justify-center select-none transition-opacity duration-500"
+  class="fixed inset-0 z-[9999] bg-black flex items-center justify-center select-none"
 >
-  <!-- Inline script: synchronously hide the overlay before paint if already seen this session -->
+  <!-- Inline script: synchronously hide overlay before first paint if already seen this session -->
   <script is:inline>
     if (sessionStorage.getItem('intro-visto')) {
       document.getElementById('preloader-container').style.display = 'none';
     }
   </script>
 
-  <!-- Centered wrapper — both children are absolute and stacked on top of each other -->
-  <div class="relative flex items-center justify-center w-full h-full">
-
-    <!-- Brand Text Element -->
-    <h1
-      id="preloader-text"
-      class="text-4xl md:text-6xl font-black tracking-widest text-zinc-100 opacity-0 transition-opacity duration-700 ease-in-out absolute select-none pointer-events-none"
-    >
-      OCCHIPIENIDI
-    </h1>
-
-    <!-- Doberman Image Element -->
-    <img
-      id="preloader-gif"
-      src="/assets/doberman.webp"
-      alt="Doberman"
-      class="max-w-[90vw] md:max-w-[500px] h-auto object-contain opacity-0 transition-opacity duration-700 ease-in-out absolute pointer-events-none"
-    />
-
-  </div>
+  <!-- Hero-sized doberman image, starts invisible -->
+  <img
+    id="preloaderGif"
+    src="/assets/doberman.webp"
+    alt="Doberman"
+    class="w-full max-w-[1200px] h-[50vh] md:h-[70vh] object-cover opacity-0 transition-all duration-[2000ms] ease-out select-none pointer-events-none"
+  />
 </div>
 
 <script>
   const container = document.getElementById('preloader-container');
-  const textEl = document.getElementById('preloader-text');
-  const gifEl = document.getElementById('preloader-gif');
+  const gif = document.getElementById('preloaderGif');
 
-  // If already seen this session, bail out immediately
+  // Bail out immediately if already seen this session
   if (sessionStorage.getItem('intro-visto')) {
     container?.remove();
   } else {
-    // Mark session so this intro won't replay on subsequent navigation
+    // Lock session so this intro won't replay on subsequent navigation
     sessionStorage.setItem('intro-visto', 'true');
 
-    // Phase 1 (0.2s): Brand text fades in
+    // Phase 1 (0.2s): GIF materialises at near-invisible opacity
     setTimeout(() => {
-      textEl?.classList.add('opacity-100');
+      gif?.classList.add('opacity-20');
     }, 200);
 
-    // Phase 2 (1.5s): Text fades out, doberman image fades in
+    // Phase 2 (1.2s): GIF rises to full opacity — 2000ms CSS transition handles the gradual emergence
     setTimeout(() => {
-      textEl?.classList.remove('opacity-100');
-      gifEl?.classList.add('opacity-100');
-    }, 1500);
+      gif?.classList.remove('opacity-20');
+      gif?.classList.add('opacity-100');
+    }, 1200);
 
-    // Phase 3 (4.0s): Full overlay fades out
+    // Phase 3 (3.8s): Overlay fades out elegantly, revealing the homepage beneath
     setTimeout(() => {
-      container?.classList.add('opacity-0', 'pointer-events-none');
+      container?.classList.add('opacity-0', 'pointer-events-none', 'transition-opacity', 'duration-700');
 
-      // Remove from DOM after fade transition completes (500ms)
+      // Remove node from DOM after fade completes
       setTimeout(() => {
         container?.remove();
-      }, 500);
-    }, 4000);
+      }, 700);
+    }, 3800);
   }
 </script>
