@@ -1,147 +1,78 @@
 ---
 /**
  * @file Preloader.astro
- * @description Intro preloader featuring a dynamic SVG slash opening and glowing ASCII art.
- *              Uses sessionStorage to run only once per user session.
+ * @description Cinematic intro preloader.
+ *              Phase 1: brand text fades in.
+ *              Phase 2: text fades out, doberman image fades in.
+ *              Phase 3: full overlay fades out and is removed from DOM.
+ *              Runs once per user session via sessionStorage.
  */
 ---
 
 <div
   id="preloader-container"
-  class="fixed inset-0 z-[9999] bg-black flex items-center justify-center overflow-hidden select-none"
+  class="fixed inset-0 z-[9999] bg-black flex items-center justify-center select-none transition-opacity duration-500"
 >
-  <!-- Inline session check: hides the container immediately if already viewed to prevent visual flashing -->
+  <!-- Inline script: synchronously hide the overlay before paint if already seen this session -->
   <script is:inline>
     if (sessionStorage.getItem('intro-visto')) {
-      const container = document.getElementById('preloader-container');
-      if (container) {
-        container.style.display = 'none';
-        container.remove();
-      }
+      document.getElementById('preloader-container').style.display = 'none';
     }
   </script>
 
-  <div class="relative flex flex-col items-center justify-center w-full h-full max-w-4xl px-4">
-    <!-- SVG Slash Image -->
+  <!-- Centered wrapper — both children are absolute and stacked on top of each other -->
+  <div class="relative flex items-center justify-center w-full h-full">
+
+    <!-- Brand Text Element -->
+    <h1
+      id="preloader-text"
+      class="text-4xl md:text-6xl font-black tracking-widest text-zinc-100 opacity-0 transition-opacity duration-700 ease-in-out absolute select-none pointer-events-none"
+    >
+      OCCHIPIENIDI
+    </h1>
+
+    <!-- Doberman Image Element -->
     <img
-      id="preloader-squarcio"
-      src="/assets/squarcio.svg"
-      alt="Slash"
-      class="w-full max-w-[85vw] md:max-w-[45vw] scale-x-0 scale-y-[0.01] transition-transform duration-700 ease-out object-contain select-none pointer-events-none"
+      id="preloader-gif"
+      src="/assets/doberman.webp"
+      alt="Doberman"
+      class="max-w-[90vw] md:max-w-[500px] h-auto object-contain opacity-0 transition-opacity duration-700 ease-in-out absolute pointer-events-none"
     />
 
-    <!-- Glitch ASCII Text overlayed inside/below the slash -->
-    <pre
-      id="preloader-ascii"
-      class="font-mono text-[2.5vw] md:text-[1.2vw] leading-none tracking-tighter opacity-0 font-bold text-zinc-100 select-none absolute pointer-events-none text-center"
-    >Ó̸̴̸͖̫̼͍͓͍͐͐͛̒̐̚̕̚͜C̴̸̴̢̡͚͍̻̫͓͚̺̒͆͌̾̚͘̕͘͠C̵̸̴̡͚͖͚͙̻͙͒͐͆̈́͋͐̈́̚͘͜H̵̸̴̡̼̝̻̘̟̠͉͑̐͌̿̓̕͜͠Ḯ̸̸̸̡̼̺͓̦̟͍̙͖͆̓͋͋͐͆̈́͘P̵̴̴̫͓͔̘͙̠̟̐̾͒̒͐͒̐̽̕I̵̸̸͖͕͓̫͉̙͖͕͊̽̀̓̽́̕͜͝E̴̵̵̢͍͖͓͇̠͎̪̦͐̀͛́͑͛̽̈́͝N̵̵̴͍͎͙̠̠̞͕̘̟͌̓̿̓̔̒̾̕D̵̴̸̟̝͖̘̫̘̼̝̒͋͑̐̽̓̈́̈́͜͝I̸̸̸̡̞̺͍̪̺͉̘̝͌̐̒̔̀̾̈́͐͠</pre>
   </div>
 </div>
 
 <script>
-  // Setup the timeline animations on client-side if not already seen in this session
   const container = document.getElementById('preloader-container');
+  const textEl = document.getElementById('preloader-text');
+  const gifEl = document.getElementById('preloader-gif');
 
+  // If already seen this session, bail out immediately
   if (sessionStorage.getItem('intro-visto')) {
-    if (container) {
-      container.remove();
-    }
+    container?.remove();
   } else {
-    // Set the session flag so it won't run again in this session
+    // Mark session so this intro won't replay on subsequent navigation
     sessionStorage.setItem('intro-visto', 'true');
 
-    const squarcio = document.getElementById('preloader-squarcio');
-    const ascii = document.getElementById('preloader-ascii');
-
-    // Phase 1 (0.0s): Preloader is full black overlay (already active)
-
-    // Phase 2 (0.5s): Animate slash opening
+    // Phase 1 (0.2s): Brand text fades in
     setTimeout(() => {
-      if (squarcio) {
-        squarcio.classList.remove('scale-x-0', 'scale-y-[0.01]');
-        squarcio.classList.add('scale-x-100', 'scale-y-100');
-      }
-    }, 500);
+      textEl?.classList.add('opacity-100');
+    }, 200);
 
-    // Phase 3 (1.2s): Make ASCII art visible with a glitch effect
+    // Phase 2 (1.5s): Text fades out, doberman image fades in
     setTimeout(() => {
-      if (ascii) {
-        ascii.classList.remove('opacity-0');
-        ascii.classList.add('opacity-100', 'animate-glitch-flicker');
-      }
-    }, 1200);
+      textEl?.classList.remove('opacity-100');
+      gifEl?.classList.add('opacity-100');
+    }, 1500);
 
-    // Phase 4 (3.2s): Smooth fade-out of the entire preloader container
+    // Phase 3 (4.0s): Full overlay fades out
     setTimeout(() => {
-      if (container) {
-        container.classList.add('opacity-0', 'pointer-events-none');
-        
-        // Remove from DOM once transition (500ms) finishes
-        setTimeout(() => {
-          container.remove();
-        }, 500);
-      }
-    }, 3200);
+      container?.classList.add('opacity-0', 'pointer-events-none');
+
+      // Remove from DOM after fade transition completes (500ms)
+      setTimeout(() => {
+        container?.remove();
+      }, 500);
+    }, 4000);
   }
 </script>
-
-<style>
-  /* Glitch flicker animation for ASCII art */
-  @keyframes glitch-effect {
-    0%, 100% {
-      opacity: 1;
-      transform: translate(0) scale(1);
-      text-shadow: none;
-    }
-    10% {
-      opacity: 0.85;
-      transform: translate(-1px, 1px) scale(0.99);
-      text-shadow: 1px 0 theme('colors.zinc.400'), -1px 0 theme('colors.zinc.700');
-    }
-    20% {
-      opacity: 0.95;
-      transform: translate(1px, -1px);
-      text-shadow: none;
-    }
-    30% {
-      opacity: 0.75;
-      transform: translate(-2px, 0);
-    }
-    40% {
-      opacity: 1;
-      transform: translate(1px, 2px);
-      text-shadow: -1px 0 theme('colors.zinc.500'), 1px 0 theme('colors.zinc.800');
-    }
-    50% {
-      opacity: 0.8;
-      transform: translate(0);
-      text-shadow: none;
-    }
-    60% {
-      opacity: 1;
-      transform: translate(-1px, -1px);
-    }
-    70% {
-      opacity: 0.9;
-      text-shadow: 0.5px 0 theme('colors.zinc.300');
-    }
-    80% {
-      opacity: 1;
-      transform: translate(1px, 1px);
-      text-shadow: none;
-    }
-    90% {
-      opacity: 0.85;
-      transform: translate(-1px, 0);
-    }
-  }
-
-  .animate-glitch-flicker {
-    animation: glitch-effect 0.6s infinite steps(2, end);
-  }
-
-  /* Fade out transition setting */
-  #preloader-container {
-    transition: opacity 500ms cubic-bezier(0.4, 0, 0.2, 1);
-  }
-</style>

@@ -2,7 +2,7 @@
 /**
  * @file Layout.astro
  * @description Global layout wrapper providing HTML boilerplate, meta tags, global styles,
- *              Navbar, Footer, CartDrawer, and the intro Preloader.
+ *              Navbar, Footer, and CartDrawer.
  */
 import Navbar from "../components/Navbar.astro";
 import Footer from "../components/Footer.astro";
@@ -43,7 +43,7 @@ const {
     </style>
   </head>
   <body>
-    <!-- Preloader rendered immediately on body start -->
+    <!-- Preloader: runs before any other UI, once per session -->
     <Preloader />
 
     <!-- Global Navigation -->
