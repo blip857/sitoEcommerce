@@ -78,6 +78,7 @@
         border: 1px solid rgba(255, 255, 255, 0.4); /* Sottile bordo geometrico */
         background: transparent;
         transition: border-color 0.3s ease;
+        box-sizing: border-box; /* TASK H-4: Previene overflow del bordo su mobile */
     }
 
     /* Focus visivo quando l'utente clicca sulla casella di testo */
@@ -124,148 +125,10 @@
             transform 0.2s ease;
     }
 
-    Questa è l'ultima colonna portante della conversion rate optimization (CRO): la raccolta delle email per fare remarketing. 
-
-Guardando attentamente `image_69963a.png`, notiamo un approccio ultra-minimalista tipico dei grandi brand streetwear d'avanguardia: il testo non è eccessivamente grande ed è scritto in un font pulito a medio spessore, mentre la casella di testo è un rettangolo allungato dai bordi sottili e bianchi che racchiude sia il testo segnaposto (*placeholder*) sia la freccia minimale `→` sul lato destro.
-
-Andiamo a riprodurre questo blocco geometrico e pulito passo dopo passo.
-
----
-
-### 📥 Passo 1: Crea il componente `Newsletter.astro`
-
-Crea un nuovo file dentro la cartella dei tuoi componenti chiamandolo **`src/components/Newsletter.astro`**.
-
-Apri il file e incolla questo codice ottimizzato per rispecchiare fedelmente le proporzioni e lo stile minimale dello screenshot:
-
-```astro
----
-// Componente Newsletter minimale (Stile esatto image_69963a.png)
----
-
-<section class="newsletter-section">
-  <div class="newsletter-container">
-    
-    <!-- Testo di invito allineato al centro -->
-    <h3 class="newsletter-title">Iscriviti alle nostre email</h3>
-    
-    <!-- Form di iscrizione geometrico -->
-    <form class="newsletter-form" action="#" method="POST" onsubmit="event.preventDefault(); alert('Grazie per l\'iscrizione!');">
-      <div class="input-wrapper">
-        <input 
-          type="email" 
-          placeholder="E-mail" 
-          required 
-          class="newsletter-input" 
-          aria-label="Indirizzo E-mail"
-        />
-        <button type="submit" class="newsletter-submit" aria-label="Invia iscrizione">
-          <span class="arrow-icon">→</span>
-        </button>
-      </div>
-    </form>
-
-  </div>
-</section>
-
-<style>
-  .newsletter-section {
-        background-color: #111111; /* Uniformato allo sfondo scuro globale */
-        padding: 40px 24px 80px 24px;
-        width: 100%;
-    }
-
-    .newsletter-container {
-        max-width: 1200px;
-        margin: 0 auto;
-        text-align: center;
-    }
-
-    /* Testo pulito e sobrio, speculare all'immagine */
-    .newsletter-title {
-        font-family: sans-serif;
-        color: #ffffff;
-        font-size: 1.2rem;
-        font-weight: 500;
-        margin: 0 0 24px 0;
-        letter-spacing: 0.5px;
-    }
-
-    .newsletter-form {
-        width: 100%;
-    }
-
-    /* La scatola di input rettangolare sottile presente in image_69963a.png */
-    .input-wrapper {
-        position: relative;
-        max-width: 460px; /* Larghezza ottimale per il bilanciamento visivo */
-        margin: 0 auto;
-        display: flex;
-        align-items: center;
-        border: 1px solid rgba(255, 255, 255, 0.5); /* Bordo chiaro e sottile */
-        padding: 12px 16px;
-        background-color: transparent;
-        transition: border-color 0.2s ease;
-    }
-
-    /* Focus visivo quando l'utente clicca sulla casella */
-    .input-wrapper:focus-within {
-        border-color: #ffffff;
-    }
-
-    /* Input invisibile per far risaltare solo il testo */
-    .newsletter-input {
-        background: transparent;
-        border: none;
-        color: #ffffff;
-        font-family: sans-serif;
-        font-size: 0.95rem;
-        width: 100%;
-        outline: none;
-        padding-right: 40px; /* Evita che il testo si sovrapponga alla freccia */
-    }
-
-    /* Stile per il testo E-mail trasparente */
-    .newsletter-input::placeholder {
-        color: rgba(255, 255, 255, 0.4);
-    }
-
-    /* Pulsante freccia sul lato destro */
-    .newsletter-submit {
-        position: absolute;
-        right: 16px;
-        background: transparent;
-        border: none;
-        color: #ffffff;
-        cursor: pointer;
-        padding: 0;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .arrow-icon {
-        font-size: 1.3rem;
-        line-height: 1;
-        transition: transform 0.2s ease;
-    }
-
-    /* Piccolo feedback dinamico al passaggio del mouse sulla freccia */
-    .newsletter-submit:hover .arrow-icon {
-        transform: translateX(3px);
-    }
-
-    /* Responsive per schermi molto piccoli */
-    @media (max-width: 480px) {
+    /* Responsive per schermi molto piccoli (xs) */
+    @media (max-width: 374px) {
         .newsletter-section {
-            padding: 30px 16px 60px 16px;
-        }
-        .newsletter-title {
-            font-size: 1.1rem;
-            margin-bottom: 20px;
-        }
-        .input-wrapper {
-            padding: 10px 14px;
+            padding: 24px 12px 48px 12px;
         }
     }
 </style>

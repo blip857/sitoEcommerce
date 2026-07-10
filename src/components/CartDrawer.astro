@@ -58,9 +58,9 @@
   </div>
 
   <!-- Footer del Drawer con pulsante Pagamento -->
-  <div class="border-t border-zinc-900 p-6 bg-zinc-950 space-y-4">
+  <div class="border-t border-zinc-900 p-6 bg-zinc-950 space-y-4 cart-footer-safe">
     <button 
-      class="w-full bg-amber-500 hover:bg-amber-600 active:scale-[0.99] text-zinc-950 py-4 font-bold text-xs tracking-[0.2em] text-center transition-all duration-200 cursor-pointer uppercase disabled:opacity-50 disabled:cursor-not-allowed" 
+      class="w-full bg-amber-500 hover:bg-amber-600 active:scale-[0.99] text-zinc-950 py-4 font-bold text-xs tracking-[0.2em] text-center transition-all duration-200 cursor-pointer uppercase disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap" 
       id="checkoutBtn"
     >
       PAGAMENTO &bull; <span id="cartTotalPrice">€0.00</span>
@@ -186,7 +186,7 @@
                 <img src="${item.image}" alt="${item.name}" class="w-full h-full object-cover block" />
               </a>
               
-              <div class="flex-1 flex flex-col justify-between py-0.5">
+              <div class="flex-1 flex flex-col justify-between py-0.5 min-w-0">
                 <div>
                   <div class="flex justify-between items-start gap-2">
                     <a href="${item.url || '#'}" class="hover:text-amber-500 transition-colors duration-200 block">
@@ -319,5 +319,19 @@
   .scrollbar-none {
     -ms-overflow-style: none;
     scrollbar-width: none;
+  }
+
+  #cartDrawer {
+    height: 100svh;
+  }
+
+  @supports not (height: 100svh) {
+    #cartDrawer {
+      height: 100vh;
+    }
+  }
+
+  .cart-footer-safe {
+    padding-bottom: max(1.5rem, env(safe-area-inset-bottom));
   }
 </style>

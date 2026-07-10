@@ -94,6 +94,10 @@
         text-transform: uppercase;
         margin: 0 0 35px 0;
         max-width: 480px;
+        overflow-wrap: break-word;
+        word-break: break-word;
+        hyphens: auto;
+        -webkit-hyphens: auto;
     }
 
     /* Etichette autore */
@@ -145,6 +149,12 @@
         .editorial-virgolette {
             font-size: 3.5rem;
             margin-bottom: 5px;
+        }
+    }
+
+    @media (max-width: 374px) {
+        .editorial-quote {
+            font-size: 1.2rem;
         }
     }
 </style>

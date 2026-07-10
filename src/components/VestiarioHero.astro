@@ -66,11 +66,20 @@
 
         .hero-content {
             padding: 0 24px 24px;
+            overflow: hidden;
         }
 
         .hero-title {
             font-size: 2.5rem;
             letter-spacing: 4px;
+            word-break: break-word;
+        }
+    }
+
+    @media (max-width: 374px) {
+        .hero-title {
+            font-size: 2rem;
+            letter-spacing: 2px;
         }
     }
 </style>

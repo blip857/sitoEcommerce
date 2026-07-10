@@ -20,8 +20,8 @@ if (product.id === "ts-01") {
 }
 ---
 
-<a href={productUrl} class="product-card-link flex" aria-label={`Visualizza dettagli di ${product.title}`}>
-    <article class="product-card w-full border-r border-b border-zinc-800 p-4 flex flex-col justify-between bg-zinc-900 group" data-product-id={product.id}>
+<a href={productUrl} class="product-card-link flex min-w-0" aria-label={`Visualizza dettagli di ${product.title}`}>
+    <article class="product-card w-full border-r border-b border-zinc-800 p-4 flex flex-col justify-between bg-zinc-900 group min-w-0" data-product-id={product.id}>
         
         <!-- Immagine Prodotto Rigida (Aspect Ratio 3:4 o Quadrata) -->
         <div class="w-full aspect-[3/4] overflow-hidden bg-zinc-950 mb-4">
@@ -41,7 +41,7 @@ if (product.id === "ts-01") {
                     {product.variants.map((variant, index) => (
                         <button
                             type="button"
-                            class={`swatch-btn w-3 h-3 block border border-zinc-700 ${index === 0 ? 'active' : ''}`}
+                            class={`swatch-btn w-4 h-4 p-1.5 box-content block border border-zinc-700 ${index === 0 ? 'active' : ''}`}
                             style={`background-color: ${variant.hex}`}
                             data-image={variant.image}
                             data-color-name={variant.name}
@@ -139,10 +139,10 @@ if (product.id === "ts-01") {
     }
 
     .swatch-btn {
-        padding: 0;
         cursor: pointer;
         outline: none;
         transition: transform 0.15s ease, border-color 0.15s ease;
+        box-sizing: content-box;
     }
 
     .swatch-btn:hover,
@@ -150,5 +150,22 @@ if (product.id === "ts-01") {
         transform: scale(1.2);
         outline: 1px solid #ffffff;
         outline-offset: 1px;
+    }
+
+    @supports not (aspect-ratio: 3/4) {
+        .product-card .aspect-\[3\/4\] {
+            height: 0;
+            padding-bottom: 133.33%;
+            position: relative;
+            overflow: hidden;
+        }
+        .product-card .aspect-\[3\/4\] > img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
     }
 </style>

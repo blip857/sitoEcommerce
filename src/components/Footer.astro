@@ -457,6 +457,12 @@ const countries = [
         text-align: left;
         border-radius: 4px;
         transition: border-color 0.2s ease;
+        box-sizing: border-box;
+    }
+    @media (max-width: 340px) {
+        .currency-trigger-footer {
+            min-width: 0;
+        }
     }
     .currency-trigger-footer:hover {
         border-color: #555555;
@@ -474,6 +480,14 @@ const countries = [
         display: none;
         box-sizing: border-box;
         border-radius: 4px;
+    }
+    @media (max-width: 767px) {
+        .disclosure__list-wrapper.custom-drop-up {
+            max-height: 220px;
+        }
+        .disclosure__list {
+            max-height: 140px !important;
+        }
     }
     @media (min-width: 768px) {
         .disclosure__list-wrapper.custom-drop-up {
@@ -552,6 +566,7 @@ const countries = [
     @media (max-width: 767px) {
         .footer-payment-badges {
             justify-content: center;
+            gap: 8px;
         }
     }
     .badge-card {
@@ -592,7 +607,7 @@ const countries = [
     }
     .footer-bottom-row {
         display: flex;
-        flex-direction: column-reverse;
+        flex-direction: column;
         gap: 24px;
         align-items: center;
         text-align: center;
@@ -609,6 +624,8 @@ const countries = [
         font-size: 12px;
         line-height: 1.5;
         margin: 0;
+        overflow-wrap: break-word;
+        word-break: break-word;
     }
     .footer-link {
         color: #8b8b8b;

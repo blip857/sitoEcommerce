@@ -329,7 +329,11 @@ import { ECOMMERCE_REGISTRY } from '../config/ecommerce.config';
 </script>
 
 <style>
-    .navbar { background-color: #111111; color: white; display: flex; justify-content: space-between; align-items: center; padding: 0 24px; height: 70px; font-family: sans-serif; font-weight: bold; font-size: 0.85rem; letter-spacing: 1px; border-bottom: 1px solid #1a1a1a; position: relative; z-index: 100; }
+    :root {
+        --navbar-desktop-h: 70px;
+        --navbar-mobile-h: 60px;
+    }
+    .navbar { background-color: #111111; color: white; display: flex; justify-content: space-between; align-items: center; padding: 0 24px; height: var(--navbar-desktop-h); font-family: sans-serif; font-weight: bold; font-size: 0.85rem; letter-spacing: 1px; border-bottom: 1px solid #1a1a1a; position: relative; z-index: 100; }
     .nav-left, .nav-right, .desktop-items { display: flex; align-items: center; gap: 24px; }
     .navbar a { color: white; text-decoration: none; transition: color 0.2s; }
     .navbar a:hover, .icon-link:hover { color: #ff9f00; }
@@ -345,12 +349,14 @@ import { ECOMMERCE_REGISTRY } from '../config/ecommerce.config';
         text-decoration: none;
         align-items: center;
         justify-content: center;
+        min-width: 44px;
+        min-height: 44px;
     }
     .currency-picker { position: relative; display: inline-block; }
     .currency-trigger { background: transparent; border: none; color: white; font-family: sans-serif; font-size: 0.85rem; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 6px; }
     .chevron-arrow { font-size: 0.6rem; transform: rotate(180deg); transition: transform 0.2s; }
     .currency-trigger[aria-expanded="true"] .chevron-arrow { transform: rotate(0deg); }
-    .disclosure__list-wrapper { position: absolute; top: calc(100% + 15px); right: 0; background-color: #000000; border: 1px solid #222; width: 320px; display: none; flex-direction: column; box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.7); z-index: 999; }
+    .disclosure__list-wrapper { position: absolute; top: calc(100% + 15px); right: 0; background-color: #000000; border: 1px solid #222; width: 320px; max-width: min(320px, calc(100vw - 32px)); display: none; flex-direction: column; box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.7); z-index: 999; }
     .disclosure__list-wrapper.active { display: flex; }
     .country-filter { display: flex; align-items: center; padding: 12px; gap: 8px; border-bottom: 1px solid #222; }
     .field { position: relative; flex-grow: 1; display: flex; align-items: center; }
@@ -404,11 +410,10 @@ import { ECOMMERCE_REGISTRY } from '../config/ecommerce.config';
     /* Mobile Menu Overlay */
     .mobile-menu-overlay {
         position: fixed;
-        top: 60px;
+        top: var(--navbar-mobile-h);
         left: 0;
         width: 100%;
-        height: calc(100vh - 60px);
-        height: calc(100dvh - 60px);
+        height: calc(100dvh - var(--navbar-mobile-h));
         background-color: #111111;
         z-index: 90;
         transform: translateX(-100%);
@@ -418,6 +423,12 @@ import { ECOMMERCE_REGISTRY } from '../config/ecommerce.config';
         box-sizing: border-box;
         display: flex;
         flex-direction: column;
+    }
+
+    @supports not (height: 100dvh) {
+        .mobile-menu-overlay {
+            height: calc(100vh - var(--navbar-mobile-h));
+        }
     }
 
     .mobile-menu-overlay.active {
@@ -524,8 +535,13 @@ import { ECOMMERCE_REGISTRY } from '../config/ecommerce.config';
     @media (max-width: 1024px) {
         .desktop-items { display: none !important; }
         .mobile-icon { display: inline-flex !important; }
-        .navbar { padding: 0 16px; height: 60px; }
+        .navbar { padding: 0 16px; height: var(--navbar-mobile-h); }
         .logo-placeholder { font-size: 1rem; }
         .nav-left, .nav-right { gap: 16px; }
+    }
+
+    @media (max-width: 374px) {
+        .navbar { padding: 0 12px; }
+        .logo-placeholder { font-size: 0.9rem; }
     }
 </style>

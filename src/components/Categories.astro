@@ -126,11 +126,21 @@
             grid-template-columns: repeat(2, 1fr);
             gap: 12px;
         }
+        .categories-grid > .category-card:last-child:nth-child(odd) {
+            grid-column: span 2;
+        }
         .card-overlay {
             padding: 14px;
         }
         .card-overlay h3 {
             font-size: 1rem;
+        }
+    }
+
+    @media (max-width: 374px) {
+        .card-overlay h3 {
+            font-size: 0.85rem;
+            letter-spacing: 0.5px;
         }
     }
 </style>

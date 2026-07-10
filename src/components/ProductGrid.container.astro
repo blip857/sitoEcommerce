@@ -10,8 +10,8 @@ import ProductCard from '../islands/ProductCard.island.astro';
 const products = ProductsFacadeService.getAllVestiarioProducts();
 ---
 
-<section class="w-full bg-[#111111] py-16 px-0 md:px-6">
-  <div class="max-w-6xl mx-auto">
+<section class="w-full bg-[#111111] py-16 px-4 md:px-6">
+  <div class="max-w-6xl mx-auto overflow-hidden">
     <div class="grid grid-cols-2 md:grid-cols-4 border-t border-l border-zinc-800 bg-zinc-900">
         {products.map((product) => (
             <ProductCard product={product} />
