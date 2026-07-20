@@ -1,64 +1,447 @@
 ---
 /**
  * @file Preloader.astro
- * @description Cinematic intro preloader — doberman hero-style image emerges from darkness.
- *              Phase 1 (0.2s):  GIF appears at near-invisible opacity (opacity-20).
- *              Phase 2 (1.2s):  GIF rises to full opacity-100 over 2000ms CSS transition.
- *              Phase 3 (3.8s):  Full overlay fades out (duration-700), removed from DOM at 4.5s.
- *              Runs once per user session via sessionStorage ('intro-visto').
+ * @description Scribble Reveal preloader — Basement Studio concept.
+ *              22-28 randomised cubic-Bézier ink paths draw across the screen,
+ *              then the brand word fades in. Hides after window 'load' fires.
+ *
+ *  ASTRO ARCHITECTURE NOTES
+ *  ─────────────────────────────────────────────────────────────────────────────
+ *  • <script is:inline> is mandatory so this script lands verbatim in the HTML
+ *    at this exact position, blocking further rendering (no FOUC / flash).
+ *
+ *  • NO TypeScript annotations. is:inline bypasses Vite / TS compilation — any
+ *    TS syntax reaches the browser as-is and causes a silent SyntaxError.
+ *
+ *  • SVG dimensions bug-fix: when is:inline runs, the browser has not yet
+ *    completed its first layout pass, so clientWidth / innerWidth can return 0.
+ *    getTotalLength() on a 0×0 SVG path returns 0, making strokeDashoffset = 0
+ *    from the start — the draw animation never triggers.
+ *    FIX: wrap buildScribble() inside two nested requestAnimationFrame calls.
+ *    This guarantees the browser has performed at least one layout pass and the
+ *    viewport dimensions are real before we generate SVG coordinates.
+ *
+ *  • var-closure bug-fix: inside the forEach that schedules setTimeout callbacks,
+ *    using `var duration` means every callback closes over the same binding and
+ *    reads the value from the last iteration. Each duration is now captured via
+ *    an immediately-invoked wrapper that receives its own copy.
  */
 ---
 
-<div
-  id="preloader-container"
-  class="fixed inset-0 z-[9999] bg-black flex items-center justify-center select-none"
->
-  <!-- Inline script: synchronously hide overlay before first paint if already seen this session -->
-  <script is:inline>
-    if (sessionStorage.getItem('intro-visto')) {
-      document.getElementById('preloader-container').style.display = 'none';
-    }
-  </script>
-
-  <!-- Hero-sized doberman image, starts invisible -->
-  <img
-    id="preloaderGif"
-    src="/assets/doberman.webp"
-    alt="Doberman"
-    class="w-full max-w-[1200px] h-[50vh] md:h-[70vh] object-cover opacity-0 transition-all duration-[2000ms] ease-out select-none pointer-events-none"
-  />
+<!-- Preloader overlay — visible immediately, before any other DOM is rendered -->
+<div id="preloader">
+  <svg id="scribble-svg" preserveAspectRatio="none"></svg>
+  <div class="preloader-word" id="preloaderWord">Occhipienidi.</div>
+  <button class="preloader-skip" id="skipBtn">Salta</button>
 </div>
 
-<script>
-  const container = document.getElementById('preloader-container');
-  const gif = document.getElementById('preloaderGif');
-
-  // Bail out immediately if already seen this session
-  if (sessionStorage.getItem('intro-visto')) {
-    container?.remove();
-  } else {
-    // Lock session so this intro won't replay on subsequent navigation
-    sessionStorage.setItem('intro-visto', 'true');
-
-    // Phase 1 (0.2s): GIF materialises at near-invisible opacity
-    setTimeout(() => {
-      gif?.classList.add('opacity-20');
-    }, 200);
-
-    // Phase 2 (1.2s): GIF rises to full opacity — 2000ms CSS transition handles the gradual emergence
-    setTimeout(() => {
-      gif?.classList.remove('opacity-20');
-      gif?.classList.add('opacity-100');
-    }, 1200);
-
-    // Phase 3 (3.8s): Overlay fades out elegantly, revealing the homepage beneath
-    setTimeout(() => {
-      container?.classList.add('opacity-0', 'pointer-events-none', 'transition-opacity', 'duration-700');
-
-      // Remove node from DOM after fade completes
-      setTimeout(() => {
-        container?.remove();
-      }, 700);
-    }, 3800);
+<style>
+  /* CSS custom properties scoped to the preloader.
+     Prefixed with --pl- to avoid collisions with site-wide :root variables. */
+  :root {
+    --pl-bg:     #0a0a0a;
+    --pl-ink:    #f5f5f0;
+    --pl-line:   rgba(245, 245, 240, 0.55);
+    --pl-accent: #d6d6ce;
   }
+
+  /* ── Overlay ─────────────────────────────────────────────────────────────── */
+  #preloader {
+    position: fixed;
+    inset: 0;
+    background: var(--pl-bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    /* overflow:hidden prevents SVG coordinate rounding from adding a scrollbar
+       on mobile (especially on Android Chrome with address-bar resize) */
+    overflow: hidden;
+    transition: opacity 0.9s ease, visibility 0.9s ease;
+  }
+
+  #preloader.hide {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  /* ── SVG canvas ──────────────────────────────────────────────────────────── */
+  #scribble-svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  /* Default path styling — mirrors the reference exactly.
+     stroke-width is also set per-path via JS for per-line randomness. */
+  #scribble-svg path {
+    fill: none !important;          /* guard against Tailwind/global resets */
+    stroke: var(--pl-line) !important; /* guard against Tailwind/global resets */
+    stroke-width: 1;
+    stroke-linecap: round;
+  }
+
+  /* ── Brand word ──────────────────────────────────────────────────────────── */
+  .preloader-word {
+    position: relative;
+    color: var(--pl-ink);
+    font-weight: 800;
+    /* clamp: 2.2rem on tiny phones → scales with viewport → max 5.5rem desktop */
+    font-size: clamp(2.2rem, 7vw, 5.5rem);
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+    /* initial hidden state */
+    opacity: 0;
+    transform: scale(0.88);
+    filter: blur(6px);
+    transition: opacity 0.7s ease, transform 0.7s ease, filter 0.7s ease;
+    /* prevents long brand name from overflowing on narrow screens */
+    max-width: 90vw;
+    text-align: center;
+    line-height: 1.1;
+  }
+
+  .preloader-word.show {
+    opacity: 1;
+    transform: scale(1);
+    filter: blur(0);
+  }
+
+  /* ── Skip button ─────────────────────────────────────────────────────────── */
+  .preloader-skip {
+    position: absolute;
+    top: 24px;
+    right: 24px;
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--pl-accent);
+    background: none;
+    border: 1px solid rgba(245, 245, 240, 0.25);
+    padding: 8px 14px;
+    border-radius: 999px;
+    cursor: pointer;
+    opacity: 0.55;
+    transition: opacity 0.2s ease, border-color 0.2s ease;
+  }
+
+  .preloader-skip:hover {
+    opacity: 1;
+    border-color: rgba(245, 245, 240, 0.6);
+  }
+
+  /* ── Accessibility: reduced motion ──────────────────────────────────────── */
+  @media (prefers-reduced-motion: reduce) {
+    #preloader       { transition: opacity 0.3s ease; }
+    .preloader-word  { transition: opacity 0.3s ease; transform: none; filter: none; }
+  }
+</style>
+
+<!--
+  ═══════════════════════════════════════════════════════════════════════════════
+  SCRIPT — is:inline (mandatory for Astro)
+  ═══════════════════════════════════════════════════════════════════════════════
+  Emitted verbatim at this position in the HTML. Executes synchronously during
+  the browser's initial parse, so the black overlay (#preloader) is already
+  covering the page before any site content below is parsed or painted.
+
+  The SVG path generation is deliberately deferred to requestAnimationFrame
+  so the browser has a real layout pass with correct viewport dimensions before
+  we compute SVG coordinates. See "SVG dimensions bug-fix" in the file header.
+
+  Plain ES5-compatible JavaScript only — no TypeScript, no ES6 import/export.
+  Arrow functions and template literals are used only where safe (modern browsers).
+  ═══════════════════════════════════════════════════════════════════════════════
+-->
+<script is:inline>
+(function () {
+
+  /* ── DOM references ───────────────────────────────────────────────────────── */
+  var svgEl     = document.getElementById('scribble-svg');
+  var wordEl    = document.getElementById('preloaderWord');
+  var overlay   = document.getElementById('preloader');
+  var skipBtn   = document.getElementById('skipBtn');
+  var svgNS     = 'http://www.w3.org/2000/svg';
+
+  /* Abort silently if any element is missing (SSR edge-cases, bots, etc.) */
+  if (!svgEl || !wordEl || !overlay || !skipBtn) return;
+
+  var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var exitTimer     = null;
+  var pageReady     = false;   /* true once window 'load' fires             */
+  var animDone      = false;   /* true once exitDelay has fully elapsed      */
+
+  /* ─────────────────────────────────────────────────────────────────────────
+     MATH — Scribble path generator
+     Each call produces one organic cubic-Bézier multi-segment curve.
+     The logic is a 1:1 port of the reference file (preloader-reference.html).
+  ───────────────────────────────────────────────────────────────────────── */
+
+  function rand(min, max) {
+    return Math.random() * (max - min) + min;
+  }
+
+  /**
+   * Returns an SVG 'd' attribute string for one randomised scribble line.
+   * Points are clustered around the viewport centre (cx, cy) within a
+   * radius of min(w,h) * 0.42.  Control points extend an additional 60%
+   * of spread to produce natural, looping curves.
+   *
+   * @param  {number} w  Viewport width  — must be > 0
+   * @param  {number} h  Viewport height — must be > 0
+   * @return {string}
+   */
+  function buildScribblePath(w, h) {
+    var cx     = w / 2;
+    var cy     = h / 2;
+    var spread = Math.min(w, h) * 0.42;
+
+    var points   = [];
+    var segments = Math.floor(rand(4, 7));
+
+    for (var i = 0; i < segments; i++) {
+      points.push([
+        cx + rand(-spread, spread),
+        cy + rand(-spread, spread)
+      ]);
+    }
+
+    var d = 'M ' + points[0][0] + ' ' + points[0][1];
+
+    for (var j = 1; j < points.length; j++) {
+      var px  = points[j - 1][0];
+      var py  = points[j - 1][1];
+      var x   = points[j][0];
+      var y   = points[j][1];
+      var c1x = px + rand(-spread * 0.6, spread * 0.6);
+      var c1y = py + rand(-spread * 0.6, spread * 0.6);
+      var c2x = x  + rand(-spread * 0.6, spread * 0.6);
+      var c2y = y  + rand(-spread * 0.6, spread * 0.6);
+      d += ' C ' + c1x + ' ' + c1y + ', ' + c2x + ' ' + c2y + ', ' + x + ' ' + y;
+    }
+
+    return d;
+  }
+
+  /* ─────────────────────────────────────────────────────────────────────────
+     SVG BUILDER
+     Fills the SVG with 22–28 randomised paths, then animates each one with
+     a staggered stroke-dashoffset draw effect.
+
+     IMPORTANT — viewport dimensions:
+     We use window.innerWidth / innerHeight (matching the reference file exactly)
+     but this function is ONLY called from inside requestAnimationFrame, after
+     the browser has completed at least one layout pass, so the values are real.
+
+     IMPORTANT — var closure fix:
+     The `duration` value for each path's setTimeout callback is captured via
+     an IIFE argument so every closure holds its own independent copy.
+  ───────────────────────────────────────────────────────────────────────── */
+
+  function buildScribble() {
+    svgEl.innerHTML = '';
+
+    /*
+      Dimension strategy — three-layer fallback:
+        1. getBoundingClientRect() on the SVG element itself: most reliable
+           because it reflects the actual rendered box size after layout.
+        2. window.innerWidth / innerHeight: works after the first layout pass.
+        3. Hard-coded 1280×720: absolute last resort so the viewBox is never
+           "0 0 0 0", which would make getTotalLength() return 0 on every path
+           and break the entire draw animation.
+    */
+    var rect = svgEl.getBoundingClientRect();
+    var w    = rect.width  || window.innerWidth;
+    var h    = rect.height || window.innerHeight;
+
+    if (w === 0) w = 1280;
+    if (h === 0) h = 720;
+
+    svgEl.setAttribute('viewBox', '0 0 ' + w + ' ' + h);
+
+    var lineCount = reducedMotion ? 0 : Math.floor(rand(22, 28));
+    var paths     = [];
+
+    for (var i = 0; i < lineCount; i++) {
+      var path = document.createElementNS(svgNS, 'path');
+      path.setAttribute('d', buildScribblePath(w, h));
+      path.setAttribute('stroke-width', rand(0.6, 1.6).toFixed(2));
+      path.style.opacity = rand(0.25, 0.6).toFixed(2);
+      svgEl.appendChild(path);
+      paths.push(path);
+    }
+
+    /*
+      Staggered stroke-dashoffset draw animation.
+
+      For each path:
+        1. Measure the total path length (getTotalLength).
+           On a properly-laid-out SVG this is > 0.
+        2. Set strokeDasharray = strokeDashoffset = length  →  path is invisible.
+        3. Force a synchronous reflow (getBoundingClientRect) so the browser
+           registers the hidden state BEFORE we apply the transition.
+           Without this, the browser coalesces both style mutations into one
+           frame, skips the initial hidden state, and the draw never plays.
+        4. Inside a setTimeout (with per-path stagger), set transition +
+           strokeDashoffset = 0  →  path animates from hidden to fully drawn.
+
+      var-closure fix: `duration` is passed as an argument to an IIFE wrapper
+      so the setTimeout callback captures its own independent numeric value,
+      not a reference to a shared var that changes each iteration.
+    */
+    for (var k = 0; k < paths.length; k++) {
+      (function (p, idx) {
+        var len = p.getTotalLength();
+        if (len === 0) return; /* skip degenerate paths (SVG not laid out yet) */
+
+        p.style.strokeDasharray  = len;
+        p.style.strokeDashoffset = len;
+        p.style.transition       = 'none';
+
+        /* *** CRITICAL REFLOW — do not remove *** */
+        p.getBoundingClientRect();
+
+        var delay    = idx * 35;
+        var duration = rand(650, 1100);
+
+        setTimeout(function () {
+          p.style.transition       = 'stroke-dashoffset ' + duration + 'ms cubic-bezier(0.65,0,0.35,1)';
+          p.style.strokeDashoffset = '0';
+        }, delay);
+      })(paths[k], k);
+    }
+
+    return paths.length;
+  }
+
+  /* ─────────────────────────────────────────────────────────────────────────
+     ANIMATION SEQUENCE
+  ───────────────────────────────────────────────────────────────────────── */
+
+  function hidePreloader() {
+    overlay.classList.add('hide');
+  }
+
+  /**
+   * Builds the scribble and schedules the brand-word reveal.
+   * Returns the minimum time (ms) before the overlay may begin fading out.
+   */
+  function playIntro() {
+    overlay.classList.remove('hide');
+    wordEl.classList.remove('show');
+
+    var count         = buildScribble();
+    var totalDrawTime = reducedMotion ? 0 : count * 35 + 1100;
+
+    /* Brand word appears at ~45% of the ink-draw duration */
+    setTimeout(function () {
+      wordEl.classList.add('show');
+    }, reducedMotion ? 100 : totalDrawTime * 0.45);
+
+    return reducedMotion ? 500 : totalDrawTime + 500;
+  }
+
+  /* ─────────────────────────────────────────────────────────────────────────
+     ENTRY POINT
+     Two-phase hide strategy mirrors the reference:
+       Phase A — animation timer: exitDelay computed from line count
+       Phase B — page ready:      window 'load' (all network assets complete)
+     The overlay hides only when BOTH phases are satisfied.
+
+     requestAnimationFrame × 2:
+     The first rAF fires after the browser commits the current paint.
+     The second rAF fires after the *next* layout + paint cycle, guaranteeing
+     that clientWidth / innerWidth are non-zero before we build the SVG.
+  ───────────────────────────────────────────────────────────────────────── */
+
+  function start() {
+    clearTimeout(exitTimer);
+    pageReady = false;
+    animDone  = false;
+
+    /* Defer SVG generation until the browser has real layout dimensions */
+    requestAnimationFrame(function () {
+      requestAnimationFrame(function () {
+
+        var exitDelay = playIntro();
+
+        /* ── Phase A: animation timer ──────────────────────────────────────── */
+        exitTimer = setTimeout(function () {
+          animDone = true;
+          if (pageReady) hidePreloader();
+        }, exitDelay);
+
+        /*
+          ── Phase B: page-ready guard ─────────────────────────────────────────
+          fallbackTimer fires after 5 s if neither 'load' nor 'astro:page-load'
+          has been received. This prevents the overlay from getting stuck when
+          Astro's hydration or a slow network asset delays the load event.
+        */
+        var fallbackTimer = setTimeout(function () {
+          if (!pageReady) {
+            pageReady = true;
+            if (animDone) hidePreloader();
+          }
+        }, 5000);
+
+        function onPageReady() {
+          clearTimeout(fallbackTimer);
+          pageReady = true;
+          if (animDone) hidePreloader();
+        }
+
+        /* Standard browser load event */
+        window.addEventListener('load', onPageReady);
+
+        /*
+          Astro View Transitions / Client Router fires 'astro:page-load'
+          on each client-side navigation. Registering here ensures the
+          preloader responds correctly if View Transitions are ever enabled.
+        */
+        document.addEventListener('astro:page-load', onPageReady);
+
+      });
+    });
+  }
+
+  start();
+
+  /* ─────────────────────────────────────────────────────────────────────────
+     EVENT LISTENERS
+  ───────────────────────────────────────────────────────────────────────── */
+
+  /* Skip button — aborts pending timers and hides immediately */
+  skipBtn.addEventListener('click', function () {
+    clearTimeout(exitTimer);
+    hidePreloader();
+  });
+
+  /*
+    Resize / orientation change.
+    Rebuilds the SVG using updated viewport dimensions so portrait ↔ landscape
+    transitions on mobile render correctly without overflow or mis-aligned curves.
+    Wrapped in a single rAF so the viewBox is computed after the browser has
+    applied the new layout geometry.
+  */
+  /*
+    Resize with debounce (100 ms) + rAF:
+    - The debounce collapses rapid consecutive resize events (e.g. mobile
+      address-bar show/hide, or desktop drag-resize) into a single call.
+    - The rAF inside the debounce ensures the new layout geometry is applied
+      before we read getBoundingClientRect() inside buildScribble().
+  */
+  var resizeDebounce = null;
+  window.addEventListener('resize', function () {
+    if (overlay.classList.contains('hide')) return;
+    clearTimeout(resizeDebounce);
+    resizeDebounce = setTimeout(function () {
+      requestAnimationFrame(function () {
+        buildScribble();
+      });
+    }, 100);
+  });
+
+})();
 </script>
