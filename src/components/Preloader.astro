@@ -5,59 +5,199 @@
  */
 ---
 
-<div id="preloader-container" class="preloader-overlay">
+<!-- Preloader overlay — visible immediately, before any other DOM is rendered -->
+<div id="preloader">
   <svg id="scribble-svg" preserveAspectRatio="none"></svg>
-  <div class="preloader-content">
-    <span class="preloader-brand">LOADING</span>
+  
+  <div class="preloader-hero-align">
+    <div class="hero-content-ghost">
+      <div class="hero-graffiti-logo-ghost" aria-hidden="true">[ LOGO GRAFFITI GRANDE MULTICOLOR ]</div>
+      <div class="preloader-word" id="preloaderWord">OCCHIPIENIDI<i>STUDIO</i></div>
+      <div class="brand-subtitle-ghost" aria-hidden="true">ABBIGLIAMENTO GRAFFITI</div>
+      <button class="cta-button-ghost" aria-hidden="true" tabindex="-1">ACQUISTA ORA</button>
+    </div>
   </div>
+
+  <button class="preloader-skip" id="skipBtn">Salta</button>
 </div>
 
 <style>
-  .preloader-overlay {
-    position: fixed;
-    inset: 0;
-    z-index: 9999;
-    background-color: #0a0a0a;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-    transition:
-      opacity 0.6s cubic-bezier(0.65, 0, 0.35, 1),
-      visibility 0.6s ease;
+  /* CSS custom properties scoped to the preloader.
+     Prefixed with --pl- to avoid collisions with site-wide :root variables. */
+  :root {
+    --pl-bg:     #0a0a0a;
+    --pl-ink:    #ffffff;
+    --pl-line:   rgba(245, 245, 240, 0.55);
+    --pl-accent: #d6d6ce;
   }
 
-  .preloader-overlay.is-hidden {
+  /* ── Overlay ─────────────────────────────────────────────────────────────── */
+  #preloader {
+    position: fixed;
+    inset: 0;
+    background: var(--pl-bg);
+    display: block;
+    z-index: 9999;
+    /* overflow:hidden prevents SVG coordinate rounding from adding a scrollbar
+       on mobile (especially on Android Chrome with address-bar resize) */
+    overflow: hidden;
+    transition: opacity 0.9s ease, visibility 0.9s ease;
+  }
+
+  #preloader.hide {
     opacity: 0;
     visibility: hidden;
     pointer-events: none;
   }
 
+  /* ── SVG canvas ──────────────────────────────────────────────────────────── */
   #scribble-svg {
     position: absolute;
     inset: 0;
     width: 100%;
     height: 100%;
-    pointer-events: none;
   }
 
-  :global(#scribble-svg path) {
-    fill: none !important;
-    stroke: rgba(245, 245, 240, 0.55) !important;
+  /* Default path styling — mirrors the reference exactly.
+     stroke-width is also set per-path via JS for per-line randomness. */
+  #scribble-svg path {
+    fill: none !important;          /* guard against Tailwind/global resets */
+    stroke: var(--pl-line, rgba(245, 245, 240, 0.55)) !important; /* guard against Tailwind/global resets */
+    stroke-width: 1;
     stroke-linecap: round;
   }
 
-  .preloader-content {
-    position: relative;
+  /* ── Hero Alignment Container ────────────────────────────────────────────── */
+  .preloader-hero-align {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 80vh; /* Mirrors .hero-section height */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    pointer-events: none;
     z-index: 2;
   }
 
-  .preloader-brand {
-    font-family: system-ui, sans-serif;
-    font-size: 1.5rem;
-    font-weight: 700;
-    letter-spacing: 0.2em;
-    color: #f5f5f0;
+  .hero-content-ghost {
+    position: relative;
+    z-index: 3;
+    padding: 0 20px;
+    box-sizing: border-box;
+  }
+
+  .hero-graffiti-logo-ghost {
+    font-family: sans-serif;
+    font-size: 1.2rem;
+    letter-spacing: 2px;
+    margin-bottom: 10px;
+    visibility: hidden;
+    user-select: none;
+  }
+
+  /* ── Brand word (Typography 1:1 match with Hero .brand-title) ───────────── */
+  .preloader-word {
+    position: relative;
+    color: var(--pl-ink);
+    font-family: serif;
+    font-size: 3.5rem;
+    font-weight: bold;
+    margin: 15px 0;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    line-height: 1.1;
+    /* initial hidden state */
+    opacity: 0;
+    transform: scale(0.88);
+    filter: blur(6px);
+    transition: opacity 0.7s ease, transform 0.7s ease, filter 0.7s ease;
+    max-width: 90vw;
+    text-align: center;
+    pointer-events: auto;
+  }
+
+  .preloader-word i {
+    font-style: italic;
+  }
+
+  .preloader-word.show {
+    opacity: 1;
+    transform: scale(1);
+    filter: blur(0);
+  }
+
+  /* Ghost elements for exact flexbox vertical alignment */
+  .brand-subtitle-ghost {
+    font-family: sans-serif;
+    font-size: 0.85rem;
+    letter-spacing: 5px;
+    margin-bottom: 35px;
+    text-transform: uppercase;
+    font-weight: bold;
+    visibility: hidden;
+    user-select: none;
+  }
+
+  .cta-button-ghost {
+    padding: 16px 48px;
+    font-family: sans-serif;
+    font-weight: bold;
+    font-size: 0.95rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    border: none;
+    visibility: hidden;
+    user-select: none;
+  }
+
+  /* ── Skip button ─────────────────────────────────────────────────────────── */
+  .preloader-skip {
+    position: absolute;
+    top: 24px;
+    right: 24px;
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--pl-accent);
+    background: none;
+    border: 1px solid rgba(245, 245, 240, 0.25);
+    padding: 8px 14px;
+    border-radius: 999px;
+    cursor: pointer;
+    opacity: 0.55;
+    transition: opacity 0.2s ease, border-color 0.2s ease;
+    z-index: 10;
+  }
+
+  .preloader-skip:hover {
+    opacity: 1;
+    border-color: rgba(245, 245, 240, 0.6);
+  }
+
+  /* ── Accessibility & Responsive Alignment (matching Hero.astro) ───────── */
+  @media (max-width: 768px) {
+    .preloader-hero-align {
+      height: 65vh; /* Mirrors .hero-section height on mobile */
+    }
+    .preloader-word {
+      font-size: 2.2rem;
+    }
+    .brand-subtitle-ghost {
+      font-size: 0.75rem;
+      letter-spacing: 3px;
+    }
+    .cta-button-ghost {
+      padding: 14px 32px;
+      font-size: 0.85rem;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #preloader       { transition: opacity 0.3s ease; }
+    .preloader-word  { transition: opacity 0.3s ease; transform: none; filter: none; }
   }
 </style>
 
@@ -68,16 +208,22 @@
     }
 
     function hidePreloader() {
-      var container = document.getElementById("preloader-container");
-      if (container && !container.classList.contains("is-hidden")) {
-        container.classList.add("is-hidden");
-        // Rimuove l'elemento dal DOM dopo la transizione CSS (0.6s) per liberare memoria
+      var container = document.getElementById("preloader");
+      if (container && !container.classList.contains("hide")) {
+        container.classList.add("hide");
+        // Rimuove l'elemento dal DOM dopo la transizione CSS (0.9s)
         setTimeout(function () {
           if (container.parentNode) {
             container.parentNode.removeChild(container);
           }
-        }, 600);
+        }, 900);
       }
+    }
+
+    // Trigger visual text
+    function showText() {
+      var el = document.getElementById("preloaderWord");
+      if (el) el.classList.add("show");
     }
 
     function buildScribble() {
@@ -166,6 +312,9 @@
           }, delay);
         })(paths[k], k);
       }
+
+      // Trigger text reveal
+      setTimeout(showText, 150);
 
       // Gestione scomparsa al termine dei caricamenti o via timer
       var minShowTime = maxAnimTime + 200; // Garantisce che l'animazione delle linee completi
